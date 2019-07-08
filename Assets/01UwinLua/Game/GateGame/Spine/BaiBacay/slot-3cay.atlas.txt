@@ -1,0 +1,90 @@
+
+slot-3cay.png
+size: 492,492
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+33
+  rotate: true
+  xy: 189, 65
+  size: 31, 43
+  orig: 31, 43
+  offset: 0, 0
+  index: -1
+333
+  rotate: true
+  xy: 135, 55
+  size: 41, 52
+  orig: 41, 52
+  offset: 0, 0
+  index: -1
+Layer 1 copy
+  rotate: false
+  xy: 442, 300
+  size: 29, 190
+  orig: 29, 190
+  offset: 0, 0
+  index: -1
+Layer 2 copy 2
+  rotate: false
+  xy: 234, 77
+  size: 22, 19
+  orig: 22, 19
+  offset: 0, 0
+  index: -1
+Layer 4
+  rotate: true
+  xy: 2, 70
+  size: 26, 131
+  orig: 26, 131
+  offset: 0, 0
+  index: -1
+Layer 40
+  rotate: false
+  xy: 2, 295
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+Layer 40 copy
+  rotate: false
+  xy: 2, 98
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+bai1
+  rotate: true
+  xy: 258, 9
+  size: 240, 179
+  orig: 240, 179
+  offset: 0, 0
+  index: -1
+bai1 copy
+  rotate: true
+  xy: 258, 251
+  size: 239, 182
+  orig: 239, 182
+  offset: 0, 0
+  index: -1
+cay2
+  rotate: true
+  xy: 2, 2
+  size: 66, 44
+  orig: 66, 44
+  offset: 0, 0
+  index: -1
+cay33
+  rotate: false
+  xy: 48, 7
+  size: 82, 61
+  orig: 82, 61
+  offset: 0, 0
+  index: -1
+suolaka
+  rotate: false
+  xy: 442, 282
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

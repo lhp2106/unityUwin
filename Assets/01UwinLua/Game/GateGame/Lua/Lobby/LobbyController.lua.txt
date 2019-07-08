@@ -1,0 +1,297 @@
+List = require 'pl.List'
+UILayerKey = require 'common.UILayerKey'
+json = require "common.json"
+local cs_coroutine = (require 'common.cs_coroutine')
+
+configGate = require("gate.ConfigGate")
+-------------------------------------------------------
+local  timeRunNotice = 60
+
+local viewLobby
+
+local isGetEvent = true
+-- Mail
+local isGetMailUnread = false
+local isGetmailUnreaded = false
+local timeGetMailUnread = 30
+local ieGetMailUnread
+
+local timeRunJackpot = 2
+
+local EventGameID =
+{
+    FARM = 1,
+    MAFIA = 2,
+    GAME25LINE = 3,
+    TAI_XIU = 4,
+    HILO = 5,
+    MINI_SLOT1 = 6,
+    MINI_SLOT2 = 7,
+    MINIPOKER = 8,
+}
+
+-------------------------------------------------------
+function Init()
+    viewLobby =_viewLobby:GetComponent(typeof(CS.XLuaBehaviour))
+    configGate.noticeRun:InitNoticeNotice();
+
+    CS.Database.Instance.onUserUpdateGoldEventLua:AddListener(UpdateGold) 
+    CS.Database.Instance.onUserUpdateCoinEventLua:AddListener(UpdateCoin) 
+end 
+
+function Show()
+    isGetEvent = true
+    isGetMailUnread = true
+    CS.WebServiceController.Instance.onWebServiceResponseLua:AddListener(OnWebServiceResponse)
+    CS.WebServiceController.Instance.onWebServiceResponseLuaCodeString:AddListener(OnReponseWeb)
+
+    -- CS.Database.Instance.onUserUpdateGoldEventLua:AddListener(UpdateGold) 
+    -- CS.Database.Instance.onUserUpdateCoinEventLua:AddListener(UpdateCoin) 
+    CS.FacebookController.Instance.onFaceBookResultLua:AddListener(OnFacebookLogin) 
+
+    -- // Get Win Player
+    CS.SendRequest.SendEventGetBigWinPlayer();
+    
+    cs_coroutine.start(self, GetDataNoticeRun)
+
+    -- // Get All Jackpot
+    GetDataAllJackpotFrist();
+    -- Mail
+    if (CS.Database.Instance.islogin and isGetmailUnreaded == false) then
+        if ieGetMailUnread ~= nil then
+            self:StopCoroutine(ieGetMailUnread)
+        end
+        ieGetMailUnread = cs_coroutine.start(self, IEGetMailUnRead)
+    end
+
+    -- Get Info New
+    if(CS.Database.Instance.islogin) then
+        local url = "https://api.uwin369.net/Account/GetAccountInfo"
+        CS.WebServiceController.Instance:SendRequestCodeString("GetAccountInfo",url,nil,0)
+    end
+
+end
+
+function DisableLobby()
+    isGetEvent = false;
+    self:StopAllCoroutines();
+    configGate.noticeRun:StopRunNotice();
+
+    CS.WebServiceController.Instance.onWebServiceResponseLua:RemoveListener(OnWebServiceResponse)
+    CS.FacebookController.Instance.onFaceBookResultLua:RemoveListener(OnFacebookLogin) 
+    CS.WebServiceController.Instance.onWebServiceResponseLuaCodeString:RemoveListener(OnReponseWeb)
+end
+
+function OnReponseWeb(code, status, data)
+    if(code == "GetAccountInfo") then
+        if (CS.Helper.CheckStatucSucess(status)) then
+            CS.UILayerController.Instance:HideLoading()
+            local dataReponse = json.decode(data)
+        else
+            if CS.Database.Instance.islogin then
+                CS.LPopup.OpenPopupTop("Thông báo", "Hãy đăng xuất và đăng nhập lại")
+            end
+        end
+    end
+end
+
+function OnWebServiceResponse(code,status,data)
+
+    if code == CS.WebServiceCode.Code.SignIn or code == CS.WebServiceCode.Code.SignInFacebook then
+        CS.UILayerController.Instance:HideLoading();
+        if (status == CS.WebServiceStatus.Status.OK) then
+            mSignUp = json.decode(data)
+                if mSignUp.Code == 1 or mSignUp.Code == 2 then
+                    CS.Database.Instance:SetAccountInfo(mSignUp.Account);
+                    LoginSuccess(mSignUp.OTPToken);
+                    if (not mSignUp.Account.IsUpdateAccountName) then
+                        CS.UILayerController.Instance:ShowLayer(UILayerKey.LCreateNewName, CS.DataResourceLobby.instance.listObjLayer[CS.IndexSourceGate.LCREATE_NEW_NAME])
+                    end
+                else
+                    CS.Helper.CheckResponseSuccess(mSignUp.Code);
+                end
+        else
+            CS.LPopup.OpenPopup("Thông Báo!", "Kiểm tra kết nối")
+        end
+    elseif code ==CS.WebServiceCode.Code.LoginOTP then
+        if status == CS.WebServiceStatus.Status.OK then
+            local mSignUpOTP = json.decode(data)
+            if CS.Helper.CheckResponseSuccess(mSignUpOTP.Code) then
+                CS.UILayerController.Instance:HideLayer(UILayerKey.LLogInWithOTP)
+                LoginSuccessWithOTP(true)
+            end
+        end
+    elseif code == CS.WebServiceCode.Code.GetBigWinPlayers then
+        if (status == CS.WebServiceStatus.Status.OK) then
+                    local dataBigWinPlayer = json.decode(data)
+                    ShowNoticeRun(dataBigWinPlayer);
+        end    
+    elseif code == CS.WebServiceCode.Code.GetMailUnreal then
+        if (status == CS.WebServiceStatus.Status.OK) then
+            local quantityMailUnread = json.decode(data)
+            viewLobby:InvokeXLua("SetNoticeMail",quantityMailUnread)
+        end    
+    end
+    
+end
+
+--  Login --------------------------------------------------------------------
+
+function OnFacebookLogin(action,result,data)
+
+    if(action == CS.FacebookAction.Login)then
+        if ( (result.Error == nil or string.len(result.Error) <1) and result and not result.Cancelled) then
+            CS.SendRequest.SendSignInFacebookRequest(data)
+        else
+            CS.LPopup.OpenPopupTop("Thông báo", "Đăng nhập Facebook thất bại! \n Hãy thử lại")
+        end
+    end
+end
+
+function RequestLogin(nameAccount,passWord)
+    CS.SendRequest.SendSignInRequest(nameAccount, passWord);
+end
+
+function LoginSuccess(token)
+    if (not CS.Database.Instance:Account().IsOTP) then
+        LoginSuccessWithOTP(true)
+    else
+        CS.Database.Instance.tokenOTPLogin = token;
+        CS.UILayerController.Instance:ShowLayer(UILayerKey.LLogInWithOTP, CS.DataResourceLobby.instance.listObjLayer[CS.IndexSourceGate.LLOGIN_WITH_OTP]);
+    end
+end
+
+function LoginSuccessWithOTP(isSuccess)
+    viewLobby:InvokeXLua("LoginSuccess")
+    CS.Database.Instance.islogin = true;
+
+    viewLobby:InvokeXLua("SetQuantiyGem",CS.Database.Instance:Account().Gold)
+    viewLobby:InvokeXLua("setQuantityCoin",CS.Database.Instance:Account().Coin)
+    viewLobby:InvokeXLua("SetName",CS.Database.Instance:Account().DisplayName)
+    -- // Get Mail Unread
+    isGetmailUnreaded = true;
+    if ieGetMailUnread ~= nil then
+        self:StopCoroutine(ieGetMailUnread)
+    end
+    ieGetMailUnread = cs_coroutine.start(self, IEGetMailUnRead)
+end
+
+function LogoutSuccess()
+    if (ieGetMailUnread ~= nil) then
+        self:StopCoroutine(ieGetMailUnread)
+    end
+end
+
+--  Profile
+function UpdateCoin(infoUpdate)
+    viewLobby:InvokeXLua("setQuantityCoin",infoUpdate.Coin)
+end
+
+function UpdateGold(infoUpdate)
+    viewLobby:InvokeXLua("SetQuantiyGem",infoUpdate.Gold)
+end
+
+-- Show Notice run
+function ShowNoticeRun(listData)
+
+    -- local strShowNotice = "Sử dụng ứng dụng OTP Uwin để lấy mã OTP ổn định và miễn phí!     "
+    local strShowNotice = ""
+    -- // 0 Tro choi,1 Name , 2 so luong
+    local fomatNotice = "[<color=#80E139>%s</color>] <color=#E1C231>%s</color> vừa thắng <color=#E1C231> %s </color>";
+
+    for i = 1,#listData do
+        if (i == 1) then
+            strShowNotice = strShowNotice .. string.format(fomatNotice, GetNameGame(listData[i]["Type"]), listData[i]["AccountName"], CS.VKCommon.ConvertStringMoney(listData[i]["PrizeValue"]))
+        else
+             strShowNotice =strShowNotice.. "        " .. string.format(fomatNotice, GetNameGame(listData[i]["Type"]), listData[i]["AccountName"], CS.VKCommon.ConvertStringMoney(listData[i]["PrizeValue"]))
+        end
+    end
+
+    if string.len(strShowNotice)> 0 then
+        configGate.noticeRun:ShowNotice(strShowNotice, timeRunNotice + 1);
+    end
+end
+
+function GetDataNoticeRun()
+
+    while (isGetEvent) do
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(timeRunNotice+1.0))
+        CS.SendRequest.SendEventGetBigWinPlayer()
+    end
+end
+
+function GetNameGame(idGameEvent)
+
+    if idGameEvent == EventGameID.FARM then
+        return "Panda"
+    elseif idGameEvent == EventGameID.GAME25LINE then
+        return "Tam Quốc"
+    elseif idGameEvent == EventGameID.MAFIA then
+        return "Thần Tài"
+    elseif idGameEvent == EventGameID.HILO then
+        return "Cao Thấp"
+    elseif idGameEvent == EventGameID.MINIPOKER then
+        return "MiniPoker"
+    elseif idGameEvent == EventGameID.MINI_SLOT1 then
+        return "Cái Đại Dương"
+    end
+
+    return "Game";
+end
+
+-- #region Info Jackpt
+function GetDataAllJackpotFrist()
+
+    if (CS.Database.Instance.listDataAllJackpot.Count > 0) then
+        ShowJackpot(CS.Database.Instance.listDataAllJackpot)
+        cs_coroutine.start(self, GetDataAllJackpot)
+    else
+        cs_coroutine.start(self, GetDataAllJackpotAgain)
+    end
+end
+
+function GetDataAllJackpotAgain()
+    isGet = true
+    while (isGet) do
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(0.1))
+
+        if CS.Database.Instance.listDataAllJackpot.Count > 0 then
+        
+            isGet = false;
+            ShowJackpot(CS.Database.Instance.listDataAllJackpot)
+
+            cs_coroutine.start(self, GetDataAllJackpot)
+        end
+    end
+end
+
+function ShowJackpot(listData)
+    for i = 0, listData.Count -1 do
+        if EventGameID.FARM == listData[i].GameID then
+            SetQuantityBet(1, listData[i].RoomID-1, listData[i].JackpotFund)
+        elseif EventGameID.MAFIA == listData[i].GameID then
+                SetQuantityBet(2, listData[i].RoomID-1, listData[i].JackpotFund)
+        elseif EventGameID.GAME25LINE == listData[i].GameID then
+            SetQuantityBet(8, listData[i].RoomID-1, listData[i].JackpotFund)
+        end
+    end
+end
+
+function GetDataAllJackpot()
+    while (true) do
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(CS.Database.Instance.timeGetAllJackpot + 0.1))
+        ShowJackpot(CS.Database.Instance.listDataAllJackpot)
+    end
+end
+
+function SetQuantityBet(indexGame,indexLine,quanitty)
+    configGate.listElementGame[indexGame]:SetQuantityBet(quanitty, indexLine, timeRunJackpot);
+end
+
+-- Mail
+function  IEGetMailUnRead()
+    while (isGetMailUnread) do
+        CS.SendRequest.SendGetMailUnread();
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(timeGetMailUnread))
+    end
+end

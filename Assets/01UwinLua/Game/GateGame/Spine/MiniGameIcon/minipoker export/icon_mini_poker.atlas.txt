@@ -1,0 +1,160 @@
+
+icon_mini_poker.png
+size: 658,258
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+minipoker/black ceur
+  rotate: false
+  xy: 579, 69
+  size: 33, 30
+  orig: 288, 288
+  offset: 132, 171
+  index: -1
+minipoker/black ceur blur
+  rotate: true
+  xy: 618, 141
+  size: 33, 37
+  orig: 288, 288
+  offset: 132, 167
+  index: -1
+minipoker/black_heart_blur
+  rotate: false
+  xy: 411, 2
+  size: 34, 41
+  orig: 288, 288
+  offset: 132, 168
+  index: -1
+minipoker/blur heart
+  rotate: false
+  xy: 618, 216
+  size: 33, 40
+  orig: 288, 288
+  offset: 132, 168
+  index: -1
+minipoker/can gat
+  rotate: false
+  xy: 411, 45
+  size: 48, 89
+  orig: 288, 288
+  offset: 215, 177
+  index: -1
+minipoker/ceur blur
+  rotate: true
+  xy: 618, 106
+  size: 33, 36
+  orig: 288, 288
+  offset: 132, 168
+  index: -1
+minipoker/cuer
+  rotate: false
+  xy: 350, 3
+  size: 33, 30
+  orig: 288, 288
+  offset: 132, 171
+  index: -1
+minipoker/heat 1
+  rotate: true
+  xy: 579, 101
+  size: 33, 34
+  orig: 288, 288
+  offset: 132, 171
+  index: -1
+minipoker/heat 2
+  rotate: false
+  xy: 615, 70
+  size: 34, 34
+  orig: 288, 288
+  offset: 132, 171
+  index: -1
+minipoker/num can gat
+  rotate: false
+  xy: 612, 6
+  size: 28, 28
+  orig: 288, 288
+  offset: 235, 238
+  index: -1
+minipoker/poker_icon_0000s_0002s_0005_Layer-55
+  rotate: false
+  xy: 614, 36
+  size: 33, 32
+  orig: 288, 288
+  offset: 105, 81
+  index: -1
+minipoker/poker_icon_0000s_0002s_0006_Curves-1
+  rotate: true
+  xy: 246, 6
+  size: 250, 102
+  orig: 288, 288
+  offset: 25, 25
+  index: -1
+minipoker/poker_icon_0000s_0002s_0007_coin-1k_normal
+  rotate: false
+  xy: 522, 15
+  size: 55, 55
+  orig: 288, 288
+  offset: 146, 92
+  index: -1
+minipoker/poker_icon_0000s_0002s_0008_coin-5k_normal
+  rotate: false
+  xy: 618, 176
+  size: 38, 38
+  orig: 288, 288
+  offset: 180, 106
+  index: -1
+minipoker/poker_icon_0000s_0002s_0009_coin-100_normal
+  rotate: true
+  xy: 525, 89
+  size: 45, 44
+  orig: 288, 288
+  offset: 201, 98
+  index: -1
+minipoker/poker_icon_0000s_0002s_0010_Layer-10-copy
+  rotate: false
+  xy: 461, 11
+  size: 59, 59
+  orig: 288, 288
+  offset: 48, 197
+  index: -1
+minipoker/poker_icon_0000s_0002s_0012_80
+  rotate: false
+  xy: 579, 11
+  size: 31, 31
+  orig: 288, 288
+  offset: 48, 116
+  index: -1
+minipoker/poker_icon_0000s_0002s_0013_60-copy-3
+  rotate: false
+  xy: 579, 44
+  size: 33, 23
+  orig: 288, 288
+  offset: 75, 121
+  index: -1
+minipoker/poker_icon_0000s_0002s_0022_Layer-53
+  rotate: false
+  xy: 411, 136
+  size: 205, 120
+  orig: 288, 288
+  offset: 46, 123
+  index: -1
+minipoker/poker_icon_0000s_0002s_0023_coin-10k_normal
+  rotate: false
+  xy: 461, 72
+  size: 62, 62
+  orig: 288, 288
+  offset: 98, 192
+  index: -1
+minipoker/poker_icon_0000s_0002s_0024_Group-8
+  rotate: true
+  xy: 350, 35
+  size: 221, 59
+  orig: 288, 288
+  offset: 38, 116
+  index: -1
+minipoker/poker_icon_0000s_0002s_0025_Group-9
+  rotate: false
+  xy: 2, 5
+  size: 242, 251
+  orig: 288, 288
+  offset: 26, 13
+  index: -1

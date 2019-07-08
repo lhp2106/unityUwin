@@ -1,0 +1,34 @@
+
+mafia_free.png
+size: 400,159
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mafia_free_bg
+  rotate: false
+  xy: 183, 16
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+mafia_free_char
+  rotate: true
+  xy: 2, 2
+  size: 155, 179
+  orig: 155, 179
+  offset: 0, 0
+  index: -1
+mafia_free_text
+  rotate: true
+  xy: 326, 14
+  size: 143, 41
+  orig: 143, 41
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: true
+  xy: 369, 77
+  size: 80, 29
+  orig: 80, 29
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,41 @@
+
+haivuong_bonus.png
+size: 294,134
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bubble
+  rotate: false
+  xy: 215, 22
+  size: 10, 9
+  orig: 10, 9
+  offset: 0, 0
+  index: -1
+haivuong_bonus_bg
+  rotate: false
+  xy: 2, 3
+  size: 129, 129
+  orig: 129, 129
+  offset: 0, 0
+  index: -1
+haivuong_bonus_char
+  rotate: false
+  xy: 133, 33
+  size: 122, 99
+  orig: 122, 99
+  offset: 0, 0
+  index: -1
+haivuong_bonus_text
+  rotate: true
+  xy: 257, 27
+  size: 105, 35
+  orig: 105, 35
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 133, 2
+  size: 80, 29
+  orig: 80, 29
+  offset: 0, 0
+  index: -1

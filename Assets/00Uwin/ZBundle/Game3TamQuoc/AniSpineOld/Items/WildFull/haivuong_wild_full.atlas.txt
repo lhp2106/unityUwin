@@ -1,0 +1,55 @@
+
+haivuong_wild_full.png
+size: 496,451
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+border_glow
+  rotate: false
+  xy: 207, 11
+  size: 58, 42
+  orig: 58, 42
+  offset: 0, 0
+  index: -1
+glow_light
+  rotate: false
+  xy: 399, 2
+  size: 69, 122
+  orig: 69, 122
+  offset: 0, 0
+  index: -1
+haivuong_wild_border
+  rotate: true
+  xy: 2, 284
+  size: 165, 492
+  orig: 165, 492
+  offset: 0, 0
+  index: -1
+haivuong_wild_char
+  rotate: true
+  xy: 2, 126
+  size: 156, 487
+  orig: 156, 487
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 267, 10
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 207, 55
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1
+trail_fx
+  rotate: true
+  xy: 2, 41
+  size: 83, 203
+  orig: 83, 203
+  offset: 0, 0
+  index: -1

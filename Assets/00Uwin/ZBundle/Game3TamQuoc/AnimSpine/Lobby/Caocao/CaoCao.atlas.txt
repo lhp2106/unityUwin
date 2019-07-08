@@ -1,0 +1,69 @@
+
+CaoCao.png
+size: 1439,681
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caocao00
+  rotate: true
+  xy: 2, 2
+  size: 421, 563
+  orig: 421, 563
+  offset: 0, 0
+  index: -1
+caocao01
+  rotate: true
+  xy: 567, 137
+  size: 286, 437
+  orig: 286, 437
+  offset: 0, 0
+  index: -1
+caocao02
+  rotate: false
+  xy: 1235, 479
+  size: 117, 200
+  orig: 117, 200
+  offset: 0, 0
+  index: -1
+caocao03
+  rotate: true
+  xy: 2, 425
+  size: 254, 777
+  orig: 254, 777
+  offset: 0, 0
+  index: -1
+caocao04
+  rotate: false
+  xy: 567, 6
+  size: 101, 129
+  orig: 101, 129
+  offset: 0, 0
+  index: -1
+caocao05
+  rotate: false
+  xy: 1354, 567
+  size: 59, 112
+  orig: 59, 112
+  offset: 0, 0
+  index: -1
+caocao06
+  rotate: false
+  xy: 1235, 462
+  size: 46, 15
+  orig: 46, 15
+  offset: 0, 0
+  index: -1
+caocao07
+  rotate: true
+  xy: 1006, 3
+  size: 427, 431
+  orig: 427, 431
+  offset: 0, 0
+  index: -1
+khung_Chonmuccuoc06
+  rotate: true
+  xy: 781, 432
+  size: 247, 452
+  orig: 247, 452
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,360 @@
+
+local cs_coroutine = require 'common.cs_coroutine'
+---------------------------------------------------------------------------
+local txtMoney
+local txtUsername
+local txtCountDown
+
+local imgAvatar
+local imgCountDown
+
+local gMaster
+local gReady
+local gContent
+local gCountDown
+
+local gBao1La
+local gBaoSam
+local gStatus
+local imgStatus
+local txtMoneyStatus
+
+local gCard = nil
+local txtNumberCard = nil
+
+local cResultWin = CS.UnityEngine.Color(1, 1, 1, 1)
+local cResultOther = CS.UnityEngine.Color(1, 0.92, 0.09, 1)
+
+local _playerData
+local _layer
+-- 1 gold, 0 coin
+local moneyType
+local goldInt = 1
+local coinInt =0
+
+--  Action<int> OnChangeNumber;
+local ieAutoHideStatus
+local ieShowCountDown
+local timeAutoHide = 0
+local timeCountDownStart = 0
+
+local isInit = false
+
+local PlayerStatus_IN_LOBBY = -1
+local PlayerStatus_VIEWER = 0
+local PlayerStatus_PLAYING = 1
+local PlayerStatus_WAITING_MATCH = 2
+
+local dataRoom 
+
+---------------------------------------------------------------------------------
+function awake()
+    if isInit == false then
+        isInit = true
+        LoadObjectGame()
+    end
+end
+
+function LoadObjectGame()
+    txtMoney = _txtMoney:GetComponent(typeof(CS.VKTextValueChange))
+    txtUsername = _txtUsername:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtCountDown  = _txtCountDown:GetComponent(typeof(CS.UnityEngine.UI.Text))
+
+    imgAvatar  = _imgAvatar:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    imgCountDown  = _imgCountDown:GetComponent(typeof(CS.UnityEngine.UI.Image))   
+
+    gMaster = _gMaster
+    gReady = _gReady
+    gContent = _gContent
+    gCountDown  = _gCountDown
+
+    gBao1La   = _gBao1La
+    gBaoSam  = _gBaoSam
+    gStatus  = _gStatus
+
+    imgStatus = _imgStatus:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    txtMoneyStatus  = _txtMoneyStatus:GetComponent(typeof(CS.UnityEngine.UI.Text))
+
+    if _gCard ~= nil then
+        gCard = _gCard
+    end
+
+    if _txtNumberCard ~= nil then
+        txtNumberCard  = _txtNumberCard:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    end
+end
+
+-------------------------------------------------------------------------------------
+
+function Init(dataRoomInput, playerData,sprAvatar,lGameSam)
+    dataRoom = dataRoomInput
+    _playerData = playerData
+    _layer = lGameSam
+    moneyType = dataRoomInput.MoneyType
+
+    gContent:SetActive(true)
+    txtUsername.text = _playerData.Account.UserName
+
+    if moneyType == goldInt then
+        txtMoney:SetNumber(_playerData.Account.Gold)
+    else
+        txtMoney:SetNumber(_playerData.Account.Coin)
+    end
+
+    gMaster:SetActive(playerData.AccountID == dataRoomInput.OwnerId)
+
+    -- LoadAvatar
+    imgAvatar.sprite = sprAvatar
+
+    -- load playing
+    if (_playerData.Status == PlayerStatus_PLAYING) then
+        ShowCard()
+        UpdateCardNumber(#_playerData.HandCards)
+    end
+end
+
+function UpdateUserData(playerData,dataRoomInput)
+    dataRoom = dataRoomInput
+    _playerData = playerData;
+
+    gMaster:SetActive(playerData.AccountID == dataRoom.OwnerId)
+
+    if moneyType == goldInt then
+        txtMoney:SetNumber(_playerData.Account.Gold)
+    else
+        txtMoney:SetNumber(_playerData.Account.Coin)
+    end
+end
+
+function UpdateMoney(moneyType,balance)
+
+    if(moneyType == goldInt) then
+        _playerData.Account.Gold = balance
+    else
+        _playerData.Account.Coin = balance
+    end
+
+    txtMoney.UpdateNumber(balance)
+end
+
+function ShowCoundDown(time)
+    timeCountDownStart = time
+
+    if ieShowCountDown ~= nil then
+        self:StopCoroutine(ieShowCountDown)
+        ieShowCountDown = nil
+    end
+
+    if(timeCountDownStart > 0) then
+        ieShowCountDown = cs_coroutine.start(self, WaitCountDown)
+    end
+end
+
+function  HideCoundDown()
+    if ieShowCountDown ~= nil then
+        self:StopCoroutine(ieShowCountDown)
+        ieShowCountDown = nil
+    end
+
+    gCountDown:SetActive(false);
+end
+
+function ShowCard()
+    if gCard ~= nil then
+        gCard:SetActive(true)
+        txtNumberCard.text = "0"
+    end
+end
+
+function HideCard()
+    if gCard ~= nil then
+        gCard:SetActive(false)
+    end
+end
+
+function UpdateCardNumber(number)
+
+    if (txtNumberCard ~= nil) then
+        txtNumberCard.text = tostring(number)
+    end
+
+    if number == 1 then
+        ShowBao1La()
+    else
+        HideBao1La()
+    end
+end
+
+function WaitCountDown()
+    local timeCount = timeCountDownStart
+    gCountDown:SetActive(true)
+
+    imgCountDown.fillAmount = 1
+    -- txtCountDown.text = time.ToString("F0")
+    txtCountDown.text = tostring(timeCountDownStart) 
+
+    local isLoop = true
+    while (isLoop) do
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(1))
+        timeCount = timeCount - 1
+
+        if OnChangeNumber ~= nil then
+            -- @Tod0
+            -- OnChangeNumber.Invoke(timeCount)
+        end
+
+        imgCountDown.fillAmount = timeCount / timeCountDownStart
+        txtCountDown.text = tostring(timeCount) 
+
+        if timeCount <= 0 then
+            isLoop = false
+        end
+    end
+
+    imgCountDown.fillAmount = 0;
+    txtCountDown.text = "0";
+
+    ieShowCountDown = nil;
+end
+
+function ShowStatus(sprStatus,showMoney,money,timeAutoHideInput)
+    imgStatus.sprite = sprStatus
+    timeAutoHide = tonumber(timeAutoHideInput) 
+
+    if ieAutoHideStatus ~= nil then
+        StopCoroutine(ieAutoHideStatus)
+        ieAutoHideStatus = nil
+    end
+
+    if showMoney then
+        _txtMoneyStatus:SetActive(true)
+        if money > 0 then
+            txtMoneyStatus.text = "+" .. CS.VKCommon.ConvertStringMoney(money)
+            txtMoneyStatus.color = cResultWin
+        else
+            txtMoneyStatus.text = "" .. CS.VKCommon.ConvertStringMoney(money)
+            txtMoneyStatus.color = cResultOther
+        end
+    else
+        _txtMoneyStatus:SetActive(false)
+    end
+
+    if timeAutoHide > 0 then
+        timeAutoHide = timeAutoHideInput
+        ieAutoHideStatus = cs_coroutine.start(self, WaitAutoHideStatus)
+    end
+
+    gStatus:SetActive(true)
+end
+
+function ShowMoneyStatus(money,timeAutoHide)
+
+    if gStatus.activeSelf == false then
+        return
+    end
+
+    if ieAutoHideStatus ~= nil then
+        self:StopCoroutine(ieAutoHideStatus)
+        ieAutoHideStatus = nil
+    end
+
+    txtMoneyStatus.gameObject:SetActive(true)
+
+    if money > 0 then
+        txtMoneyStatus.text = "+" .. CS.VKCommon.ConvertStringMoney(money)
+        txtMoneyStatus.color = cResultWin
+    else
+        txtMoneyStatus.text = "" .. CS.VKCommon.ConvertStringMoney(money)
+        txtMoneyStatus.color = cResultOther
+    end
+
+    if (timeAutoHide > 0) then
+        self.timeAutoHide = timeAutoHide
+        ieAutoHideStatus = cs_coroutine.start(self, WaitAutoHideStatus)
+    end
+end
+
+function WaitAutoHideStatus()
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(timeAutoHide))
+    HideStatus()
+    ieAutoHideStatus = nil
+end
+
+function ShowBao1La()
+    gBao1La:SetActive(true)
+end
+
+function HideBao1La()
+    gBao1La:SetActive(false)
+end
+
+function ShowBaoSam()
+    gBaoSam:SetActive(true)
+end
+
+function HideStatus()
+    gStatus:SetActive(false)
+end
+
+function ClearUI()
+    self:StopAllCoroutines()
+
+    _playerData = nil
+
+    gContent:SetActive(false)
+    gCountDown:SetActive(false)
+    gMaster:SetActive(false)
+    gStatus:SetActive(false)
+    gBaoSam:SetActive(false)
+    gBao1La:SetActive(false)
+    HideCard()
+
+    ieAutoHideStatus = nil
+    ieShowCountDown = nil
+end
+
+function IsPlayer(accountId)
+    if gContent.activeSelf == false and _playerData == nil then
+        return false
+    end
+
+    if _playerData.AccountID == nil then
+        return false
+    end
+
+    print(_playerData.AccountID," Check account ",accountId)
+
+    if _playerData.AccountID == accountId then
+        return true
+    end
+
+    return  false
+end
+
+function IsPlaying()
+    return gContent.activeSelf and _playerData ~= nil and (_playerData.Status == PlayerStatus_PLAYING)
+end
+
+function GetgContent()
+    return gContent
+end
+
+function GetGmaster()
+    return _gMaster
+end
+
+function GetIDPlayer()
+    if _playerData == nil then
+        return nil
+    end
+    
+    return _playerData.AccountID
+end
+
+function GetDataUser()
+    return _playerData
+end
+
+function GetTransGcard()
+    return _gCard:GetComponent(typeof(CS.UnityEngine.Transform))
+end

@@ -1,0 +1,48 @@
+
+huou.png
+size: 264,264
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 2
+  rotate: false
+  xy: 236, 232
+  size: 10, 28
+  orig: 10, 28
+  offset: 0, 0
+  index: -1
+bc_0028_Layer-19
+  rotate: false
+  xy: 2, 54
+  size: 115, 102
+  orig: 115, 102
+  offset: 0, 0
+  index: -1
+bc_0028_Layer-19 copy
+  rotate: false
+  xy: 119, 158
+  size: 115, 102
+  orig: 115, 102
+  offset: 0, 0
+  index: -1
+bc_0028_Layer-19 copy 2
+  rotate: false
+  xy: 119, 58
+  size: 106, 98
+  orig: 106, 98
+  offset: 0, 0
+  index: -1
+bc_0028_Layer-19 copy 3
+  rotate: false
+  xy: 2, 158
+  size: 115, 102
+  orig: 115, 102
+  offset: 0, 0
+  index: -1
+suolaka1
+  rotate: false
+  xy: 2, 2
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1

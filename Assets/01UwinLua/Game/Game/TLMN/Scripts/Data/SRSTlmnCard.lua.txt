@@ -1,0 +1,14 @@
+local SRSTlmnCard =
+{
+    Flip = false,
+    IsDraggable = false,
+    -- giá trị số của quân bài(từ 1..9),
+    CardNumber = 1,
+    -- giá trị chất của quân bài
+    -- CO = 39,RO = 26,TEP = 9,BICH = 0
+    CardSuite = 30,
+    OrdinalValue = 1,
+}
+
+return SRSTlmnCard
+

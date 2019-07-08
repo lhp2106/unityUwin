@@ -1,0 +1,41 @@
+
+mafia_bonus.png
+size: 415,168
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mafia_bonus_bg
+  rotate: false
+  xy: 196, 23
+  size: 143, 143
+  orig: 143, 143
+  offset: 0, 0
+  index: -1
+mafia_bonus_char
+  rotate: true
+  xy: 2, 2
+  size: 164, 192
+  orig: 164, 192
+  offset: 0, 0
+  index: -1
+mafia_bonus_text
+  rotate: true
+  xy: 341, 57
+  size: 109, 41
+  orig: 109, 41
+  offset: 0, 0
+  index: -1
+smoke
+  rotate: true
+  xy: 341, 5
+  size: 50, 64
+  orig: 50, 64
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: true
+  xy: 384, 86
+  size: 80, 29
+  orig: 80, 29
+  offset: 0, 0
+  index: -1

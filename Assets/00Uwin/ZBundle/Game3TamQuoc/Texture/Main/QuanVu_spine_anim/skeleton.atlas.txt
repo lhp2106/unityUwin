@@ -1,0 +1,97 @@
+
+skeleton.png
+size: 1309,1235
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+khung_Chonmuccuoc00
+  rotate: false
+  xy: 483, 22
+  size: 247, 452
+  orig: 247, 452
+  offset: 0, 0
+  index: -1
+khung_Chonmuccuoc01
+  rotate: true
+  xy: 731, 964
+  size: 269, 491
+  orig: 269, 491
+  offset: 0, 0
+  index: -1
+quanyuTach01
+  rotate: true
+  xy: 1007, 4
+  size: 145, 161
+  orig: 145, 161
+  offset: 0, 0
+  index: -1
+quanyuTach02
+  rotate: false
+  xy: 732, 151
+  size: 330, 403
+  orig: 330, 403
+  offset: 0, 0
+  index: -1
+quanyuTach03
+  rotate: true
+  xy: 2, 16
+  size: 458, 479
+  orig: 458, 479
+  offset: 0, 0
+  index: -1
+quanyuTach04
+  rotate: false
+  xy: 2, 476
+  size: 727, 757
+  orig: 727, 757
+  offset: 0, 0
+  index: -1
+quanyuTach05
+  rotate: true
+  xy: 732, 29
+  size: 120, 273
+  orig: 120, 273
+  offset: 0, 0
+  index: -1
+quanyuTach06
+  rotate: true
+  xy: 1064, 339
+  size: 215, 240
+  orig: 215, 240
+  offset: 0, 0
+  index: -1
+quanyuTach07
+  rotate: false
+  xy: 1224, 1092
+  size: 83, 141
+  orig: 83, 141
+  offset: 0, 0
+  index: -1
+quanyuTach08
+  rotate: true
+  xy: 1064, 163
+  size: 174, 203
+  orig: 174, 203
+  offset: 0, 0
+  index: -1
+quanyuTach09
+  rotate: false
+  xy: 1170, 2
+  size: 55, 159
+  orig: 55, 159
+  offset: 0, 0
+  index: -1
+quanyuTach10
+  rotate: false
+  xy: 1116, 742
+  size: 190, 220
+  orig: 190, 220
+  offset: 0, 0
+  index: -1
+quanyuTach11
+  rotate: false
+  xy: 731, 556
+  size: 383, 406
+  orig: 383, 406
+  offset: 0, 0
+  index: -1

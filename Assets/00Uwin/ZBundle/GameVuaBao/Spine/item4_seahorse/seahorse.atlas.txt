@@ -1,0 +1,27 @@
+
+seahorse.png
+size: 384,140
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bubble
+  rotate: false
+  xy: 2, 2
+  size: 136, 136
+  orig: 136, 136
+  offset: 0, 0
+  index: -1
+fish04_00
+  rotate: false
+  xy: 140, 18
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+fish04_01
+  rotate: false
+  xy: 262, 18
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1

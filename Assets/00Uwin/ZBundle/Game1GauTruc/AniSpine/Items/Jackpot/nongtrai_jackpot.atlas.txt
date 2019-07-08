@@ -1,0 +1,41 @@
+
+nongtrai_jackpot.png
+size: 424,247
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+nongtrai_jackpot_bg
+  rotate: true
+  xy: 224, 56
+  size: 189, 198
+  orig: 189, 198
+  offset: 0, 0
+  index: -1
+nongtrai_jackpot_char
+  rotate: false
+  xy: 2, 71
+  size: 220, 174
+  orig: 220, 174
+  offset: 0, 0
+  index: -1
+nongtrai_jackpot_text
+  rotate: false
+  xy: 2, 2
+  size: 185, 52
+  orig: 185, 52
+  offset: 0, 0
+  index: -1
+smoke
+  rotate: false
+  xy: 189, 2
+  size: 60, 52
+  orig: 60, 52
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 251, 25
+  size: 80, 29
+  orig: 80, 29
+  offset: 0, 0
+  index: -1

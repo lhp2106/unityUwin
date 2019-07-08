@@ -1,0 +1,50 @@
+List = require 'pl.List'
+-------------------------------------------------------
+local pageController
+local btBack
+local btPage1
+local btPage2
+local btPage3
+local btNext
+local listItem = List()
+local item2
+local item3
+local item4
+local item5
+local item6
+local item7
+
+function  start()
+    pageController = _pageController:GetComponent(typeof(CS.VKPageController))
+
+    btBack = _btBack:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btPage1 = _btPage1:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btPage2 = _btPage2:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btPage3 = _btPage3:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btNext = _btNext:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    listItem:append(_item1)
+    listItem:append(_item2)
+    listItem:append(_item3)
+    listItem:append(_item4)
+    listItem:append(_item5)
+    listItem:append(_item6)
+    listItem:append(_item7)
+
+    btBack.onClick:AddListener(CheckOpenReward)
+    btPage1.onClick:AddListener(CheckOpenReward)
+    btPage2.onClick:AddListener(CheckOpenReward)
+    btPage3.onClick:AddListener(CheckOpenReward)
+    btNext.onClick:AddListener(CheckOpenReward)
+end
+
+function CheckOpenReward()
+    if pageController.currentPage >1 then
+        for i =1, #listItem do 
+            listItem[i]:SetActive(false)
+        end
+    else
+        for i =1, #listItem do 
+            listItem[i]:SetActive(true)
+        end
+    end
+end

@@ -1,0 +1,158 @@
+{
+"skeleton": { "hash": "UkcoWUmllOe3FBWUIoss2Qmo/UI", "spine": "3.6.53", "width": 146.5, "height": 170, "images": "./images/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "mafia_jackpot_char", "parent": "root", "x": 1.06, "y": 7.38 },
+	{ "name": "smoke", "parent": "root", "x": -28.69, "y": 65.78, "scaleX": 0.497, "scaleY": 0.497 },
+	{
+		"name": "text_light_fx",
+		"parent": "root",
+		"length": 60.12,
+		"rotation": 178.56,
+		"x": -55.35,
+		"y": 18.76,
+		"scaleX": 0.391,
+		"scaleY": 1.24
+	}
+],
+"slots": [
+	{ "name": "mafia_jackpot_bg", "bone": "root", "attachment": "mafia_jackpot_bg" },
+	{ "name": "mafia_jackpot_char", "bone": "mafia_jackpot_char", "attachment": "mafia_jackpot_char" },
+	{ "name": "mafia_jackpot_text", "bone": "root", "attachment": "mafia_jackpot_text" },
+	{ "name": "text_light_fx", "bone": "text_light_fx", "blend": "additive" },
+	{ "name": "smoke", "bone": "smoke", "attachment": "smoke", "blend": "additive" }
+],
+"skins": {
+	"default": {
+		"mafia_jackpot_bg": {
+			"mafia_jackpot_bg": { "x": 1.3, "y": 49.78, "width": 145, "height": 146 }
+		},
+		"mafia_jackpot_char": {
+			"mafia_jackpot_char": { "x": 2.75, "y": 37.41, "width": 138, "height": 170 }
+		},
+		"mafia_jackpot_text": {
+			"mafia_jackpot_text": { "x": 2.3, "y": -5.24, "width": 146, "height": 57 }
+		},
+		"smoke": {
+			"smoke": { "x": 12.29, "y": 45.9, "scaleX": 2, "scaleY": 2, "width": 50, "height": 64 }
+		},
+		"text_light_fx": {
+			"text_light_fx": { "x": 38.27, "y": 11.93, "rotation": -178.56, "width": 80, "height": 29 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"slots": {
+			"smoke": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" },
+					{ "time": 0.1667, "color": "ffffffda", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffffda" },
+					{ "time": 1.2, "color": "ffffff00" }
+				]
+			},
+			"text_light_fx": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.0667, "color": "ffffff00" },
+					{ "time": 0.1333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "text_light_fx" }
+				]
+			}
+		},
+		"bones": {
+			"text_light_fx": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.106, 0.01, 0.75, 1 ]
+					},
+					{ "time": 0.5, "x": 116.25, "y": 0 }
+				],
+				"scale": [
+					{
+						"time": 0,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.106, 0.01, 0.75, 1 ]
+					},
+					{ "time": 0.5, "x": 2.238, "y": 1 }
+				]
+			},
+			"mafia_jackpot_char": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{
+						"time": 0.6,
+						"x": 0,
+						"y": 2.51,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{ "time": 1.2, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{
+						"time": 0,
+						"x": 1.013,
+						"y": 1.031,
+						"curve": [ 0.375, 0.5, 0.75, 1 ]
+					},
+					{
+						"time": 0.3,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{
+						"time": 0.9,
+						"x": 1.025,
+						"y": 1.062,
+						"curve": [ 0.25, 0, 0.625, 0.5 ]
+					},
+					{ "time": 1.2, "x": 1.013, "y": 1.031 }
+				]
+			},
+			"smoke": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": 0,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{ "time": 1.2, "angle": -7.37 }
+				],
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{ "time": 1.2, "x": -1.1, "y": 19.18 }
+				],
+				"scale": [
+					{
+						"time": 0,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{ "time": 1.2, "x": 1.362, "y": 2.169 }
+				]
+			}
+		}
+	}
+}
+}

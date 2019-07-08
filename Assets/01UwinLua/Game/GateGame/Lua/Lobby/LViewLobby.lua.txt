@@ -1,0 +1,749 @@
+List = require 'pl.List'
+UILayerKey = require 'common.UILayerKey'
+json = require "common.json"
+local cs_coroutine = require 'common.cs_coroutine'
+
+configGate = require("gate.ConfigGate")
+------------------------Parameter Common UILayer -------------------------------------
+local AnimKey = {
+    OpenPopup = "OpenPopup",
+    ClosePopup = "ClosePopup",
+}
+
+local Position = {
+    Bootom = 0,
+    Middle = 1,
+    Top = 2
+}
+
+local  AnimType= {
+      None = 0,
+      Popup= 1,
+}
+
+local dragMini
+local gContenAll
+local layerAnimType = AnimType.None
+
+local animkey = AnimKey.OpenPopup
+
+local  allowDestroy = false;
+local  isGameLayer = false;
+local  lockCanvasScale= false;
+local  hideBehindLayers= false;
+
+local position = Position.Bootom
+
+local childOrders = List()
+
+local anim
+local canvas 
+local graphicRaycaster
+local layerIndex
+local layerKey = UILayerKey.LLobby
+local isLayerAnimOpenDone = false
+
+local uiLayerController
+local uiLayerThis
+-- -----------------Parameter LViewLobby --------------------------------
+local IndexSourceGate =
+{
+    LBANK = 0,
+    LINFO_UESR =1,
+    LCHANGE_AVATAR=2,
+    LCHANGE_PASS =3,
+    LCREATE_ACCOUNT=4,
+    LCREATE_NEW_NAME=5,
+    LLOGIN_WITH_OTP=6,
+    LMAIL =7,
+    LCustomerCare = 8,
+    LHistory = 9,
+    LGiftCode = 10,
+    LForgetPass = 11,
+}
+
+local objHeadPrepareLogin
+local objHeadLogined
+
+--Head Prepare Login
+local btLoginWithFB
+local inputFieldNameAccount
+local inputFielPassword
+local btLogin
+local btCreateNewAccount
+local btForgetPass
+
+--Head Logined
+local btProfile
+local imgIconUser
+local txtNameUser
+local txtQuantityGem
+local btAddGem
+local txtQuantityCoin
+local btAddCoin
+local btHistory
+local btShop
+local btSetting
+
+--Setting
+local ObjAllSetting
+local btSound
+local btLogout
+local btOffSetting
+local btMusic
+local spriteOnSound
+local spriteOffSound
+local spriteOnMusic
+local spriteOffMusic
+
+--Mene Bottom
+local btGiftCode
+local btFanpage
+local btHotline
+local btMail
+local objNoticeMail
+local txtNoticeMail
+local objMenuBottom
+
+--Main
+local listElementGame =  List()
+local dataResourceLobby
+
+local lobbyController
+
+local hotLine = "http://www.M.me/Uwin369.conggamesomotvietnam"
+local linkFanpage = "https://www.facebook.com/SanChoiHoangGia/"
+
+-- //Sound
+local isMuteSoundLobby = false
+local isMuteMusicLobby = false
+local keySoundLobby = "soundLobby"
+local keyMusicLobby = "muiscLobby"
+
+    -- ----------------- Method Common Overide------------------------
+
+function FirstLoadLayer()
+    uiLayerController = CS.UILayerController.Instance
+    local xlua = uiLayerController:GetComponent(typeof(CS.XLuaBehaviour))
+    uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+
+    AddEvent()
+
+    objHeadLogined:SetActive(false)
+    objHeadPrepareLogin:SetActive(true)
+
+    InitListGame()
+
+    dataResourceLobby = self:GetComponent(typeof(CS.DataResourceLobby))
+    dataResourceLobby:Init()
+
+    -- Get Pass, acount Saved
+    GetPassSaveLocal()
+end
+
+function EnableLayer()
+    graphicRaycaster.enabled = true;
+
+    if (CS.Database.Instance.islogin) then
+            objHeadPrepareLogin:SetActive(false);
+            objHeadLogined:SetActive(true);
+    else
+            objHeadLogined:SetActive(false);
+            objHeadPrepareLogin:SetActive(true);
+            -- // Get Pass, acount Saved
+            GetPassSaveLocal();
+    end
+    lobbyController:InvokeXLua("Show")
+
+    CS.AudioAssistant.Instance:PlayMusic(CS.StringHelper.SOUND_GATE_BG)
+    SetSoundAndMusic()
+end
+
+function DisableLayer()
+    if position ~= Position.Middle then
+            graphicRaycaster.enabled = false;
+    end 
+
+    lobbyController:InvokeXLua("DisableLobby");
+end
+-------------------------------Load Object in MonoBehaviour
+function LoadObjectGame()
+
+    objHeadPrepareLogin = _objHeadPrepareLogin
+    objHeadLogined = _objHeadLogined
+    
+    -- Head Prepare Login
+    btLoginWithFB = _btLoginWithFB:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    inputFieldNameAccount = _inputFieldNameAccount:GetComponent(typeof(CS.UnityEngine.UI.InputField))
+    inputFielPassword = _inputFielPassword:GetComponent(typeof(CS.UnityEngine.UI.InputField))
+    btLogin = _btLogin:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btCreateNewAccount = _btCreateNewAccount:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btForgetPass = _btForgetPass:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+    -- Head Logined
+    btProfile = _btProfile:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    imgIconUser = _imgIconUser:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    txtNameUser = _txtNameUser:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtQuantityGem = _txtQuantityGem:GetComponent(typeof(CS.VKTextValueChange))
+    btAddGem = _btAddGem:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    txtQuantityCoin = _txtQuantityCoin:GetComponent(typeof(CS.VKTextValueChange))
+    btAddCoin = _btAddCoin:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btHistory = _btHistory:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btShop = _btShop:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btSetting = _btSetting:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+    -- Setting
+    ObjAllSetting = _ObjAllSetting
+    btSound = _btSound:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btLogout = _btLogout:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btOffSetting = _btOffSetting:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btMusic = _btMusic:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    spriteOnSound = _spriteOnSound
+    spriteOffSound = _spriteOffSound
+    spriteOnMusic = _spriteOnMusic
+    spriteOffMusic = _spriteOffMusic
+
+    -- Menu Bottom
+    btGiftCode = _btGiftCode:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btFanpage = _btFanpage:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btHotline = _btHotline:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btMail = _btMail:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    objNoticeMail = _objNoticeMail
+    txtNoticeMail = _txtNoticeMail:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    objMenuBottom = _objMenuBottom
+
+    configGate.noticeRun = _noticeRun:GetComponent(typeof(CS.NoticeRunController))
+
+    -- Main
+    listElementGame:append(_ElementGame1:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame2:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame3:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame4:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame5:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame6:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame7:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame8:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame9:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame10:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame11:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame12:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame13:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame14:GetComponent(typeof(CS.ViewElementGame)))
+    listElementGame:append(_ElementGame15:GetComponent(typeof(CS.ViewElementGame)))
+
+    configGate.listElementGame:append(_ElementGame1:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame2:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame3:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame4:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame5:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame6:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame7:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame8:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame9:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame10:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame11:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame12:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame13:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame14:GetComponent(typeof(CS.ViewElementGame)))
+    configGate.listElementGame:append(_ElementGame15:GetComponent(typeof(CS.ViewElementGame)))
+
+    -- lobby
+    lobbyController = _lobbyController:GetComponent(typeof(CS.XLuaBehaviour))
+    lobbyController:InvokeXLua("Init")
+end
+-- ------------------------Method ViewLobby-----------------------------------------
+function AddEvent()
+    btLoginWithFB.onClick:AddListener(ClickBtLoginFb);
+    btLogin.onClick:AddListener(ClickBtLogin);
+    btCreateNewAccount.onClick:AddListener(ClickBtCreateAccount);
+    btForgetPass.onClick:AddListener(ClickBtForgetPass);
+
+    btProfile.onClick:AddListener(ClickBtProfileUser);
+    btAddGem.onClick:AddListener(ClickBtAddGem);
+    btAddCoin.onClick:AddListener(ClickBtAddCoin);
+    btHistory.onClick:AddListener(ClickBtHistory);
+    btShop.onClick:AddListener(ClickBtShop);
+    btSetting.onClick:AddListener(ClickBtSetting);
+
+    btFanpage.onClick:AddListener(ClickBtFanpage);
+    btGiftCode.onClick:AddListener(ClickBtGift);
+    btHotline.onClick:AddListener(ClickBtHotline);
+    btMail.onClick:AddListener(ClickBtMail);
+
+    btOffSetting.onClick:AddListener(ClickBtOffSetting);
+    btLogout.onClick:AddListener(ClickBtLogout);
+    btSound.onClick:AddListener(ClickBtSound);
+    btMusic.onClick:AddListener(ClickBtMusic);
+end
+
+    -- --------------------------------------listener
+    --Head Prepare Login
+function ClickBtLoginFb()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+    CS.FacebookController.Instance:FBlogin()
+end
+    
+function ClickBtLogin()
+    
+    local name = inputFieldNameAccount.text;
+    local pass = inputFielPassword.text;
+
+    if not uiLayerController:IsCurrentLayer(layerKey) then
+        return
+    end
+
+    if name == nil or name == '' then
+        CS.LPopup.OpenPopup("Thông báo", "Bạn chưa nhập 'Tên đăng nhập'")
+        return
+    end
+
+    if (pass == nil or pass == '') then
+        CS.LPopup.OpenPopup("Thông báo", "Bạn chưa nhập 'Mật khẩu'")
+        return
+    end
+
+    uiLayerController:ShowLoading();
+
+        -- Save data temp
+    CS.Database.Instance.accountTemp = name;
+    CS.Database.Instance.passTemp = pass;
+
+    lobbyController:InvokeXLua("RequestLogin",name,pass)
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+
+end
+    
+function ClickBtCreateAccount()
+
+    if (uiLayerController:IsCachedLayer(UILayerKey.LCreateAccountController)) then
+        local layerCreateAccount = uiLayerController:ShowLayer(UILayerKey.LCreateAccountController, dataResourceLobby.listObjLayer[IndexSourceGate.LCREATE_ACCOUNT])
+        layerCreateAccount:ReloadLayer();
+    else
+        local layerCreateAccount = uiLayerController:ShowLayer(UILayerKey.LCreateAccountController, dataResourceLobby.listObjLayer[IndexSourceGate.LCREATE_ACCOUNT])
+    end    
+
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+function ClickBtForgetPass()
+    local layerForgetPass = uiLayerController:ShowLayer(UILayerKey.LForgetPass, dataResourceLobby.listObjLayer[IndexSourceGate.LForgetPass])
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+    -- Head logined
+function ClickBtProfileUser()
+-- @Todo
+    -- CS.LPopup.OpenPopup("Thông báo!", "Chức năng đang hoàn thiện")
+    uiLayerController:ShowLayer(UILayerKey.LInfoUser, dataResourceLobby.listObjLayer[IndexSourceGate.LINFO_UESR])
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+function ClickBtAddGem()
+    -- CS.LPopup.OpenPopup("Thông báo!", "Chức năng đang hoàn thiện")
+    uiLayerController:ShowLayer(UILayerKey.LShop, dataResourceLobby.listObjLayer[IndexSourceGate.LBANK])
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+function ClickBtAddCoin()
+-- @Todo
+    -- CS.LPopup.OpenPopup("Thông báo!", "Chức năng đang hoàn thiện")
+    shop =uiLayerController:ShowLayer(UILayerKey.LShop, dataResourceLobby.listObjLayer[IndexSourceGate.LBANK])
+    shop.listToggleMenu[1].isOn = true
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+function ClickBtHistory()
+-- @Todo
+    -- CS.LPopup.OpenPopup("Thông báo!", "Chức năng đang hoàn thiện")
+    if (CS.Database.Instance.islogin == false) then
+        CS.LPopup.OpenPopup("Thông báo!", "Chức năng này cần đăng nhập mới sử dụng được")
+        return
+    end
+    
+    CS.UILayerController.Instance:ShowLayer(CS.UILayerKey.LHistory, dataResourceLobby.listObjLayer[CS.IndexSourceGate.LHistory]);
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+function ClickBtShop()
+-- @Todo
+    -- CS.LPopup.OpenPopup("Thông báo!", "Chức năng đang hoàn thiện")
+
+    if (CS.Database.Instance.islogin == false) then
+        CS.LPopup.OpenPopup("Thông báo!", "Chức năng này cần đăng nhập mới sử dụng được")
+        return
+    end
+
+    uiLayerController:ShowLayer(UILayerKey.LShop, dataResourceLobby.listObjLayer[IndexSourceGate.LBANK])
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+function ClickBtSetting()
+    ObjAllSetting:SetActive(true);
+    btOffSetting.gameObject:SetActive(true);
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+        -- Setting
+function ClickBtLogout()
+
+    CS.WebServiceController.Instance._gvar = nil
+    CS.Database.Instance.islogin = false;
+    objHeadLogined:SetActive(false);
+    objHeadPrepareLogin:SetActive(true);
+    ObjAllSetting:SetActive(false);
+    uiLayerController:GotoLogin();
+    lobbyController:InvokeXLua("LogoutSuccess")
+    objMenuBottom:SetActive(false);
+
+    -- logout Web
+    local url = "https://services.uwin369.net/Account/Signout"
+    CS.WebServiceController.Instance:SendRequestCodeString("Singout",url,nil,0)
+
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+end
+    
+function  ClickBtSound()
+    SetSound()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+
+function  ClickBtMusic()
+    SetMusic()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+    
+function ClickBtOffSetting()
+    ObjAllSetting:SetActive(false);
+    btOffSetting.gameObject:SetActive(false);
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+end
+    
+        -- Bottom
+function ClickBtGift()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+
+    if (CS.Database.Instance.islogin == false) then
+        CS.LPopup.OpenPopup("Thông báo!", "Chức năng này cần đăng nhập mới sử dụng được")
+        return
+    end
+
+    CS.UILayerController.Instance:ShowLayer(UILayerKey.LGiftCode, dataResourceLobby.listObjLayer[CS.IndexSourceGate.LGiftCode]);
+end
+    
+function ClickBtFanpage()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+    CS.UnityEngine.Application.OpenURL(linkFanpage);
+end
+    
+function ClickBtHotline()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+    CS.UnityEngine.Application.OpenURL(hotLine);
+end
+    
+function ClickBtMail()
+    if (CS.Database.Instance.islogin == false) then
+        CS.LPopup.OpenPopup("Thông báo!", "Chức năng này cần đăng nhập mới sử dụng được")
+        return
+    end
+
+    uiLayerController:ShowLayer(UILayerKey.LMail, dataResourceLobby.listObjLayer[IndexSourceGate.LMAIL])
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+end
+
+-------------------------- Method Main Lobby
+function InitListGame()
+
+    for i=1,#listElementGame do
+        listElementGame[i]:Init()
+    end
+    --listElementGame.ForEach(a => a.Init(this));
+end
+
+------------------------------- Method
+function SetAvatar(id)
+    imgIconUser.sprite = dataResourceLobby.listSpriteAvatar[id]
+end
+
+function GetElementGameById(gameId)
+    for i=1,#listElementGame do
+        if listElementGame[i].gameId == gameId then
+            return listElementGame[i]
+        end
+    end
+    return nil
+end
+
+function LoginSuccess()
+    objHeadPrepareLogin:SetActive(false)
+    objHeadLogined:SetActive(true)
+    objMenuBottom:SetActive(true)
+
+    CS.Database.Instance.localData.password = CS.Database.Instance.passTemp
+    CS.Database.Instance.localData.username = CS.Database.Instance.accountTemp
+    CS.Database.Instance:SaveLocalData();
+
+    CS.VKDebug.LogColorRed("Save Pass Success");
+
+    SetAvatar(CS.Database.Instance:Account().AvatarID);
+-- @Todo
+    CS.MenuMiniGame.Instance:Show();
+    CS.MenuMiniGame.Instance:InitTaiXiu();
+end
+
+function  CreateNameSuccesss(token)
+    lobbyController:InvokeXLua("LoginSuccess",token)
+end
+
+function GetPassSaveLocal()
+    local pass = CS.Database.Instance.localData.password;
+    local account = CS.Database.Instance.localData.username;
+
+    if (pass == nil or account == nil) then
+        return;
+    end
+
+    if (string.len(pass) > 4 and string.len(pass)> 4) then
+        inputFielPassword.text = pass;
+        inputFieldNameAccount.text = account;
+    end
+end
+
+function SetQuantiyGem(quantityGame)
+    txtQuantityGem:StopValueChange()
+    txtQuantityGem.isMoney = true
+    txtQuantityGem:SetTimeRun(1.0)
+    txtQuantityGem:UpdateNumber(quantityGame)
+end
+
+function setQuantityCoin(quanityCoin)
+    txtQuantityCoin:StopValueChange()
+    txtQuantityCoin.isMoney = true
+    txtQuantityCoin:SetTimeRun(1.0)
+    txtQuantityCoin:UpdateNumber(quanityCoin)
+end
+
+function SetLayoutVip(expCurrent,expMax)
+
+end
+
+function SetName(name)
+    txtNameUser.text = name
+end
+
+--  Sound Music
+function SetSoundAndMusic()
+
+    isMuteSoundLobby = CS.UnityEngine.PlayerPrefs.GetInt(keySoundLobby) == 1
+    isMuteMusicLobby = CS.UnityEngine.PlayerPrefs.GetInt(keyMusicLobby) == 1
+
+    CS.AudioAssistant.Instance:MuteSound(isMuteSoundLobby)
+    CS.AudioAssistant.Instance:MuteMusic(isMuteMusicLobby)
+
+    if (isMuteMusicLobby) then
+        btMusic:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOffMusic
+        
+    else
+        btMusic:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOnMusic
+    end
+
+    if (isMuteSoundLobby) then
+        btSound:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOffSound
+    else
+        btSound:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOnSound
+    end
+end
+
+function SetSound()
+    isMuteSoundLobby = not isMuteSoundLobby
+    CS.AudioAssistant.Instance:MuteSound(isMuteSoundLobby)
+
+    if isMuteSoundLobby then
+        CS.UnityEngine.PlayerPrefs.SetInt(keySoundLobby,1)
+    else
+        CS.UnityEngine.PlayerPrefs.SetInt(keySoundLobby,0)
+    end
+
+    CS.UnityEngine.PlayerPrefs.Save()
+
+    if isMuteSoundLobby then
+        btSound:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOffSound
+    else
+        btSound:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOnSound
+    end
+end
+
+function SetMusic()
+    isMuteMusicLobby = not isMuteMusicLobby
+    CS.AudioAssistant.Instance:MuteMusic(isMuteMusicLobby)
+
+    if isMuteMusicLobby then
+        CS.UnityEngine.PlayerPrefs.SetInt(keyMusicLobby, 1)
+    else
+        CS.UnityEngine.PlayerPrefs.SetInt(keyMusicLobby, 0)
+    end
+
+    CS.UnityEngine.PlayerPrefs.Save()
+
+    if (isMuteMusicLobby) then
+        btMusic:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOffMusic
+    else
+        btMusic:GetComponent(typeof(CS.UnityEngine.UI.Image)).sprite = spriteOnMusic
+    end
+end
+
+-- // Notice Mail
+function SetNoticeMail(quanittyUnread)
+    if (quanittyUnread > 0) then
+        objNoticeMail:SetActive(true)
+        txtNoticeMail.text = quanittyUnread
+    else
+        objNoticeMail:SetActive(false)
+    end
+end
+
+---------------------------------Method Common -----------------------------------
+function InitLayer(layerKeys, screenRatio)
+
+    isLayerAnimOpenDone = false;
+
+    layerKey = layerKeys
+    canvas = self:GetComponent(typeof(CS.UnityEngine.Canvas))
+    anim = self:GetComponent(typeof(CS.UnityEngine.Animator))
+    graphicRaycaster = self:GetComponent(typeof(CS.UnityEngine.UI.GraphicRaycaster))
+
+    uiLayerController = CS.UILayerController.Instance
+    local xlua = uiLayerController:GetComponent(typeof(CS.XLuaBehaviour))
+    uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+    LoadObjectGame()
+    -- Chưa khởi tạo gContenAll
+
+    -- Chưa khởi tạo dragMini
+end
+
+function SetLayerIndex(index)
+    layerIndex = index
+end
+
+function StartLayer()
+    if layerAnimType == AnimType.None then
+        isLayerAnimOpenDone = true;
+    end
+end
+
+function  ShowLayer()
+
+end
+
+function ReloadLayer()
+    
+end
+
+function BeforeHideLayer()
+    
+end
+
+function HideLayer()
+    
+end
+
+function DestroyLayer()
+    
+end
+
+function SetSortOrder(order)
+    canvas.sortingOrder = order;
+    if childOrders ~= nil then
+        -- body
+        for i=1,#childOrders do
+            childOrders[i].ResetOrder(canvas.sortingOrder)
+        end
+    end
+end
+
+function ResetPosition()
+    if gContentAll ~= nil then
+        rect = gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+    end
+end
+
+function ResetAfterAnim()
+    if gContentAll ~= nil then
+
+        gContentAll.transform.localScale = Vector3.one;
+
+        rect =  gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+        cvGroup = gContentAll.GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+        cvGroup.alpha = 1
+    end
+end
+
+function PlayAnimation(key)
+    if anim ~= nil then
+        isLayerAnimOpenDone = false
+        anim.enabled = true
+        graphicRaycaster.enabled = false;
+        if key == AnimKey.OpenPopup or key == AnimKey.ClosePopup then
+            if key == AnimKey.OpenPopup then
+                cs_coroutine.start(self. DelayToResetAfterAnim)
+            end
+            anim:SetTrigger(key);
+        else
+            local DelaytoRunAnim = cs_coroutine.start(self,
+                function()
+                    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+                    anim:SetTrigger(key);
+                end
+            )
+        end
+    else
+        isLayerAnimOpenDone = true;
+    end
+end
+
+function  Close()
+    graphicRaycaster.enabled = false;
+    uiLayerController:HideLayer(layer);
+end
+
+function  OnLayerOpenDone()
+
+    anim.enabled = false;
+
+    graphicRaycaster.enabled = true;
+    isLayerAnimOpenDone = true;
+
+    ResetAfterAnim();
+end
+
+function  OnLayerCloseDone()
+    anim.enabled = false;
+    HideLayer();
+
+    uiLayerController:CacheLayer(uiLayerThis);
+    isLayerAnimOpenDone = false;
+end
+
+function DelayToResetAfterAnim()
+    
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.5))
+
+    if gContentAll ~= nil then
+        local cvGroup = gContentAll.GetComponent(typeof(CanvasGroup))
+        if  cvGroup.alpha < 1 then
+            gContentAll.transform.localScale = CS.UnityEngine.Vector3.one
+
+            local rect = gContentAll.GetComponent(typeof(RectTransform));
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0);
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0);
+
+            cvGroup.alpha = 1;
+        end
+    end    
+end

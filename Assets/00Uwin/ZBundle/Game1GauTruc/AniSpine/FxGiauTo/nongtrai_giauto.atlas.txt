@@ -1,0 +1,41 @@
+
+nongtrai_giauto.png
+size: 454,254
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: true
+  xy: 302, 97
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+giauto_text
+  rotate: false
+  xy: 2, 139
+  size: 298, 113
+  orig: 298, 113
+  offset: 0, 0
+  index: -1
+nongtrai_giauto_char
+  rotate: true
+  xy: 2, 2
+  size: 135, 212
+  orig: 135, 212
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 408, 52
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 216, 26
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,48 @@
+
+icon_caothap.png
+size: 474,272
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cap thap/Group-6
+  rotate: false
+  xy: 2, 8
+  size: 273, 262
+  orig: 288, 288
+  offset: 11, 2
+  index: -1
+cap thap/Layer-56
+  rotate: false
+  xy: 404, 24
+  size: 16, 20
+  orig: 16, 20
+  offset: 0, 0
+  index: -1
+cap thap/cao
+  rotate: true
+  xy: 414, 46
+  size: 109, 58
+  orig: 288, 288
+  offset: 35, 44
+  index: -1
+cap thap/mui-ten-len
+  rotate: false
+  xy: 277, 98
+  size: 135, 172
+  orig: 288, 288
+  offset: 50, 90
+  index: -1
+cap thap/mui-ten-xuong
+  rotate: true
+  xy: 277, 2
+  size: 94, 125
+  orig: 288, 288
+  offset: 149, 93
+  index: -1
+cap thap/thap
+  rotate: true
+  xy: 414, 157
+  size: 113, 58
+  orig: 288, 288
+  offset: 149, 47
+  index: -1

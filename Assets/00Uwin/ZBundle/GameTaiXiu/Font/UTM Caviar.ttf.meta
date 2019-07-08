@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 2de566f9100000a46adf24b4a19ac879
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: UTM Caviar
+  fontNames:
+  - UTM Caviar
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 6725ffa440e350e488fd109912b1775b, type: 3}
+  - {fileID: 12800000, guid: a1de25fccf3e4bf40adc54dceebebc10, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

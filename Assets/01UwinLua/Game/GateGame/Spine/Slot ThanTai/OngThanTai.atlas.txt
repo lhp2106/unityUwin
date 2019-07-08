@@ -1,0 +1,118 @@
+
+OngThanTai.png
+size: 1185,519
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+coinani00
+  rotate: false
+  xy: 914, 70
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani01
+  rotate: false
+  xy: 1104, 156
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani05
+  rotate: false
+  xy: 1104, 156
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani02
+  rotate: false
+  xy: 995, 31
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani03
+  rotate: false
+  xy: 1035, 31
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani04
+  rotate: false
+  xy: 1144, 156
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+khung hien thi tien
+  rotate: false
+  xy: 961, 245
+  size: 220, 115
+  orig: 220, 115
+  offset: 0, 0
+  index: -1
+khung than tai
+  rotate: false
+  xy: 689, 109
+  size: 270, 408
+  orig: 270, 408
+  offset: 0, 0
+  index: -1
+ongthantaitach01
+  rotate: true
+  xy: 689, 32
+  size: 75, 223
+  orig: 75, 223
+  offset: 0, 0
+  index: -1
+ongthantaitach02
+  rotate: true
+  xy: 961, 362
+  size: 155, 222
+  orig: 155, 222
+  offset: 0, 0
+  index: -1
+ongthantaitach03
+  rotate: false
+  xy: 961, 133
+  size: 141, 60
+  orig: 141, 60
+  offset: 0, 0
+  index: -1
+ongthantaitach04
+  rotate: false
+  xy: 961, 70
+  size: 132, 61
+  orig: 132, 61
+  offset: 0, 0
+  index: -1
+ongthantaitach05
+  rotate: false
+  xy: 2, 15
+  size: 685, 502
+  orig: 685, 502
+  offset: 0, 0
+  index: -1
+ongthantaitach06
+  rotate: true
+  xy: 1095, 31
+  size: 100, 82
+  orig: 100, 82
+  offset: 0, 0
+  index: -1
+ongthantaitach07
+  rotate: false
+  xy: 914, 2
+  size: 79, 66
+  orig: 79, 66
+  offset: 0, 0
+  index: -1
+tittle
+  rotate: false
+  xy: 961, 195
+  size: 219, 48
+  orig: 219, 48
+  offset: 0, 0
+  index: -1

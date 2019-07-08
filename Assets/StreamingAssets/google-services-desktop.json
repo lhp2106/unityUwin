@@ -1,0 +1,37 @@
+{
+  "client": [
+    {
+      "services": {
+        "appinvite_service": {
+          "status": 0
+        }, 
+        "analytics_service": {
+          "status": 0
+        }
+      }, 
+      "oauth_client": [
+        {
+          "client_id": "578611212018-2au71ruvsr2m9395b9s0b23at99q5ea7.apps.googleusercontent.com"
+        }
+      ], 
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR97zqqQx5JrQQ4OFa8JHc-kvHTlGr78c"
+        }
+      ], 
+      "client_info": {
+        "mobilesdk_app_id": "1:578611212018:ios:8595a8c159730723", 
+        "android_client_info": {
+          "package_name": "com.rongclub.rong88"
+        }
+      }
+    }
+  ], 
+  "configuration_version": "1", 
+  "project_info": {
+    "storage_bucket": "rong88-f00b4.appspot.com", 
+    "project_id": "rong88-f00b4", 
+    "firebase_url": "https://rong88-f00b4.firebaseio.com", 
+    "project_number": "578611212018"
+  }
+}

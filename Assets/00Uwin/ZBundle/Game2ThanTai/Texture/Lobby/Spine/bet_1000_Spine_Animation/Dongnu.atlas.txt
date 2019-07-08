@@ -1,0 +1,90 @@
+
+Dongnu.png
+size: 1425,305
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cmcuocthantai01
+  rotate: false
+  xy: 1014, 13
+  size: 143, 64
+  orig: 143, 64
+  offset: 0, 0
+  index: -1
+cmcuocthantai02
+  rotate: true
+  xy: 2, 10
+  size: 293, 429
+  orig: 293, 429
+  offset: 0, 0
+  index: -1
+cmcuocthantai05
+  rotate: true
+  xy: 433, 32
+  size: 271, 338
+  orig: 271, 338
+  offset: 0, 0
+  index: -1
+dongnu01
+  rotate: false
+  xy: 1235, 25
+  size: 132, 133
+  orig: 132, 133
+  offset: 0, 0
+  index: -1
+dongnu02
+  rotate: true
+  xy: 773, 29
+  size: 274, 239
+  orig: 274, 239
+  offset: 0, 0
+  index: -1
+dongnu03
+  rotate: false
+  xy: 1235, 160
+  size: 143, 143
+  orig: 143, 143
+  offset: 0, 0
+  index: -1
+dongnu04
+  rotate: false
+  xy: 1159, 20
+  size: 68, 57
+  orig: 68, 57
+  offset: 0, 0
+  index: -1
+dongnu05
+  rotate: false
+  xy: 1176, 3
+  size: 14, 15
+  orig: 14, 15
+  offset: 0, 0
+  index: -1
+dongnu06
+  rotate: false
+  xy: 1369, 111
+  size: 54, 47
+  orig: 54, 47
+  offset: 0, 0
+  index: -1
+dongnu07
+  rotate: true
+  xy: 1159, 2
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1
+dongnu08
+  rotate: true
+  xy: 1014, 79
+  size: 224, 219
+  orig: 224, 219
+  offset: 0, 0
+  index: -1
+dongnu09
+  rotate: true
+  xy: 1229, 8
+  size: 15, 39
+  orig: 15, 39
+  offset: 0, 0
+  index: -1

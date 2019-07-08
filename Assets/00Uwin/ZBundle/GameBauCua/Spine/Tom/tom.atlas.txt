@@ -1,0 +1,48 @@
+
+tom.png
+size: 244,240
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 2
+  rotate: false
+  xy: 55, 26
+  size: 10, 28
+  orig: 10, 28
+  offset: 0, 0
+  index: -1
+bc_0031_Layer-16
+  rotate: false
+  xy: 2, 56
+  size: 118, 90
+  orig: 118, 90
+  offset: 0, 0
+  index: -1
+bc_0031_Layer-16 copy
+  rotate: false
+  xy: 122, 148
+  size: 118, 90
+  orig: 118, 90
+  offset: 0, 0
+  index: -1
+bc_0031_Layer-16 copy 2
+  rotate: false
+  xy: 2, 148
+  size: 118, 90
+  orig: 118, 90
+  offset: 0, 0
+  index: -1
+bc_0031_Layer-16 copy 3
+  rotate: false
+  xy: 122, 57
+  size: 115, 89
+  orig: 115, 89
+  offset: 0, 0
+  index: -1
+suolaka1
+  rotate: false
+  xy: 2, 4
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1

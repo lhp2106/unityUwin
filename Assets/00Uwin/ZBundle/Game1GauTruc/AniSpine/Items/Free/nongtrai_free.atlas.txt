@@ -1,0 +1,34 @@
+
+nongtrai_free.png
+size: 422,210
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+nongtrai_free_bg
+  rotate: false
+  xy: 2, 8
+  size: 199, 200
+  orig: 199, 200
+  offset: 0, 0
+  index: -1
+nongtrai_free_char
+  rotate: true
+  xy: 203, 84
+  size: 124, 206
+  orig: 124, 206
+  offset: 0, 0
+  index: -1
+nongtrai_free_text
+  rotate: false
+  xy: 203, 18
+  size: 186, 64
+  orig: 186, 64
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: true
+  xy: 391, 2
+  size: 80, 29
+  orig: 80, 29
+  offset: 0, 0
+  index: -1

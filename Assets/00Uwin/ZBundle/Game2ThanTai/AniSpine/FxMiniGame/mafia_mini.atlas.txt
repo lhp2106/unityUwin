@@ -1,0 +1,41 @@
+
+mafia_mini.png
+size: 370,329
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: false
+  xy: 2, 2
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+mafia_mini_char
+  rotate: false
+  xy: 2, 154
+  size: 250, 173
+  orig: 250, 173
+  offset: 0, 0
+  index: -1
+mini_ducket_text
+  rotate: true
+  xy: 254, 79
+  size: 248, 114
+  orig: 248, 114
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 159, 109
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 159, 8
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1

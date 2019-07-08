@@ -1,0 +1,41 @@
+
+golden_fish.png
+size: 544,136
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BUBBLE
+  rotate: false
+  xy: 2, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+fish02_00
+  rotate: false
+  xy: 238, 34
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+fish02_01
+  rotate: false
+  xy: 340, 34
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+fish02_02
+  rotate: false
+  xy: 442, 34
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+fish02_03
+  rotate: false
+  xy: 136, 34
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1

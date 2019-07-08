@@ -1,0 +1,41 @@
+
+nongtrai_mini.png
+size: 491,225
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: false
+  xy: 289, 2
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+mini_chanrau_text
+  rotate: false
+  xy: 2, 120
+  size: 285, 103
+  orig: 285, 103
+  offset: 0, 0
+  index: -1
+nongtrai_mini_char
+  rotate: false
+  xy: 2, 27
+  size: 243, 91
+  orig: 243, 91
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 446, 109
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 289, 154
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1

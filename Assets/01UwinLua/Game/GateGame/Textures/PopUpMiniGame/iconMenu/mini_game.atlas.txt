@@ -1,0 +1,48 @@
+
+mini_game.png
+size: 399,285
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ligh_on
+  rotate: false
+  xy: 347, 2
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+mini game_light
+  rotate: false
+  xy: 277, 163
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+mini game_light2
+  rotate: false
+  xy: 277, 50
+  size: 107, 111
+  orig: 400, 400
+  offset: 150, 142
+  index: -1
+text1
+  rotate: false
+  xy: 277, 28
+  size: 69, 20
+  orig: 400, 400
+  offset: 165, 179
+  index: -1
+text2
+  rotate: false
+  xy: 277, 3
+  size: 68, 23
+  orig: 400, 400
+  offset: 166, 203
+  index: -1
+vong tron mini game_effect
+  rotate: false
+  xy: 2, 9
+  size: 273, 274
+  orig: 273, 274
+  offset: 0, 0
+  index: -1

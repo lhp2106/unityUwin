@@ -1,0 +1,97 @@
+
+TamQuocLobbyAnimation.png
+size: 1162,434
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+icontamquoc01
+  rotate: false
+  xy: 1055, 263
+  size: 103, 169
+  orig: 103, 169
+  offset: 0, 0
+  index: -1
+icontamquoc02
+  rotate: false
+  xy: 564, 2
+  size: 233, 149
+  orig: 233, 149
+  offset: 0, 0
+  index: -1
+icontamquoc03
+  rotate: false
+  xy: 799, 29
+  size: 48, 130
+  orig: 48, 130
+  offset: 0, 0
+  index: -1
+icontamquoc04
+  rotate: true
+  xy: 877, 91
+  size: 165, 163
+  orig: 165, 163
+  offset: 0, 0
+  index: -1
+icontamquoc06
+  rotate: false
+  xy: 1055, 153
+  size: 105, 108
+  orig: 105, 108
+  offset: 0, 0
+  index: -1
+icontamquoc08
+  rotate: false
+  xy: 877, 258
+  size: 176, 174
+  orig: 176, 174
+  offset: 0, 0
+  index: -1
+icontamquoc09
+  rotate: false
+  xy: 849, 17
+  size: 47, 72
+  orig: 47, 72
+  offset: 0, 0
+  index: -1
+icontamquoc10
+  rotate: false
+  xy: 785, 240
+  size: 90, 192
+  orig: 90, 192
+  offset: 0, 0
+  index: -1
+icontamquoc11
+  rotate: false
+  xy: 2, 20
+  size: 279, 412
+  orig: 279, 412
+  offset: 0, 0
+  index: -1
+icontamquoc12
+  rotate: false
+  xy: 668, 161
+  size: 207, 49
+  orig: 207, 49
+  offset: 0, 0
+  index: -1
+icontamquoc13
+  rotate: true
+  xy: 564, 153
+  size: 279, 102
+  orig: 279, 102
+  offset: 0, 0
+  index: -1
+icontamquoc14
+  rotate: false
+  xy: 283, 20
+  size: 279, 412
+  orig: 279, 412
+  offset: 0, 0
+  index: -1
+khung hien thi tien
+  rotate: true
+  xy: 668, 212
+  size: 220, 115
+  orig: 220, 115
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,570 @@
+local cs_coroutine = require 'common.cs_coroutine'
+
+local deepOrder = 5
+local deepPlaneDistance = 100
+local isLandscape = false
+local deepOrderStarts = {}
+local planeDistanceStarts = {}
+
+local layerCaches = {}
+local layers = {}
+local screenRatio = 1
+local timePause = 0
+local ShowLayerFromBundleCallBack = nil
+local _uiCamera = nil
+
+local urlApiPortal = "https://api.uwin369.net/"
+local urlEvent = "https://event.uwin369.net/api/"
+
+function start()
+
+    CS.WebServiceController.Instance.urlApiPortal = urlApiPortal
+    CS.WebServiceController.Instance.urlEvent = urlEvent
+
+    layers[CS.UILayer.Position.Bootom] = {}
+    layers[CS.UILayer.Position.Middle] = {}
+    layers[CS.UILayer.Position.Top] = {}
+ 
+    planeDistanceStarts[CS.UILayer.Position.Bootom] = 1800
+    planeDistanceStarts[CS.UILayer.Position.Middle] = 1200
+    planeDistanceStarts[CS.UILayer.Position.Top] = 600
+
+    deepOrderStarts[CS.UILayer.Position.Bootom] = 0
+    deepOrderStarts[CS.UILayer.Position.Middle] = 60
+    deepOrderStarts[CS.UILayer.Position.Top] = 120
+
+    screenRatio = CS.UnityEngine.Screen.width / CS.UnityEngine.Screen.height
+
+    _uiCamera = uiCamera:GetComponent(typeof(CS.UnityEngine.Camera))
+    
+    for _,name in ipairs({"LPopup", "LPopupTop"}) do
+        local layer = CreateLayer(name)
+        layer:BeforeHideLayer();
+        layer:HideLayer();
+        layer.gameObject:SetActive(false);
+    end
+
+    local obj = CS.AssetbundlesManager.Instance:GetAsset("gate.bundle", "LViewLobby")
+    local lobby = ShowLayer(CreateLayer("LViewLobby", obj))
+    lobby:FirstLoadLayer();
+end
+
+function onApplicationPause(paused)
+    if paused then
+        timePause = os.time()
+    else
+        if timePause < 10 then
+            return
+        end
+
+        local timeRange = os.time() - timePause;
+        if timeRange.TotalSeconds > 600 then
+            GotoLogin()
+            CS.LPopup.OpenPopup("WARNING", "Disconnect server")
+        end
+    end
+end
+
+function CreateLayer(layerName, obj)
+	local sLayer = nil
+    local isCreate = true
+	if layerCaches[layerName] and layerCaches[layerName][1] then
+		isCreate = false
+        sLayer = layerCaches[layerName][1]
+        sLayer.gameObject:SetActive(true)
+        table.remove(layerCaches[layerName], 1)
+    else
+        if not obj then
+            obj = CS.UnityEngine.Resources.Load("Layer/" .. layerName)
+        end
+        if (isLandscape and screenRatio > 1.9) or (not isLandscape and screenRatio > 0.74) then
+            if not obj:GetComponent(typeof(CS.UILayer)).lockCanvasScale then
+                local canvasScaler = obj:GetComponent(typeof(CS.UnityEngine.UI.CanvasScaler))
+                canvasScaler.matchWidthOrHeight = 1
+            end
+        else
+            if not obj:GetComponent(typeof(CS.UILayer)).lockCanvasScale then
+                local canvasScaler = obj:GetComponent(typeof(CS.UnityEngine.UI.CanvasScaler))
+                canvasScaler.matchWidthOrHeight = 0
+            end
+        end
+        local oLayer = CS.UnityEngine.Object.Instantiate(obj)
+        sLayer = oLayer:GetComponent(typeof(CS.UILayer))
+        sLayer:InitLayer(layerName, screenRatio);
+        sLayer.canvas.renderMode = CS.UnityEngine.RenderMode.ScreenSpaceCamera;
+        sLayer.canvas.worldCamera = _uiCamera
+	end
+    local position = sLayer.position
+    local uiLayerTemps = layers[position]
+    if uiLayerTemps then
+        countLayer = #uiLayerTemps
+    else
+        countLayer = 0
+    end
+    -- local countLayer = #uiLayerTemps
+    if countLayer == 0 then
+        sorting = deepOrderStarts[position]
+        distance = planeDistanceStarts[position]
+    else
+        sorting = uiLayerTemps[countLayer]:GetComponent(typeof(CS.UILayer)).canvas.sortingOrder + deepOrder
+        distance = uiLayerTemps[countLayer]:GetComponent(typeof(CS.UILayer)):GetPlaneDistance() - deepPlaneDistance
+    end
+    sLayer.transform:SetAsLastSibling();
+    sLayer.name = layerName .. "_" .. (countLayer + 1);
+
+    sLayer:SetSortOrder(sorting);
+    sLayer:SetPlaneDistance(distance);
+
+    if isCreate then
+        sLayer:StartLayer();
+    end
+    sLayer:ShowLayer();
+	return sLayer
+end
+
+function ShowLayerByName(name)
+    return ShowLayer(CreateLayer(name))
+end
+
+function ShowLayerByNameFromBundle(key, bundleName, callBack)
+    ShowLayerFromBundleCallBack = callBack;
+    if layerCaches[key] and #layerCaches[key] > 0 then
+        local layer = ShowLayer(CreateLayer(key));
+
+        if (ShowLayerFromBundleCallBack) then
+            ShowLayerFromBundleCallBack(layer);
+        end
+    else
+        ShowLoading();
+        CS.AssetbundlesManager.Instance:LoadPrefabFromAsset(key, bundleName, ShowLayerCallBack);
+    end
+end
+
+function ShowLayerCallBack(key, obj)
+    HideLoading();
+    if (not obj) then
+        return;
+    end
+    local layer = ShowLayer(CreateLayer(key, obj));
+
+    if(ShowLayerFromBundleCallBack) then
+        ShowLayerFromBundleCallBack(layer);
+    end
+end
+
+function ShowLayer(olayer)
+    if not olayer then
+        return nil
+    end
+    layer = olayer:GetComponent(typeof(CS.UILayer))
+    local lastLayer = nil;
+    local uiLayerTemps = layers[layer.position];
+
+    local layerCount = #uiLayerTemps;
+
+    -- disable layer
+    if layerCount > 0 then
+        lastLayer = uiLayerTemps[layerCount];
+        lastLayer:DisableLayer();
+    end
+
+    if layer.position == CS.UILayer.Position.Middle then
+        layerMiniMask:SetActive(true);
+    end
+
+    layer:SetLayerIndex(layerCount + 1);
+    table.insert(uiLayerTemps, layer)
+    layer:EnableLayer();
+
+    -- animation
+    local anim = layer.layerAnimType
+    if anim == CS.UILayer.AnimType.Popup then
+        layer:PlayAnimation(CS.UILayer.AnimKey.OpenPopup);
+    elseif anim == CS.UILayer.AnimType.None then
+        if layer.hideBehindLayers and lastLayer then
+            lastLayer.gameObject:SetActive(false);
+        end
+    end
+    return layer;
+end
+
+function IsCachedLayer(layerName)
+    return layerCaches[layerName] ~= nil
+end
+
+function CacheLayer(oLayer)
+    local layer = oLayer:GetComponent(typeof(CS.UILayer))
+    if layer.allowDestroy then
+        layer:DestroyLayer();
+        CS.UnityEngine.Object.Destroy(oLayer.gameObject);
+        UnloadAllAssets();
+    else
+        layer.gameObject:SetActive(false)
+        if not layerCaches[layer.layerKey] then
+            layerCaches[layer.layerKey] = {}
+        end
+        table.insert(layerCaches[layer.layerKey], layer)
+    end
+end
+
+function PrivateHideLayer(oLayer)
+    local layer = oLayer:GetComponent(typeof(CS.UILayer))
+    layer:DisableLayer();
+    layer:BeforeHideLayer();
+    layer:HideLayer();
+
+    if layer.allowDestroy then
+        layer:DestroyLayer();
+        CS.UnityEngine.Object.Destroy(oLayer);
+    else
+        layer:ResetPosition();
+        CacheLayer(layer);
+    end
+end
+
+-- function WaitRemoveLayerGame(layer)
+--     yield_return(CS.UnityEngine.WaitUntil(function() return layer == nil or not layer.gameObject.activeSelf end))
+
+--     RemoveLayerGame();
+-- end
+
+function RemoveLayerGame()
+    for _,item in pairs(layerCaches) do
+        local layerTemps = item;
+        if #layerTemps > 0 then
+            for i=#layerTemps,1,-1 do
+                local layer = layerTemps[i]:GetComponent(typeof(CS.UILayer))
+                if layer.isGameLayer then
+                    table.remove(layerTemps, i)
+
+                    layer:DisableLayer();
+                    layer:BeforeHideLayer();
+                    layer:HideLayer();
+                    layer:DestroyLayer();
+
+                    CS.UnityEngine.Object.Destroy(layer.gameObject);
+                end
+            end
+        end
+    end
+
+    UnloadAllAssets();
+end
+
+-- Back to login
+function GotoLogin()
+    -- hide mask
+    HideLoading();
+    layerMiniMask:SetActive(false);
+
+    -- hide layer
+    local loginLayer = layers[CS.UILayer.Position.Bootom][1];
+
+    -- khong co lobby nen load truoc
+    for _,o in ipairs(layers[CS.UILayer.Position.Middle]) do
+        PrivateHideLayer(o);
+    end
+
+     -- khong co lobby nen load truoc
+    for _,o in ipairs(layers[CS.UILayer.Position.Top]) do
+        PrivateHideLayer(o);
+    end
+    
+    -- khong co lobby nen load truoc
+    local layerBottoms = layers[CS.UILayer.Position.Bootom]
+    for i = #layerBottoms - 1,1,-1 do
+        local layer = layerBottoms[i];
+        if layer ~= loginLayer then
+            PrivateHideLayer(layer);
+        end
+    end
+
+    layers[CS.UILayer.Position.Bootom] = {};
+    layers[CS.UILayer.Position.Middle] = {};
+    layers[CS.UILayer.Position.Top] = {};
+
+    table.insert(layers[CS.UILayer.Position.Bootom], loginLayer)
+
+    RemoveLayerGame();
+
+    -- clear Audio
+    --AudioController.Instance.ClearAudioCache();
+
+    UnloadAllAssets();
+
+    loginLayer.transform:GetChild(0).localPosition = CS.UnityEngine.Vector3.zero
+    loginLayer.gameObject:SetActive(true)
+
+    loginLayer:DisableLayer()
+    loginLayer:ShowLayer()
+    loginLayer:EnableLayer()
+end
+
+function BackToLogin()
+    -- hide mask
+    HideLoading();
+    layerMiniMask:SetActive(false);
+
+     -- khong co lobby nen load truoc
+    for _,layer in ipairs(layers[CS.UILayer.Position.Middle]) do
+        PrivateHideLayer(layer);
+    end
+
+     -- khong co lobby nen load truoc
+    for _,layer in ipairs(layers[CS.UILayer.Position.Top]) do
+        PrivateHideLayer(layer);
+    end
+
+    layers[CS.UILayer.Position.Middle] = {};
+    layers[CS.UILayer.Position.Top] = {};
+
+    RemoveLayerGame();
+
+    -- clear Audio
+    CS.AudioController.Instance.ClearAudioCache();
+
+    UnloadAllAssets();
+end
+
+function ShowLoading(autoHide)
+    layerLoading:GetComponent(typeof(CS.UILayerLoading)):ShowLoading(autoHide);
+end
+
+function HideLoading()
+    layerLoading:GetComponent(typeof(CS.UILayerLoading)):HideLoading();
+end
+
+function FocusMiniGameByKey(key) 
+    local layer = GetLayerByName(key);
+    FocusMiniGame(layer.dragMini);
+    layer.dragMini.transform.localPosition = CS.UnityEngine.Vector3.zero;
+end
+
+-- drag mini game
+function FocusMiniGame(drag)
+    local layerTemps = {}
+    for _,o in ipairs(layers[CS.UILayer.Position.Middle]) do
+        if o:GetComponent(typeof(CS.UILayer)).dragMini then
+            table.insert(layerTemps, o:GetComponent(typeof(CS.UILayer)))
+        end
+    end
+
+    if #layerTemps > 0 then
+        if not drag then
+            layerMiniMask:SetActive(false);
+            for _,layer in ipairs(layerTemps) do
+                layer.dragMini.canvasGroup.alpha = 0.6
+            end
+        else
+            layerMiniMask:SetActive(true);
+
+            for _,layer in ipairs(layerTemps) do
+                layer.dragMini.canvasGroup.alpha = 1
+            end
+
+            table.sort(layerTemps, function ( left, right )
+                return left.canvas.sortingOrder < right.canvas.sortingOrder
+            end)
+
+            local layerTop = layerTemps[#layerTemps]
+            local layerCurrent = nil
+            for _,o in ipairs(layerTemps) do
+                if o.dragMini == drag then
+                    layerCurrent = o
+                    break
+                end
+            end
+
+            if layerCurrent and layerTop ~= layerCurrent then
+                local order = layerTop.canvas.sortingOrder;
+                local layerIndex = layerTop.layerIndex;
+                local distance = layerTop.canvas.planeDistance;
+
+                layerTop.layerIndex = layerCurrent.layerIndex;
+                layerTop:SetSortOrder(layerCurrent.canvas.sortingOrder);
+                layerTop.canvas.planeDistance = layerCurrent.canvas.planeDistance;
+
+                layerCurrent.layerIndex = layerIndex;
+                layerCurrent:SetSortOrder(order);
+                layerCurrent.canvas.planeDistance = distance;
+            end
+
+            table.sort(layers[CS.UILayer.Position.Middle], function( left, right )
+                return left.canvas.sortingOrder < right.canvas.sortingOrder
+            end)
+        end
+    end
+end
+
+--     //close all popup bottom
+function CloseAllPopupBottom()
+    local layerTemps = {}
+    for _,o in ipairs(layers[CS.UILayer.Position.Bootom]) do
+        if o:GetComponent(typeof(CS.UILayer)).layerKey == CS.UILayerKey.LPopup then
+            table.insert(layers, o)
+        end
+    end
+    for _,layer in ipairs(layerTemps) do
+        layer:GetComponent(typeof(CS.UILayer)).Close();
+    end
+end
+
+--     // get
+function GetLayerByType(type)
+    for _, item in pairs(layers) do
+        for _, layer in pairs(item) do
+            if layer.layerKey == type then
+                return layer
+            end
+        end
+    end
+    return nil
+end
+
+function GetLayerByName(key)
+    for _,item in pairs(layers) do
+        for _,layer in pairs(item) do
+            if layer:GetComponent(typeof(CS.UILayer)).layerKey == key then
+                return layer
+            end
+        end
+    end
+
+    return nil;
+end
+
+function GetCurrentLayer(position)
+    local layerTemps = layers[position];
+    if layerTemps ~= nil and #layerTemps > 0 then
+        return layerTemps[#layerTemps.Count];
+    end
+    return nil;
+end
+
+function IsCurrentLayer(key)
+    for _,item in pairs(layers) do
+        if #item > 0 then
+            if item[#item]:GetComponent(typeof(CS.UILayer)).layerKey == key then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
+function IsLayerExistedByType(type)
+    return GetLayerByType(type) ~= nil;
+end
+
+function IsLayerExisted(key)
+    local exist = false;
+    for _,item in ipairs(layers) do
+        if not exist then
+            for _,a in ipairs(item) do
+                if a:GetComponent(typeof(CS.UILayer)).layerKey == key then
+                    exist = true
+                end
+            end
+        end
+    end
+
+    return exist;
+end
+
+function IsLayerLoadingActive()
+    return layerLoading.gameObject.activeSelf;
+end
+
+--     // mouse
+function GetMousePoint()
+    return _uiCamera:ScreenToWorldPoint(CS.UnityEngine.Input.mousePosition)
+end
+
+function GetMousePointByPos(pos)
+    return CS.UnityEngine.Camera.main:WorldToScreenPoint(pos);
+end
+
+--     // unload aset
+function UnloadAllAssets()
+    cs_coroutine.start(self, function() 
+        coroutine.yield(CS.UnityEngine.Resources.UnloadUnusedAssets())
+    end)
+end
+
+function UnloadAllUnusedAssets()
+    coroutine.yield(CS.UnityEngine.Resources.UnloadUnusedAssets())
+end
+
+function HideLayerByName(layerName)
+    local layer = GetLayerByName(layerName)
+    if (layer) then
+        HideLayer(layer)
+    end
+end
+
+function HideLayer(layer)
+    if layer == nil then
+        return
+    end
+
+    local uiLayerTemps = layers[layer.position]
+    local pos = 0
+    for i,item in ipairs(uiLayerTemps) do
+        if item == layer then
+            pos = i
+            break
+        end
+    end
+
+    if pos == 0 then
+        return
+    end
+    -- remove
+    table.remove( uiLayerTemps, pos )
+
+    local lastLayer = nil
+    if layer.layerIndex > 1 and #uiLayerTemps >= layer.layerIndex - 1 then
+        -- @todo: need to add try catch block
+        lastLayer = uiLayerTemps[layer.layerIndex - 1];
+        if lastLayer then
+            lastLayer.gameObject:SetActive(true);
+            lastLayer:ReloadLayer();
+        end
+    end
+    if layer.layerIndex-1 == #uiLayerTemps then
+        if lastLayer then
+            lastLayer:EnableLayer()
+        end
+    else
+        for i,item in ipairs(uiLayerTemps) do
+            item:GetComponent(typeof(CS.UILayer)):SetLayerIndex(i)
+        end
+    end
+
+    -- call hide
+    layer:BeforeHideLayer();
+
+    -- if last game in middle close => clear all layer game cache
+    if layer.position == CS.UILayer.Position.Middle and (not uiLayerTemps or #uiLayerTemps <= 0) then
+        layerMiniMask:SetActive(false);
+        cs_coroutine.start(self, function() 
+            coroutine.yield(CS.UnityEngine.WaitUntil(function() return layer == nil or not layer.gameObject.activeSelf end))
+            RemoveLayerGame();
+        end)
+    end
+
+    if layer.layerAnimType == CS.UILayer.AnimType.None then
+        layer:HideLayer();
+
+        if (layer.allowDestroy)then
+            layer:DestroyLayer();
+            CS.UnityEngine.Object.Destroy(layer.gameObject);
+            UnloadAllAssets();
+        else
+            CacheLayer(layer);
+        end
+    elseif layer.layerAnimType == CS.UILayer.AnimType.Popup then
+        layer:PlayAnimation(CS.UILayer.AnimKey.ClosePopup);
+    end
+end

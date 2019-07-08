@@ -1,0 +1,98 @@
+List = require 'pl.List'
+-- ------------------------------------------------------
+local sprCardUp
+local sprCards = List()
+    
+function awake()
+    LoadObjectGame()
+end    
+    
+function LoadObjectGame()
+    sprCardUp = _sprCardUp
+    vkPoolManager = _vkPoolManager:GetComponent(typeof(CS.VKObjectPoolManager))
+
+    sprCards:append(_sprCard3b)
+    sprCards:append(_sprCard3t)
+    sprCards:append(_sprCard3r)
+    sprCards:append(_sprCard3c)
+
+    sprCards:append(_sprCard4b)
+    sprCards:append(_sprCard4t)
+    sprCards:append(_sprCard4r)
+    sprCards:append(_sprCard4c)
+
+    sprCards:append(_sprCard5b)
+    sprCards:append(_sprCard5t)
+    sprCards:append(_sprCard5r)
+    sprCards:append(_sprCard5c)
+
+    sprCards:append(_sprCard6b)
+    sprCards:append(_sprCard6t)
+    sprCards:append(_sprCard6r)
+    sprCards:append(_sprCard6c)
+
+    sprCards:append(_sprCard7b)
+    sprCards:append(_sprCard7t)
+    sprCards:append(_sprCard7r)
+    sprCards:append(_sprCard7c)
+
+    sprCards:append(_sprCard8b)
+    sprCards:append(_sprCard8t)
+    sprCards:append(_sprCard8r)
+    sprCards:append(_sprCard8c)
+
+    sprCards:append(_sprCard9b)
+    sprCards:append(_sprCard9t)
+    sprCards:append(_sprCard9r)
+    sprCards:append(_sprCard9c)
+
+    sprCards:append(_sprCard10b)
+    sprCards:append(_sprCard10t)
+    sprCards:append(_sprCard10r)
+    sprCards:append(_sprCard10c)
+
+    sprCards:append(_sprCard11b)
+    sprCards:append(_sprCard11t)
+    sprCards:append(_sprCard11r)
+    sprCards:append(_sprCard11c)
+
+    sprCards:append(_sprCard12b)
+    sprCards:append(_sprCard12t)
+    sprCards:append(_sprCard12r)
+    sprCards:append(_sprCard12c)
+
+    sprCards:append(_sprCard13b)
+    sprCards:append(_sprCard13t)
+    sprCards:append(_sprCard13r)
+    sprCards:append(_sprCard13c)
+
+    sprCards:append(_sprCard1b)
+    sprCards:append(_sprCard1t)
+    sprCards:append(_sprCard1r)
+    sprCards:append(_sprCard1c)
+
+    sprCards:append(_sprCard2b)
+    sprCards:append(_sprCard2t)
+    sprCards:append(_sprCard2r)
+    sprCards:append(_sprCard2c)
+end
+
+function BorrowCard()
+    local tlmnCard = vkPoolManager:BorrowObject()
+    tlmnCard = tlmnCard:GetComponent(typeof(CS.XLuaBehaviour))
+    tlmnCard:InvokeXLua("Init",self)
+
+    return tlmnCard
+end
+
+function GiveBackCard(gameObject)
+    vkPoolManager:GiveBackObject(gameObject);
+end
+
+function GiveBackAll()
+    vkPoolManager:GiveBackAll();
+end
+
+function GetCard(index)
+    return sprCards[index+1]
+end

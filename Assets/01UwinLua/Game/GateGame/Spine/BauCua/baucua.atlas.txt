@@ -1,0 +1,111 @@
+
+baucua.png
+size: 536,536
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+CUA
+  rotate: true
+  xy: 391, 11
+  size: 101, 51
+  orig: 101, 51
+  offset: 0, 0
+  index: -1
+CUA copy
+  rotate: true
+  xy: 331, 114
+  size: 144, 97
+  orig: 144, 97
+  offset: 0, 0
+  index: -1
+Layer 1 copy
+  rotate: false
+  xy: 482, 341
+  size: 29, 190
+  orig: 29, 190
+  offset: 0, 0
+  index: -1
+bau
+  rotate: true
+  xy: 328, 9
+  size: 103, 61
+  orig: 103, 61
+  offset: 0, 0
+  index: -1
+bau copy
+  rotate: true
+  xy: 351, 260
+  size: 149, 103
+  orig: 149, 103
+  offset: 0, 0
+  index: -1
+bg1
+  rotate: false
+  xy: 2, 310
+  size: 208, 221
+  orig: 208, 221
+  offset: 0, 0
+  index: -1
+bg2
+  rotate: false
+  xy: 2, 87
+  size: 208, 221
+  orig: 208, 221
+  offset: 0, 0
+  index: -1
+bggg
+  rotate: false
+  xy: 2, 2
+  size: 212, 83
+  orig: 212, 83
+  offset: 0, 0
+  index: -1
+ga
+  rotate: true
+  xy: 216, 10
+  size: 118, 110
+  orig: 118, 110
+  offset: 0, 0
+  index: -1
+ga copy
+  rotate: false
+  xy: 351, 411
+  size: 129, 120
+  orig: 129, 120
+  offset: 0, 0
+  index: -1
+huou
+  rotate: true
+  xy: 212, 130
+  size: 128, 117
+  orig: 128, 117
+  offset: 0, 0
+  index: -1
+huou copy
+  rotate: false
+  xy: 212, 404
+  size: 137, 127
+  orig: 137, 127
+  offset: 0, 0
+  index: -1
+quabau
+  rotate: false
+  xy: 456, 252
+  size: 77, 87
+  orig: 77, 87
+  offset: 0, 0
+  index: -1
+quabau copy
+  rotate: true
+  xy: 212, 289
+  size: 113, 121
+  orig: 113, 121
+  offset: 0, 0
+  index: -1
+suolaka
+  rotate: false
+  xy: 513, 515
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

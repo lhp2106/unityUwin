@@ -1,0 +1,24 @@
+configGate = require("gate.ConfigGate")
+-----------------------------------------------------------
+local btSelect
+
+local nameElement
+local nameSolo = "UIElementTlmnSolo"
+local nameNormal = "UIElementTlmn"
+
+function start()
+    btSelect = _btSelect:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btSelect.onClick:AddListener(SelectGame)
+
+    nameElement = self.gameObject.name
+    print("...Name",nameElement)
+    
+end
+
+function SelectGame()
+    if nameElement == nameSolo then
+        configGate.requestJoinGameTLMNSolo = true
+    else
+        configGate.requestJoinGameTLMNSolo = false
+    end
+end

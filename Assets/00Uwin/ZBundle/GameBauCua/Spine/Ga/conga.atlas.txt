@@ -1,0 +1,48 @@
+
+conga.png
+size: 248,248
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 1
+  rotate: false
+  xy: 2, 135
+  size: 121, 109
+  orig: 121, 109
+  offset: 0, 0
+  index: -1
+Layer 1 copy
+  rotate: false
+  xy: 125, 135
+  size: 121, 109
+  orig: 121, 109
+  offset: 0, 0
+  index: -1
+Layer 1 copy 2
+  rotate: false
+  xy: 79, 57
+  size: 107, 76
+  orig: 107, 76
+  offset: 0, 0
+  index: -1
+Layer 1 copy 3
+  rotate: false
+  xy: 2, 25
+  size: 75, 108
+  orig: 75, 108
+  offset: 0, 0
+  index: -1
+Layer 2
+  rotate: true
+  xy: 2, 13
+  size: 10, 28
+  orig: 10, 28
+  offset: 0, 0
+  index: -1
+suolaka1
+  rotate: false
+  xy: 188, 83
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,41 @@
+
+haivuong_thanglon.png
+size: 392,336
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: false
+  xy: 190, 95
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+haivuong_thanglon_char
+  rotate: false
+  xy: 2, 2
+  size: 186, 243
+  orig: 186, 243
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 347, 202
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 190, 24
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1
+thanglon_text
+  rotate: false
+  xy: 2, 247
+  size: 350, 87
+  orig: 350, 87
+  offset: 0, 0
+  index: -1

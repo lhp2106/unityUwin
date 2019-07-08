@@ -1,0 +1,20 @@
+
+khung_lon.png
+size: 588,652
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+khung_trang_tri
+  rotate: true
+  xy: 2, 52
+  size: 598, 584
+  orig: 598, 584
+  offset: 0, 0
+  index: -1
+light dot
+  rotate: false
+  xy: 2, 2
+  size: 47, 48
+  orig: 47, 48
+  offset: 0, 0
+  index: -1

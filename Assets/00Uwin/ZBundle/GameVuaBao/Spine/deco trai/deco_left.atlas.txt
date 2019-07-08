@@ -1,0 +1,27 @@
+
+deco_left.png
+size: 740,456
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+deco_left_00
+  rotate: false
+  xy: 248, 2
+  size: 244, 452
+  orig: 244, 452
+  offset: 0, 0
+  index: -1
+deco_left_01
+  rotate: false
+  xy: 494, 2
+  size: 244, 452
+  orig: 244, 452
+  offset: 0, 0
+  index: -1
+deco_left_02
+  rotate: false
+  xy: 2, 2
+  size: 244, 452
+  orig: 244, 452
+  offset: 0, 0
+  index: -1

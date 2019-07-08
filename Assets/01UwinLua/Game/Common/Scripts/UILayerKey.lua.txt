@@ -1,0 +1,80 @@
+local UILayerKey =
+{
+    None = "None",
+    LPopup = "LPopup",
+    LPopupTop = "LPopupTop",
+    LLobby = "LViewLobby",
+    
+    -- Lobby
+    LCreateAccountController = "LCreateAccountController",
+    LCreateNewName = "LCreateNewName",
+    LLogInWithOTP = "LLogInWithOTP",
+
+    -- Info
+    LInfoUser = "LInfoUser",
+    LChangeAvatar = "LChangeAvatar",
+    LChangePass = "LChangePass",
+    LForgetPass = "LForgetPass",
+    
+    -- ShopBank
+    LShop = "LShop",
+    LCustomerCare = "LCustomerCare",
+
+    LMail = "LMail",
+    LHistory = "LHistory",
+
+    LGiftCode = "LGiftCode",
+
+    -- Game
+    LGameSlot20Line = "LGameSlot20Line",
+    LGameSlot20LineLobby = "LGameSlot20LineLobby",
+    LGameSlot20LineWin = "LGameSlot20LineWin",
+    LGameSlot20LinePopup = "LGameSlot20LinePopup",
+    LGameSlot20LineBonus = "LGameSlot20LineBonus",
+    LGameSlot20LineStatistic = "LGameSlot20LineStatistic",
+
+    LGameMiniPoker = "LGameMiniPoker",
+    LGameMiniPokerStatistic = "LGameMiniPokerStatistic",
+    LGameMiniPokerPopup = "LGameMiniPokerPopup",
+
+    LGameHighLow = "LGameHighLow",
+    LGameHighLowStatistics = "LGameHighLowStatistics",
+    LGameHighLowHelp = "LGameHighLowHelp",
+
+    LGameLuckySpin = "LGameLuckySpin",
+    LGameLuckySpinHistory = "LGameLuckySpinHistory",
+
+    LGameTaiXiu = "LGameTaiXiu",
+    LGameTaiXiuStatistic = "LGameTaiXiuStatistic",
+    LGameTaiXiuBetInfo = "LGameTaiXiuBetInfo",
+    LGameTaiXiuGameInfo = "LGameTaiXiuGameInfo",
+    LGameTaiXiuRank = "LGameTaiXiuRank",
+    LGameTaiXiuHelp = "LGameTaiXiuHelp",
+
+    LGameVuaBao = "LGameVuaBao",
+    LGameVuaBaoHelp = "LGameVuaBaoHelp",
+    LGameVuaBaoRank = "LGameVuaBaoRank",
+    LGameVuaBaoHistory = "LGameVuaBaoHistory",
+
+    LGameBauCua = "LGameBauCua",
+    LGameBauCuaStatistic = "LGameBauCuaStatistic",
+    LGameBauCuaLog = "LGameBauCuaLog",
+    LGameBauCuaRank = "LGameBauCuaRank",
+    LGameBauCuaHelp = "LGameBauCuaHelp",
+
+    -- // Game 25 line
+    LGameSlot25Line = "LGameSlot25Line",
+    LGameSlot25LineLobby = "LGameSlot25LineLobby",
+    LGameSlot25LineWin = "LGameSlot25LineWin",
+    LGameSlot25LinePopup = "LGameSlot25LinePopup",
+    LGameSlot25LineBonus = "LGameSlot25LineBonus",
+    LGameSlot25LineStatistic = "LGameSlot25LineStatistic",
+
+    -- // Game XocXoc
+    LGameXocXoc = "LGameXocXoc",
+    LGameXocXocLobby = "LGameXocXocLobby",
+
+    LGameTLMNLobby = "LGameTLMNLobby",
+    LGameTLMN = "LGameTLMN"
+}
+return UILayerKey	

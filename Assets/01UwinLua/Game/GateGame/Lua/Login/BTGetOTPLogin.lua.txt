@@ -1,0 +1,52 @@
+json = require "common.json"
+local btGetOTPLogin
+
+function start()
+    print("Get otp REceive")
+    LoadObjectGame()
+    AddEvent()
+    -- @Todo ver3 tro len moi nhan event
+    -- CS.WebServiceController.Instance.onWebServiceResponseLuaCodeString:AddListener(OnReponseWeb)
+end
+
+function ondestroy()
+    -- @Todo ver3 tro len moi nhan event
+    -- CS.WebServiceController.Instance.onWebServiceResponseLuaCodeString:RemoveListener(OnReponseWeb)
+end
+
+function OnEnable()
+   
+end
+
+function LoadObjectGame()
+    btGetOTPLogin = _btGetOTPLogin:GetComponent(typeof(CS.UnityEngine.UI.Button))
+end
+
+function AddEvent()
+    btGetOTPLogin.onClick:AddListener(ClickGetOTPLogin)
+end
+
+function ClickGetOTPLogin()
+    local url = "https://services.uwin369.net/Security/ReceiveLoginOTP?tokenOTP="
+    url = url .. CS.Database.Instance.tokenOTPLogin
+
+    CS.WebServiceController.Instance:SendRequestCodeString("ReceiveLoginOTP",url,nil,0)
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT);
+end
+
+function OnReponseWeb(code, status, data)
+    if(code == "ReceiveLoginOTP") then
+        if (CS.Helper.CheckStatucSucess(status)) then
+
+            CS.UILayerController.Instance:HideLoading()
+            local opCode = json.decode(data)
+            local numCode = tonumber(opCode)
+
+            if (CS.Helper.CheckResponseSuccess(numCode)) then
+                CS.LPopup.OpenPopupTop("THÔNG BÁO!", "Đã gửi mã OTP về số điện thoại của bạn hãy kiểm tra");
+            end
+        end
+    end
+end
+
+ 

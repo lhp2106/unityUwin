@@ -1,0 +1,111 @@
+
+Shifu.png
+size: 857,309
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+MasterShifu00
+  rotate: false
+  xy: 624, 126
+  size: 207, 181
+  orig: 207, 181
+  offset: 0, 0
+  index: -1
+MasterShifu01
+  rotate: false
+  xy: 833, 218
+  size: 18, 89
+  orig: 18, 89
+  offset: 0, 0
+  index: -1
+MasterShifu02
+  rotate: true
+  xy: 2, 2
+  size: 19, 79
+  orig: 19, 79
+  offset: 0, 0
+  index: -1
+MasterShifu03
+  rotate: false
+  xy: 500, 35
+  size: 3, 3
+  orig: 3, 3
+  offset: 0, 0
+  index: -1
+MasterShifu04
+  rotate: false
+  xy: 819, 88
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+MasterShifu05
+  rotate: false
+  xy: 432, 27
+  size: 3, 4
+  orig: 3, 4
+  offset: 0, 0
+  index: -1
+MasterShifu07
+  rotate: false
+  xy: 500, 40
+  size: 39, 38
+  orig: 39, 38
+  offset: 0, 0
+  index: -1
+MasterShifu08
+  rotate: false
+  xy: 432, 80
+  size: 190, 227
+  orig: 190, 227
+  offset: 0, 0
+  index: -1
+MasterShifu09
+  rotate: true
+  xy: 432, 33
+  size: 45, 66
+  orig: 45, 66
+  offset: 0, 0
+  index: -1
+MasterShifu10
+  rotate: false
+  xy: 767, 74
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+MasterShifu11
+  rotate: false
+  xy: 624, 11
+  size: 122, 113
+  orig: 122, 113
+  offset: 0, 0
+  index: -1
+MasterShifu13
+  rotate: false
+  xy: 748, 72
+  size: 17, 52
+  orig: 17, 52
+  offset: 0, 0
+  index: -1
+khung_5000
+  rotate: true
+  xy: 2, 23
+  size: 284, 428
+  orig: 284, 428
+  offset: 0, 0
+  index: -1
+matphai
+  rotate: false
+  xy: 83, 6
+  size: 14, 15
+  orig: 14, 15
+  offset: 0, 0
+  index: -1
+mattrai
+  rotate: false
+  xy: 748, 55
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1

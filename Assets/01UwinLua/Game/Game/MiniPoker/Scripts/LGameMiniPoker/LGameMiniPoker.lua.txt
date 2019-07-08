@@ -1,0 +1,576 @@
+List = require 'pl.List'
+GameEnums = require 'common.GameEnums'
+UILayerKey = require 'common.UILayerKey'
+local cs_coroutine = require 'common.cs_coroutine'
+local json = (require 'common.json')
+
+-- --------------------------------- Parameter Common ----------------------------
+local AnimKey = {
+    OpenPopup = "OpenPopup",
+    ClosePopup = "ClosePopup",
+}
+
+local Position = {
+    Bootom = 0,
+    Middle = 1,
+    Top = 2
+}
+
+local AnimType= {
+    None = 0,
+    Popup= 1,
+}
+
+local dragMini
+local gContenAll
+local layerAnimType = AnimType.None
+
+local animkey = AnimKey.OpenPopup
+
+local allowDestroy = false
+local isGameLayer = false
+local lockCanvasScale= false
+local hideBehindLayers= false
+
+local position = Position.Middle
+
+local childOrders = List()
+
+local anim
+local canvas 
+local graphicRaycaster
+local layerIndex
+local layerKey
+local isLayerAnimOpenDone = false
+
+local uiLayerController
+local uiLayerThis
+
+------------------------------------- Parameter MiniPoker -------------------------------
+
+-- ("CONFIG")]
+local  _GAMEID = 11 --GameEnums.GameId_MINIPOKER
+local  _API = "http://alphaserver.rong88.club/minipoker/"
+local  _URL = "http://alphaserver.rong88.club/minipoker/signalr/negotiate"
+local  _HUBNAME = "Minipoker"
+
+local vkTxtJackpot
+local lines = List()
+
+local vkBtBets = List()
+local gTransLight
+
+local imgBtMoneyType
+local txtMoneyType
+local sprMoney = List()
+local strMoney = List()
+
+local toggleAuto
+local toggleFast
+local btSpin
+
+local gNoti
+local gJackpot
+local txtNoti
+local txtJackpot
+
+local roomBetValues = List()
+local btClose
+local btHistory
+local btTutorial 
+local btTop 
+local btMoney
+
+local _server
+local accountInfo
+
+local moneyType
+local roomIdSelected
+local roomBetValue
+local isAuto
+local isSpinning
+local lastUpdateMoney
+
+local _assetBundleConfig
+
+-- Sound
+local SCLICK
+local SFAIL
+local SWIN
+local SJACKPOT
+local SREEL_SPIN
+
+----------------------------------- Method Common ----------------------------------
+function InitLayer(layerKeys, screenRatio)
+    isLayerAnimOpenDone = false;
+
+    layerKey = layerKeys
+    canvas = self:GetComponent(typeof(CS.UnityEngine.Canvas))
+    anim = self:GetComponent(typeof(CS.UnityEngine.Animator))
+    graphicRaycaster = self:GetComponent(typeof(CS.UnityEngine.UI.GraphicRaycaster))
+
+    -- uiLayerController = CS.UILayerController.Instance
+    -- uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+
+    -- khởi tạo gContenAll
+    gContenAll  = _gContenAll
+    -- Chưa khởi tạo dragMini
+    dragMini = _dragMini:GetComponent(typeof(CS.DragGameMiniEvent))
+end
+
+function StartLayer()
+    uiLayerController = CS.UILayerController.Instance
+    uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+
+    LoadObjectGame()
+    AddEvent()
+
+    if layerAnimType == AnimType.None then
+        isLayerAnimOpenDone = true;
+    end
+end
+
+function ShowLayer()
+    _server:SRSInit(_URL, _HUBNAME)
+    Init()
+end
+
+function HideLayer()
+    _server:HubCall("HideSlot")
+    _server:SRSDisconnect()
+end
+
+function LoadObjectGame()
+    vkTxtJackpot = _vkTxtJackpot:GetComponent(typeof(CS.VKTextValueChange))
+
+    lines:append(_line1:GetComponent(typeof(CS.LineMiniPoker)))
+    lines:append(_line2:GetComponent(typeof(CS.LineMiniPoker)))
+    lines:append(_line3:GetComponent(typeof(CS.LineMiniPoker)))
+    lines:append(_line4:GetComponent(typeof(CS.LineMiniPoker)))
+    lines:append(_line5:GetComponent(typeof(CS.LineMiniPoker)))
+
+    vkBtBets:append(_vkBtBet1:GetComponent(typeof(CS.VKButton)))
+    vkBtBets:append(_vkBtBet2:GetComponent(typeof(CS.VKButton)))
+    vkBtBets:append(_vkBtBet3:GetComponent(typeof(CS.VKButton)))
+    vkBtBets:append(_vkBtBet4:GetComponent(typeof(CS.VKButton)))
+
+    gTransLight = _gTransLight:GetComponent(typeof(CS.UnityEngine.Transform))
+
+    imgBtMoneyType = _imgBtMoneyType:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    txtMoneyType = _txtMoneyType:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    sprMoney:append(_sprMoney1)
+    sprMoney:append(_sprMoney2)
+
+    strMoney:append("Vàng")
+    strMoney:append("Coin")
+
+    toggleAuto = _toggleAuto:GetComponent(typeof(CS.UnityEngine.UI.Toggle))
+    toggleFast = _toggleFast:GetComponent(typeof(CS.UnityEngine.UI.Toggle))
+    btSpin = _btSpin:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+    gNoti = _gNoti
+    gJackpot = _gJackpot
+    txtNoti = _txtNoti:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtJackpot = _txtJackpot:GetComponent(typeof(CS.VKTextValueChange))
+
+    roomBetValues:append(100)
+    roomBetValues:append(1000)
+    roomBetValues:append(5000)
+    roomBetValues:append(10000)
+
+    btClose = _btClose:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btHistory = _btHistory:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btTutorial  = _btTutorial:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btTop  = _btTop:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btMoney = _btMoney:GetComponent(typeof(CS.UnityEngine.UI.Button))
+end
+----------------------------------- Method Minipoker ----------------------------------
+
+function AddEvent()
+    btClose.onClick:AddListener(ButtonCloseClickListener)
+    btHistory.onClick:AddListener(ButtonHistoryClickListener)
+    btTop.onClick:AddListener(ButtonTopClickListener)
+    btTutorial.onClick:AddListener(ButtonTutorialClickListener)
+    btSpin.onClick:AddListener(ButtonSpinClickListener)
+    btMoney.onClick:AddListener(ButtonChangeMoneyClickListener)
+
+    for i=1,#vkBtBets do
+        local j = i
+        vkBtBets[i].onClick:AddListener(
+            function ()
+                ButtonBetClickListener(j)
+            end
+        )
+    end
+
+    toggleAuto.onValueChanged:AddListener(ButtonAutoClickListener)
+    toggleFast.onValueChanged:AddListener(ButtonFastSpinClickListener)
+end
+
+-- ----------------------------------------------------Listener
+function ButtonCloseClickListener(  )
+    Close()
+end
+
+function ButtonBetClickListener(roomId)
+    if roomId == roomIdSelected then
+        return
+    end
+
+    CS.UILayerController.Instance:ShowLoading()
+    roomIdSelected = roomId
+    ChangeBet()
+end
+
+function ButtonChangeMoneyClickListener()
+    if isSpinning then
+        CS.NotifyController.Instance.Open("Không đổi được loại tiền khi đang quay", CS.NotifyController.TypeNotify.Error)
+        return
+    end
+    
+    if moneyType == GameEnums.MoneyType_GOLD then
+        moneyType = GameEnums.MoneyType_COIN
+    else
+        moneyType = GameEnums.MoneyType_GOLD
+    end
+
+    ChangeTypeMoney()
+
+    CS.UILayerController.Instance:ShowLoading()
+    _server:HubCall("GetJackpot", moneyType, roomIdSelected)
+end
+
+function ButtonSpinClickListener()
+    btSpin.interactable = false
+
+    if moneyType == GameEnums.MoneyType_GOLD then
+        if accountInfo.Gold >= roomBetValue then
+            CS.Database.Instance:UpdateUserGold(CS.MAccountInfoUpdateGold(accountInfo.Gold - roomBetValue))
+        else
+            isSpinning = false
+            btSpin.interactable = true
+            SetNoti("Số dư của bạn không đủ!!!")
+            return
+        end
+    else
+        if accountInfo.Coin >= roomBetValue then
+            CS.Database.Instance:UpdateUserCoin(CS.MAccountInfoUpdateCoin(accountInfo.Coin - roomBetValue))
+        else
+            isSpinning = false
+            btSpin.interactable = true
+
+            SetNoti("Số dư của bạn không đủ!!!")
+            return
+        end
+    end
+    _server:HubCall("Spin", moneyType, roomIdSelected)
+end
+
+function ButtonAutoClickListener(checked)
+    isAuto = toggleAuto.isOn
+    if isAuto and not isSpinning then
+        ButtonSpinClickListener()
+    end
+end
+
+function ButtonFastSpinClickListener(checked)
+    for i=1,#lines do
+        if toggleFast.isOn then
+            lines[i].anim.speed =3
+        else
+            lines[i].anim.speed =1
+        end
+    end
+end
+
+function ButtonHistoryClickListener()
+    CS.UILayerController.Instance:ShowLayer(UILayerKey.LGameMiniPokerStatistic, _assetBundleConfig.name
+        ,function(layer) 
+            layer:InitHistory(_API, moneyType)
+        end
+    )
+end
+
+function  ButtonTutorialClickListener()
+    CS.UILayerController.Instance:ShowLayer(UILayerKey.LGameMiniPokerPopup, _assetBundleConfig.name);
+end
+
+function ButtonTopClickListener()
+    CS.UILayerController.Instance:ShowLayer(UILayerKey.LGameMiniPokerStatistic, _assetBundleConfig.name, 
+        function (layer)            
+            layer:InitRank(_API,moneyType)
+        end
+    )
+end
+
+-- --  --------------------------------------------------Method
+function Init()
+    CS.UILayerController.Instance:ShowLoading()
+    _assetBundleConfig = CS.AssetbundlesManager.Instance.assetSetting:GetItemByGameId(_GAMEID)
+
+    moneyType = GameEnums.MoneyType_GOLD
+
+    _server = self.gameObject:AddComponent(typeof(CS.XLuaSignalRServer))
+
+    _server.onConnected = HandleConnected
+    _server.onClosed = HandleConnectClose
+    _server.onError = HandleConnectError
+
+    roomBetValue = 100 -- @TODO dung tam, ti nua roi xoa
+    accountInfo = CS.Database.Instance:Account()
+    roomIdSelected = 1
+    vkBtBets[roomIdSelected].VKInteractable = false
+
+    ChangeTypeMoney()
+    toggleAuto.isOn = false
+    toggleFast.isOn = false
+    ButtonFastSpinClickListener()
+
+    local randomNumbers = List()
+    
+    -- Get 5 number random from 1 to 49 unduplicated
+    local listIdCard = List()
+    for i=1,49 do
+        listIdCard:append(i)
+    end
+    for i=1,#lines do
+        local idCard = math.random(1,#listIdCard)
+        randomNumbers:append(idCard)
+        listIdCard:remove(idCard)
+    end
+    -----------------------------
+
+    for i = 1,#lines do
+        lines[i]:LoadCard(randomNumbers[i])
+    end
+end
+
+function ChangeBet()
+    for i=1,#vkBtBets do
+        vkBtBets[i].VKInteractable = true
+    end
+    vkBtBets[roomIdSelected].VKInteractable = false
+
+    roomBetValue = roomBetValues[roomIdSelected]
+
+    gTransLight:SetParent(vkBtBets[roomIdSelected].transform)
+    gTransLight.transform.localPosition = CS.UnityEngine.Vector3.zero
+    _server:HubCall("GetJackpot", moneyType, roomIdSelected)
+end
+
+function ChangeTypeMoney()
+    if moneyType == GameEnums.MoneyType_GOLD then
+        txtMoneyType.text = strMoney[1]
+        imgBtMoneyType.sprite = sprMoney[1]
+    else
+        txtMoneyType.text = strMoney[2]
+        imgBtMoneyType.sprite = sprMoney[2]
+    end
+end
+
+function SetNoti(str)
+    txtNoti.text = str;
+    gNoti:SetActive(true);
+end
+
+-- --  Handle Method
+-- @todo
+function HandleConnected()
+    CS.UILayerController.Instance:HideLoading()
+    ChangeBet();
+end
+
+function HandleConnectError(msg)
+    CS.UILayerController.Instance:HideLoading()
+    if (not(msg == nil or msg == '') ) then
+        CS.LPopup.OpenPopupTop("Lỗi", msg)
+    end
+end
+
+function HandleConnectClose()
+    CS.UILayerController.Instance:HideLoading()
+    self:StopAllCoroutines();
+end
+
+function jackpotMiniPoker(data)
+    CS.UILayerController.Instance:HideLoading()
+    local result = json.decode(data)
+    vkTxtJackpot:UpdateNumber(result["Jackpot"])
+end
+
+function resultSpinMiniPoker(data)
+    lastUpdateMoney = CS.DateTime.Now
+    -- isSpinning = true
+    cs_coroutine.start(self, function() 
+        coroutine.yield(LineSpinResult(json.decode(data)))
+    end)
+end
+
+function LineSpinResult(result)
+
+    for i = 1,#lines do
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+        lines[i]:Init(result["Cards"][1]["CardID"..i]);
+    end
+
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(1))
+    
+    local msg = ""
+    if result["PrizeValue"] > 0 then
+        msg = "\n+ " .. CS.VKCommon.ConvertStringMoney(result["PrizeValue"])
+    end
+
+    if CS.Database.Instance:CanUpdateMoney(result["BetType"], lastUpdateMoney) then
+        CS.Database.Instance:UpdateUserMoney(result["BetType"], result["Balance"])
+    end
+
+    vkTxtJackpot:UpdateNumber(result["Jackpot"])
+
+    if result["Cards"][1]["CardTypeID"] == 12 then
+        txtJackpot:UpdateNumber(result["PrizeValue"])
+        gJackpot:SetActive(true)
+
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(3))
+        gJackpot:SetActive(false);
+    else
+        if result["Cards"][1]["CardTypeID"] == 10 or result["Cards"][1]["CardTypeID"] == 11 then
+        else
+            SetNoti( CS.VKCommon.ConvertCardTypeId(result["Cards"][1]["CardTypeID"]) .. msg)
+        end
+    end
+
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(1.8))
+    isSpinning = false
+
+    if isAuto then
+        ButtonSpinClickListener()
+    else
+        btSpin.interactable = true
+    end
+end
+
+-- ----------------------------------- Method Common No FIXED ----------------------------
+function SetLayerIndex(index)
+    layerIndex = index
+end
+
+function FirstLoadLayer()
+
+end
+
+function EnableLayer()
+    graphicRaycaster.enabled = true;
+end
+
+function ReloadLayer()
+    
+end
+
+function BeforeHideLayer()
+    
+end
+
+function DisableLayer()
+   if position ~= Position.Middle then
+        graphicRaycaster.enabled = false;
+   end 
+end
+
+function DestroyLayer()
+    
+end
+
+function SetSortOrder(order)
+    canvas.sortingOrder = order;
+    if childOrders ~= nil then
+        -- body
+        for i=1,#childOrders do
+            childOrders[i].ResetOrder(canvas.sortingOrder)
+        end
+    end
+end
+
+function ResetPosition()
+    if gContentAll ~= nil then
+        rect = gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+    end
+end
+
+function ResetAfterAnim()
+    if gContentAll ~= nil then
+
+        gContentAll.transform.localScale = Vector3.one;
+
+        rect =  gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+        cvGroup = gContentAll.GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+        cvGroup.alpha = 1
+    end
+end
+
+function PlayAnimation(key)
+    if anim ~= nil then
+        isLayerAnimOpenDone = false
+        anim.enabled = true
+        graphicRaycaster.enabled = false;
+        if key == AnimKey.OpenPopup or key == AnimKey.ClosePopup then
+            if key == AnimKey.OpenPopup then
+                cs_coroutine.start(self, DelayToResetAfterAnim)
+            end
+            anim:SetTrigger(key);
+        else
+            local DelaytoRunAnim = cs_coroutine.start(self,
+                function()
+                    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+                    anim:SetTrigger(key);
+                end
+            )
+        end
+    else
+        isLayerAnimOpenDone = true;
+    end
+end
+
+function Close()
+    graphicRaycaster.enabled = false
+    uiLayerController:HideLayer(uiLayerThis)
+end
+
+function OnLayerOpenDone()
+    anim.enabled = false
+    graphicRaycaster.enabled = true;
+    isLayerAnimOpenDone = true;
+    ResetAfterAnim();
+end
+
+function OnLayerCloseDone()
+    anim.enabled = false
+    HideLayer()
+
+    uiLayerController:CacheLayer(uiLayerThis)
+    isLayerAnimOpenDone = false
+end
+
+function DelayToResetAfterAnim()
+    
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.5))
+
+    if gContentAll ~= nil then
+        local cvGroup = gContentAll.GetComponent(typeof(CanvasGroup))
+        if  cvGroup.alpha < 1 then
+            gContentAll.transform.localScale = CS.UnityEngine.Vector3.one
+
+            local rect = gContentAll.GetComponent(typeof(RectTransform))
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+            cvGroup.alpha = 1
+        end
+    end    
+end

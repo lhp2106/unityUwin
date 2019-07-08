@@ -1,0 +1,41 @@
+
+haivuong_mini.png
+size: 740,168
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: false
+  xy: 583, 16
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+haivuong_mini_char
+  rotate: false
+  xy: 350, 13
+  size: 231, 153
+  orig: 231, 153
+  offset: 0, 0
+  index: -1
+mini_dgv_text
+  rotate: false
+  xy: 2, 73
+  size: 346, 93
+  orig: 346, 93
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 194, 28
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 2, 2
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,55 @@
+
+KhongMinhWild.png
+size: 579,153
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+itemKM01
+  rotate: false
+  xy: 398, 5
+  size: 117, 85
+  orig: 117, 85
+  offset: 0, 0
+  index: -1
+itemKM02
+  rotate: false
+  xy: 153, 6
+  size: 103, 145
+  orig: 103, 145
+  offset: 0, 0
+  index: -1
+itemKM03
+  rotate: false
+  xy: 549, 71
+  size: 28, 80
+  orig: 28, 80
+  offset: 0, 0
+  index: -1
+itemKM04
+  rotate: false
+  xy: 531, 61
+  size: 16, 90
+  orig: 16, 90
+  offset: 0, 0
+  index: -1
+itemKM05
+  rotate: false
+  xy: 2, 2
+  size: 149, 149
+  orig: 149, 149
+  offset: 0, 0
+  index: -1
+itemKM06
+  rotate: false
+  xy: 258, 13
+  size: 138, 138
+  orig: 138, 138
+  offset: 0, 0
+  index: -1
+itemKM07
+  rotate: false
+  xy: 398, 92
+  size: 131, 59
+  orig: 131, 59
+  offset: 0, 0
+  index: -1

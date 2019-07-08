@@ -1,0 +1,125 @@
+
+xocdia.png
+size: 476,476
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 1 copy
+  rotate: false
+  xy: 445, 282
+  size: 29, 190
+  orig: 29, 190
+  offset: 0, 0
+  index: -1
+Layer 3 copy
+  rotate: false
+  xy: 404, 351
+  size: 32, 24
+  orig: 32, 24
+  offset: 0, 0
+  index: -1
+Layer 3 copy 5
+  rotate: false
+  xy: 2, 251
+  size: 208, 221
+  orig: 208, 221
+  offset: 0, 0
+  index: -1
+Layer 3 copy 6
+  rotate: false
+  xy: 2, 28
+  size: 208, 221
+  orig: 208, 221
+  offset: 0, 0
+  index: -1
+bat
+  rotate: false
+  xy: 212, 15
+  size: 134, 94
+  orig: 134, 94
+  offset: 0, 0
+  index: -1
+bat copy
+  rotate: true
+  xy: 348, 9
+  size: 134, 94
+  orig: 134, 94
+  offset: 0, 0
+  index: -1
+dia1
+  rotate: true
+  xy: 328, 145
+  size: 162, 80
+  orig: 162, 80
+  offset: 0, 0
+  index: -1
+sey
+  rotate: false
+  xy: 212, 309
+  size: 190, 163
+  orig: 190, 163
+  offset: 0, 0
+  index: -1
+suolaka
+  rotate: false
+  xy: 404, 309
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+tien
+  rotate: false
+  xy: 404, 441
+  size: 39, 31
+  orig: 39, 31
+  offset: 0, 0
+  index: -1
+tien copy
+  rotate: false
+  xy: 37, 3
+  size: 32, 23
+  orig: 32, 23
+  offset: 0, 0
+  index: -1
+tien2
+  rotate: false
+  xy: 404, 408
+  size: 39, 31
+  orig: 39, 31
+  offset: 0, 0
+  index: -1
+tien3
+  rotate: false
+  xy: 404, 377
+  size: 39, 29
+  orig: 39, 29
+  offset: 0, 0
+  index: -1
+tien3 copy
+  rotate: false
+  xy: 404, 327
+  size: 31, 22
+  orig: 31, 22
+  offset: 0, 0
+  index: -1
+tien4 copy 2
+  rotate: false
+  xy: 2, 2
+  size: 33, 24
+  orig: 33, 24
+  offset: 0, 0
+  index: -1
+xd
+  rotate: true
+  xy: 212, 111
+  size: 196, 58
+  orig: 196, 58
+  offset: 0, 0
+  index: -1
+xd1
+  rotate: true
+  xy: 272, 117
+  size: 190, 54
+  orig: 190, 54
+  offset: 0, 0
+  index: -1

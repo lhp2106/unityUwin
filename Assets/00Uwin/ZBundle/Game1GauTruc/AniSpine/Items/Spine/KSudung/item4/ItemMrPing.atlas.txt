@@ -1,0 +1,41 @@
+
+ItemMrPing.png
+size: 552,150
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+MrPing01
+  rotate: false
+  xy: 2, 7
+  size: 151, 141
+  orig: 151, 141
+  offset: 0, 0
+  index: -1
+MrPing02
+  rotate: false
+  xy: 308, 2
+  size: 110, 36
+  orig: 110, 36
+  offset: 0, 0
+  index: -1
+MrPing03
+  rotate: true
+  xy: 308, 40
+  size: 108, 120
+  orig: 108, 120
+  offset: 0, 0
+  index: -1
+MrPing04
+  rotate: true
+  xy: 430, 30
+  size: 118, 120
+  orig: 118, 120
+  offset: 0, 0
+  index: -1
+MrPing05
+  rotate: false
+  xy: 155, 3
+  size: 151, 145
+  orig: 151, 145
+  offset: 0, 0
+  index: -1

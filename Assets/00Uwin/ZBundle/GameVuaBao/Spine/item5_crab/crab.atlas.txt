@@ -1,0 +1,69 @@
+
+crab.png
+size: 314,236
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bubble
+  rotate: false
+  xy: 2, 130
+  size: 104, 104
+  orig: 104, 104
+  offset: 0, 0
+  index: -1
+fish_00
+  rotate: false
+  xy: 2, 52
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+fish_01
+  rotate: false
+  xy: 108, 158
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+fish_02
+  rotate: false
+  xy: 186, 158
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+fish_022
+  rotate: false
+  xy: 158, 2
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+fish_03
+  rotate: false
+  xy: 80, 52
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+fish_033
+  rotate: false
+  xy: 236, 80
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+fish_04
+  rotate: false
+  xy: 158, 80
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+fish_044
+  rotate: false
+  xy: 236, 2
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 194df19d05679e14b89f248f6728c4bb
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: UVF Caviar Dreams
+  fontNames:
+  - UVF Caviar Dreams
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f6d540262d3809449bf6bf7012cc448b, type: 3}
+  - {fileID: 12800000, guid: 3142cd2a279efcd49a863329661a8f7a, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

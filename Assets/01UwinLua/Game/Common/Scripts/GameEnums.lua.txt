@@ -1,0 +1,49 @@
+local GameEnums ={
+
+    -- TypeMonety
+    MoneyType_GOLD = 1,
+    MoneyType_COIN = 2,
+
+    -- RoomBet 20 Line
+    RoomBet20Line_ROOM_100 = 1,
+    RoomBet20Line_ROOM_1000 = 2,
+    RoomBet20Line_ROOM_5000 = 3,
+    RoomBet20Line_ROOM_10000 = 4,
+
+    --  TypeLock
+    TypeLockGold_OPEN = 2,
+    TypeLockGold_CLOSE = 1,
+
+    --  GameResponseStatus
+    GameResponseStatus_SUCCESS = 1,
+
+    -- Game ID
+    GameId_NONE = -1,
+
+    GameId_SLOT_NONGTRAI = 1,
+    GameId_SLOT_MAFIA = 2,
+    GameId_SLOT_25=3,
+
+    GameId_MINIPOKER = 8,
+    GameId_HIGHLOW = 5,
+    GameId_VUABAO = 6,
+    GameId_VUABAO_2 = 7,
+    GameId_TAIXIU = 4,
+    GameId_BAUCUA = 9,
+    GameId_LUCKYSPIN = 101,
+    GameId_XOCXOC = 102,
+
+    -- Event Game ID
+    EventGameID_FARM = 1,
+    EventGameID_MAFIA = 2,
+    EventGameID_GAME25LINE = 3,
+    EventGameID_TAI_XIU = 4,
+    EventGameID_HILO = 5,
+    EventGameID_MINI_SLOT1 = 6,
+    EventGameID_MINI_SLOT2 = 7,
+    EventGameID_MINIPOKER = 8,
+
+    
+}
+
+return GameEnums

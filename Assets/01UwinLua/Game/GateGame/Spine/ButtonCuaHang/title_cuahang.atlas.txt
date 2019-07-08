@@ -1,0 +1,20 @@
+
+title_cuahang.png
+size: 204,354
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cinema_light
+  rotate: false
+  xy: 2, 52
+  size: 200, 300
+  orig: 200, 300
+  offset: 0, 0
+  index: -1
+title_cuahang
+  rotate: false
+  xy: 2, 2
+  size: 198, 48
+  orig: 198, 48
+  offset: 0, 0
+  index: -1

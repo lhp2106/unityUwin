@@ -1,0 +1,35 @@
+local cs_coroutine = require 'common.cs_coroutine'
+
+local transform
+local txtOrder
+local order
+local quantityChildOfParent
+local rangerSort = 2
+
+
+function start()
+    txtOrder = _txtOrder:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    transform = _transform:GetComponent(typeof(CS.UnityEngine.Transform))
+
+    order = transform:GetSiblingIndex()
+
+    if(order >rangerSort) then
+        cs_coroutine.start(self,ChangeOrder)
+    end
+end
+
+function ChangeOrder()
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+    quantityChildOfParent = transform.parent.childCount;
+
+    local orderNew = math.random(rangerSort+1,quantityChildOfParent-1)
+    transform:SetSiblingIndex(orderNew);
+
+    cs_coroutine.start(self,SetAgainOrder)
+end
+
+function SetAgainOrder()
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+    local orCurrent = transform:GetSiblingIndex()
+    txtOrder.text = (orCurrent+1)
+end

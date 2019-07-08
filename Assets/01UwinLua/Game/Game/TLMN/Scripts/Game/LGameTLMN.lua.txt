@@ -1,0 +1,1864 @@
+List = require 'pl.List'
+GameEnums = require 'common.GameEnums'
+UILayerKey = require 'common.UILayerKey'
+SRSTlmnCard = require 'tlmn.SRSTlmnCard'
+local cs_coroutine = require 'common.cs_coroutine'
+local json = (require 'common.json')
+
+-- --------------------------------- Parameter Common ----------------------------
+local AnimKey = {
+    OpenPopup = "OpenPopup",
+    ClosePopup = "ClosePopup",
+}
+
+local Position = {
+    Bootom = 0,
+    Middle = 1,
+    Top = 2
+}
+
+local AnimType= {
+    None = 0,
+    Popup= 1,
+}
+
+local dragMini
+local gContenAll
+local layerAnimType = AnimType.None
+
+local animkey = AnimKey.OpenPopup
+
+local allowDestroy = false
+local isGameLayer = false
+local lockCanvasScale= false
+local hideBehindLayers= false
+
+local position = Position.Middle
+
+local childOrders = List()
+
+local anim
+local canvas 
+local graphicRaycaster
+local layerIndex
+local layerKey
+local isLayerAnimOpenDone = false
+
+local uiLayerController
+local uiLayerThis
+
+------------------------------------- Parameter TLMN -------------------------------
+local _cardController
+
+local txtRoomId
+local txtRoomBet
+local txtVanId
+
+local gNotify
+local txtNotify
+
+local uiUser
+
+local uiPlayers = List()
+
+local btLeave
+local btDanhBai
+local btXepBai
+local btHuy
+local btBatDau
+local btBaoSam
+local btHuySam
+
+local gBaoSamEffect
+
+local gUiCoints = List()
+local gUiGolds = List()
+
+local gUiSamNormals = List()
+local gUiSamSolos = List()
+
+local  tranWorld
+local  tranTable
+local  tranUserCards = List()
+local  gMenuContent
+local  btSound
+local  btMusic
+local  imgMoney
+local  sprMoneyIcon = List()
+
+local  xCardTableStart = CS.UnityEngine.Vector2(-0.9,0.9)
+local  yCardTableStart = CS.UnityEngine.Vector2(0.8,1)
+local  xCardTableRange = 0.6
+local  yCardTableRange = 0.3
+local  timeNextAction = 1
+local  timeWaitShowResult = 0.8
+local  timeWaitHideResult = 3
+
+local _assetBundleConfig
+local _config
+local _settingSound
+
+local _server
+
+local _sam
+
+local dataRoom
+local moneyType
+local isRoomSolo = true
+
+local _account
+
+-- // private
+local cacheGold
+local cacheCoin
+
+-- // card
+local indexPlayerPositions = List()
+local userCards = List()
+local tableCards = List()
+local turnInRound
+local xLastTableCard
+local yLastTableCard
+local lastTimeClick
+
+local listSpriteStatus = List()
+local listSpriteToiTrang = List()
+
+-- Status
+local PlayerStatus_IN_LOBBY = -1
+local PlayerStatus_VIEWER = 0
+local PlayerStatus_PLAYING = 1
+local PlayerStatus_WAITING_MATCH = 2
+
+-- Action Name
+local ActionName_START_GAME = 1000
+local ActionName_WAIT = -1
+local ActionName_DANH_BAI = 1
+local ActionName_BO_LUOT = 2
+local ActionName_CHAT_BAI = 3
+local ActionName_THANG_THUA = 4
+
+local TU_QUY_BA_TOI_TRANG = 0
+local BA_DOI_THONG_3BICH_TOI_TRANG = 1
+local SANH_RONG_TOI_TRANG = 2
+local NAM_DOI_THONG_TOI_TRANG = 3
+local SAU_DOI_TOI_TRANG = 4
+local TU_QUY_HAI_TOI_TRANG = 5
+
+-- Result Family
+local Family_CONG_VA_THOI = 0
+local Family_CONG = 1
+local Family_THOI_BAI = 2
+local Family_BET = 3
+local Family_NHAT = 4
+local Family_TOI_TRANG = 5
+
+-- PlayerResurlt_ Status
+local PlayerResurlt_CONG_VA_THOI = 1
+local PlayerResurlt_CONG = 2
+local PlayerResurlt_THOI_BAI =3
+local PlayerResurlt_BET = 4
+local PlayerResurlt_THANG = 5
+local PlayerResurlt_TOI_TRANG = 6
+local PlayerResurlt_BI_CHAT = 7
+local PlayerResurlt_BA_DOI_THONG = 8
+local PlayerResurlt_BON_DOI_THONG = 9
+local PlayerResurlt_TU_QUY = 10
+
+-- type Attack
+local AttackType_ONE_CARD_NORMAL = 0
+local AttackType_ONE_CARD_TWO = 1
+local AttackType_PAIR_NORMAL = 2
+local AttackType_PAIR_TWO = 3
+local AttackType_THREE_OFAKIND_NORMAL = 4
+local AttackType_THREE_OFAKIND_TWO = 5
+local AttackType_FOUR_OFAKIND_NORMAL = 6
+local AttackType_FOUR_OFAKIND_TWO = 7
+local AttackType_STRAIGHT = 8
+local AttackType_THREE_STRAIGHT_PAIR = 9
+local AttackType_FOUR_STRAIGHT_PAIR = 10
+
+
+local lobbyTlmn
+local myData
+-- --------------------------------------------------------- load Object -------------------
+
+function LoadObjectGame()
+    _cardController = cardController:GetComponent(typeof(CS.XLuaBehaviour))
+
+    txtRoomId = _txtRoomId:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtRoomBet = _txtRoomBet:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtVanId = _txtVanId:GetComponent(typeof(CS.UnityEngine.UI.Text))
+
+    gNotify = _gNotify
+    txtNotify = _txtNotify:GetComponent(typeof(CS.UnityEngine.UI.Text))
+
+    uiUser = _uiUser:GetComponent(typeof(CS.XLuaBehaviour))
+
+    uiPlayers:append(_uiPlayer2:GetComponent(typeof(CS.XLuaBehaviour)))
+    uiPlayers:append(_uiPlayer3:GetComponent(typeof(CS.XLuaBehaviour)))
+    uiPlayers:append(_uiPlayer4:GetComponent(typeof(CS.XLuaBehaviour)))
+
+    btLeave = _btLeave:GetComponent(typeof(CS.VKButton))
+    btDanhBai = _btDanhBai:GetComponent(typeof(CS.VKButton))
+    btXepBai = _btXepBai:GetComponent(typeof(CS.VKButton))
+    btHuy = _btHuy:GetComponent(typeof(CS.VKButton))
+    btBatDau = _btBatDau:GetComponent(typeof(CS.VKButton))
+    btBaoSam = _btBaoSam:GetComponent(typeof(CS.VKButton))
+    btHuySam = _btHuySam:GetComponent(typeof(CS.VKButton))
+
+    gBaoSamEffect = _gBaoSamEffect
+
+    gUiSamNormals:append(_gUiSamNormal1)
+    gUiSamNormals:append(_gUiSamNormal2)
+    gUiSamNormals:append(_gUiSamNormal3)
+
+    gUiSamSolos:append(_gUiSamSolos)
+
+    tranWorld = _tranWorld:GetComponent(typeof(CS.UnityEngine.Transform))
+    tranTable = _tranTable:GetComponent(typeof(CS.UnityEngine.Transform))
+
+    tranUserCards:append(_tranUserCard1:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard2:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard3:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard4:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard5:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard6:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard7:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard8:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard9:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard10:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard11:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard12:GetComponent(typeof(CS.UnityEngine.Transform)))
+    tranUserCards:append(_tranUserCard13:GetComponent(typeof(CS.UnityEngine.Transform)))
+
+    gMenuContent = _gMenuContent
+    btSound = _btSound
+    btMusic = _btMusic
+
+    imgMoney = _imgMoney:GetComponent(typeof(CS.UnityEngine.UI.Image))
+
+    sprMoneyIcon:append(_sprMoneyIcon1)
+    sprMoneyIcon:append(_sprMoneyIcon2)
+
+    listSpriteStatus:append(_PlayerResurlt1)
+    listSpriteStatus:append(_PlayerResurlt2)
+    listSpriteStatus:append(_PlayerResurlt3)
+    listSpriteStatus:append(_PlayerResurlt4)
+    listSpriteStatus:append(_PlayerResurlt5)
+    listSpriteStatus:append(_PlayerResurlt6)
+    listSpriteStatus:append(_PlayerResurlt7)
+    listSpriteStatus:append(_PlayerResurlt8)
+    listSpriteStatus:append(_PlayerResurlt9)
+    listSpriteStatus:append(_PlayerResurlt10)
+
+    listSpriteToiTrang:append(_typeToiTrang1)
+    listSpriteToiTrang:append(_typeToiTrang2)
+    listSpriteToiTrang:append(_typeToiTrang3)
+    listSpriteToiTrang:append(_typeToiTrang4)
+    listSpriteToiTrang:append(_typeToiTrang5)
+    listSpriteToiTrang:append(_typeToiTrang6)
+
+end
+
+function AddEvent()
+    btLeave.onClick:AddListener(ButtonCloseClickListener)
+    btDanhBai.onClick:AddListener(ButtonDanhBaiClickListener)
+    btXepBai.onClick:AddListener(ButtonSapXepClickListener)
+    btHuy.onClick:AddListener(ButtonHuyClickListener)
+    btBatDau.onClick:AddListener(ButtonBatDauClickListener)
+    -- btBaoSam.onClick:AddListener(ButtonBaoSamClickListener)
+    -- btHuySam.onClick:AddListener(ButtonHuySamClickListener)
+    
+end
+
+
+----------------------------------- Method Common ----------------------------------
+function InitLayer(layerKeys, screenRatio)
+    isLayerAnimOpenDone = false;
+
+    layerKey = layerKeys
+    canvas = self:GetComponent(typeof(CS.UnityEngine.Canvas))
+    anim = self:GetComponent(typeof(CS.UnityEngine.Animator))
+    graphicRaycaster = self:GetComponent(typeof(CS.UnityEngine.UI.GraphicRaycaster))
+
+    -- khởi tạo gContenAll
+    gContenAll  = _gContenAll
+    -- Chưa khởi tạo dragMini
+    -- dragMini = _dragMini:GetComponent(typeof(CS.DragGameMiniEvent))
+end
+
+function StartLayer()
+    uiLayerController = CS.UILayerController.Instance
+    uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+
+    if layerAnimType == AnimType.None then
+        isLayerAnimOpenDone = true;
+    end
+
+    indexPlayerPositions:append(-1)
+    indexPlayerPositions:append(1)
+    indexPlayerPositions:append(2)
+    indexPlayerPositions:append(3)
+
+    LoadObjectGame()
+    AddEvent()
+    lastTimeClick = CS.System.DateTime.Now
+end
+
+function ShowLayer()
+    -- Init()
+    CS.Database.Instance.onUserUpdateGoldEventLua:AddListener(OnUserUpdateGold) 
+    CS.Database.Instance.onUserUpdateCoinEventLua:AddListener(OnUserUpdateCoin) 
+end
+
+function HideLayer()
+    CS.Database.Instance.onUserUpdateGoldEventLua:AddListener(OnUserUpdateGold) 
+    CS.Database.Instance.onUserUpdateCoinEventLua:AddListener(OnUserUpdateCoin) 
+end
+
+
+function Close()
+    ClearUI()
+    --  CS.UILayerController.Instance:GetLayer(UILayerKey.LGameTLMNLobby):InvokeXLua("Reload")
+    lobbyTlmn:InvokeXLua("Reload")
+
+    graphicRaycaster.enabled = false
+    uiLayerController:HideLayer(uiLayerThis)
+end
+
+function DestroyLayer()
+    
+end
+
+-- --  --------------------------------------------------Method-------------------------------
+
+-- ----------------------------------------------------Listener-----------------------------------
+
+function ButtonCloseClickListener()
+    print("==================Click button leave room")
+    if CheckCanAction() then
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+        if myData.RegisterLeaveRoom then
+            lobbyTlmn:InvokeXLua("RegisterLeaveRoomCallServer",RegisterLeaveRoomCallBack)
+        else
+            lobbyTlmn:InvokeXLua("LeaveGameCallServer",LeaveRoomCallBack)
+        end
+    end
+end
+
+function RegisterLeaveRoomCallBack(datas)
+    print("--- Call back register leave" , datas)
+
+    if (datas) then
+        btLeave:SetupAll(true)
+        myData.RegisterLeaveRoom = false;
+        if (myData.Status == PlayerStatus_PLAYING) then
+            ShowNotify("Hủy đăng ký rời bàn");
+        end
+    end
+end
+
+function LeaveRoomCallBack( datas )
+    print("--- Call back leave" , datas)
+
+    if datas then
+        btLeave:SetupAll(false)
+        myData.RegisterLeaveRoom = true
+        if myData.Status == PlayerStatus_PLAYING then
+            ShowNotify("Đăng ký rời bàn thành công")
+        end
+    end
+end
+
+function ButtonDanhBaiClickListener()
+    if (CheckCanAction()) then
+        -- CS.AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+        local idArray = {}
+        local idArray2 ={}
+        
+        local arrayList = CS.System.Collections.ArrayList()
+
+        local test = CS.UnityEngine.Vector3(0,0,0)
+
+        for i = 1,#userCards do
+            local isSelect = userCards[i]:InvokeXLua("GetSelectCard")
+            isSelect = isSelect[0]
+
+            if isSelect then
+                local idTemp = userCards[i]:InvokeXLua("GetIdCard")
+                idTemp = idTemp[0]
+                table.insert( idArray2,idTemp)
+                print("id retuqnest danh ",idTemp)
+                arrayList:Add(idTemp)
+            end
+        end
+        
+        table.insert( idArray,idArray2)
+        lobbyTlmn:InvokeXLua("DanhBaiCallServer",danhBaiCallBack,arrayList)
+    end
+end
+
+function ButtonSapXepClickListener()
+    if CheckCanAction() then
+        -- CS.AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick)
+        lobbyTlmn:InvokeXLua("XepBaiCallServer",CallBackXepBai)
+    end
+end
+
+function ButtonHuyClickListener()
+    if CheckCanAction() then
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+        lobbyTlmn:InvokeXLua("BoLuotCallServer",BoLuotCallBack)
+    end
+end
+
+function ButtonBatDauClickListener()
+    if CheckCanAction() then
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+        lobbyTlmn:InvokeXLua("StartGameCallServer")
+    end
+end
+
+function ButtonBaoSamClickListener()
+    if CheckCanAction() then
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+        -- lobbyTlmn:InvokeXLua("BaoSamCallServer",CallBackBaoSam,true)
+    end
+end
+
+function ButtonHuySamClickListener()
+    if CheckCanAction() then
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+        -- lobbyTlmn:InvokeXLua("BaoSamCallServer",CallBackBaoSam,false)
+    end
+end
+
+-- //menu
+function ButtonMenuClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick)
+    gMenuContent:SetActive(true)
+    LoadSound()
+end
+
+function ButtonMusicClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    -- AudioAssistant.Instance.MuteMusicGame(_config.gameId);
+
+    -- btMusic.SetupAll(!_settingSound.isMuteMusic);
+end
+
+function ButtonSoundClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    -- AudioAssistant.Instance.MuteSoundGame(_config.gameId);
+    -- btSound.SetupAll(!_settingSound.isMuteSound);
+end
+
+----------------------------------------- Handle Method ---------------------------------------
+function HandleConnected()
+    CS.UILayerController.Instance:HideLoading()
+    _server:HubCallAndResult("EnterLobby",CallBackEnterLobby)
+end
+
+function HandleConnectError(msg)
+    CS.UILayerController.Instance:HideLoading()
+    if (not(msg == nil or msg == '') ) then
+        CS.LPopup.OpenPopupTop("Lỗi", msg)
+    end
+end
+
+function HandleConnectClose()
+    CS.UILayerController.Instance:HideLoading()
+    self:StopAllCoroutines();
+end
+
+-- ----------------------------------- Method Logic Sam lobby .....................................
+
+--   Account Info Update -------------------------------------
+function OnUserUpdateGold(info)
+    if dataRoom.moneyType == 1 then
+        uiUser.UpdateMoney(_sam.moneyType, info.Gold);
+    end
+end
+
+function OnUserUpdateCoin(info)
+    if dataRoom.moneyType == 2 then
+        uiUser.UpdateMoney(_sam.moneyType, info.Coin);
+    end
+end
+-------------------------------------------------------------------------------
+
+-- Action Other -------------------------------------------------------------------
+function OnCountDownChangeNumber(number)
+    if (number <= 5) then
+        AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioHurryup);
+    else
+        AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioTicktak);
+    end
+end
+
+---------------------------------------------------------------------------------
+--  Method
+function Init(lTlmnLobby,data,moneyTypeInput,isRoomSoloInput)
+    lobbyTlmn = lTlmnLobby
+    print("..." .. data)
+
+    dataRoom = json.decode(data)
+    print(#(dataRoom.Players),"  so luong nguoi choi")
+    moneyType = moneyTypeInput
+    isRoomSolo = isRoomSoloInput
+    ClearUI()
+    -- _settingSound = AudioAssistant.Instance.GetSettingSound(_config.gameId);
+    _account = CS.Database.Instance:Account()
+
+    for i=1,#gUiCoints do
+
+        local value = false
+        if _sam.moneyType == 2 then
+            value = true
+        end
+
+        gUiCoints[i]:SetActive(value)
+    end
+
+    for i=1,#gUiGolds do
+
+        local value = false
+        if _sam.moneyType == 1 then
+            value = true
+        end
+        
+        gUiGolds[i]:SetActive(value)
+    end
+
+    for i=1,#gUiSamSolos do
+        gUiSamSolos[i]:SetActive(isRoomSolo)
+    end
+
+    for i=1,#gUiSamNormals do
+        gUiSamNormals[i]:SetActive(not isRoomSolo)
+    end
+
+    LoadRoomInfo()
+    LoadUserFirst(isRoomSolo)
+end
+
+function LoadSound()
+    -- btSound.SetupAll(!_settingSound.isMuteSound);
+    -- btMusic.SetupAll(!_settingSound.isMuteMusic);
+end
+
+function LoadMoneyType()
+    imgMoney.sprite = sprMoneyIcon[_sam.moneyType]
+end
+
+function LoadRoomInfo()
+    txtRoomId.text = "Bàn " .. dataRoom.Name;
+    txtRoomBet.text = "Cược " .. CS.VKCommon.ConvertStringMoney(dataRoom.MinBet)
+    txtVanId.text = "#" .. dataRoom.CurrentGameLoopId;
+end
+
+function LoadUserFirst(isSolo)
+    -- // my data
+    myData = dataRoom.Players[tostring(_account.AccountID)]
+
+    uiUser:InvokeXLua("Init",dataRoom,myData,GetAvatar(_account.AvatarID),self)
+
+    CS.Database.Instance:UpdateUserMoney(GameEnums.MoneyType_GOLD, myData.Account.Gold)
+    CS.Database.Instance:UpdateUserMoney(GameEnums.MoneyType_COIN, myData.Account.Coin)
+
+    -- my card playing
+    -- dang choi
+    if myData.Status == PlayerStatus_PLAYING then
+        local actions = GetGameStateUser(myData.AccountID)
+
+        if actions ~= nil then
+            LoadActionPlayer(actions)
+        else
+            LoadActionPlayer(nil)
+        end
+
+        for  i = 1,#myData.HandCards do
+            -- // user
+            local uiCard = _cardController:InvokeXLua("BorrowCard")
+            uiCard = uiCard[0]
+
+            uiCard:InvokeXLua("LoadData",myData.HandCards[i], nil, true)
+            uiCard:InvokeXLua("LoadCard")
+
+            local transCard = tranUserCards[i]:GetComponent(typeof(CS.UnityEngine.Transform))
+
+            uiCard:InvokeXLua("SetCardPosition",transCard.position, transCard, 1)
+            userCards:append(uiCard)
+
+            -- // my bao1la
+            if (#userCards == 1) then
+                uiUser:InvokeXLua("ShowBao1La")
+            else
+                uiUser:InvokeXLua("HideBao1La")
+            end
+        end
+    end
+
+    -- show leave
+    btLeave:SetupAll(not myData.RegisterLeaveRoom)
+
+    -- player index
+    if isSolo then
+        for i = 1,#indexPlayerPositions do
+            indexPlayerPositions[i] = 1
+        end
+    else
+        indexPlayerPositions[myData.Position+1] = -1
+        local index = 1
+
+        for i = myData.Position + 2,#indexPlayerPositions do
+            indexPlayerPositions[i] = index
+            index = index + 1
+        end
+        for  i = 1,myData.Position do
+            indexPlayerPositions[i] = index
+            index = index +1
+            
+        end
+    end
+
+    -- player
+    for k,v in pairs(dataRoom.Players) do
+        local playerData = v
+        if (tonumber(myData.AccountID) ~= tonumber(k)) then
+            uiPlayers[indexPlayerPositions[playerData.Position + 1]]:InvokeXLua("Init",dataRoom,playerData, GetAvatar(-1), self)
+        end
+    end
+
+    -- // load card in table
+
+    if (not dataRoom.GameLoop.TimerPaused) and dataRoom.GameLoop.CurrTurnCards ~= nil and #dataRoom.GameLoop.CurrTurnCards > 0 then
+        
+        for i = 1,#dataRoom.GameLoop.CurrTurnCards do
+            local cardAttack = List()
+            local itemValue = dataRoom.GameLoop.CurrTurnCards[i].Value
+            for j = 1,#itemValue.Cards do
+                local uCard = _cardController:InvokeXLua("BorrowCard")
+                uCard = uCard[0]
+                uCard:InvokeXLua("LoadCard")
+
+                print("value card  ", itemValue.Cards[j])
+
+                local srstlmnCard = SRSTlmnCard
+                srstlmnCard.OrdinalValue = itemValue.Cards[j]
+                uCard:InvokeXLua("LoadData",srstlmnCard,nil,false)
+
+                uCard:InvokeXLua("LoadCard")
+                cardAttack:append(uCard)
+            end
+            AddCardToTable(cardAttack, false)
+        end
+    end
+end
+
+function GetGameStateUser(accountId)
+    local listStates = dataRoom.GameLoop.GameState.ClientStates
+
+    for k,v in pairs(listStates) do
+        if v.AccountId == accountId and dataRoom.GameLoop.GameState.DefaultAccount == accountId and dataRoom.GameLoop.AllowDanhBai then
+            local actions = {}
+            actions[1] = 1
+            return actions
+        end
+    end
+
+    return nil
+end
+
+function AddCardToTable(cards,isMove)
+
+    for i=1,#tableCards do
+        tableCards[i]:InvokeXLua("ShowBlack")
+    end
+
+    local cardCount = #cards
+
+    local yCardStart = 0
+    local xCardStart = 0
+
+    local xCenter = 0
+
+    if turnInRound == 0 then
+
+        yCardStart = CS.UnityEngine.Random.Range(yCardTableStart.x, yCardTableStart.y)
+        xCenter = CS.UnityEngine.Random.Range(xCardTableStart.x, xCardTableStart.y)
+    else
+        if (turnInRound / 5) % 2 == 0 then
+            yCardStart = yLastTableCard - yCardTableRange
+        else
+            yCardStart = yLastTableCard + yCardTableRange
+        end 
+
+        if (xLastTableCard < 0) then
+            xCenter = xLastTableCard + CS.UnityEngine.Random.Range(0, xCardTableStart.y)
+        else
+            xCenter = xLastTableCard + CS.UnityEngine.Random.Range(xCardTableStart.x, 0)
+        end
+    end
+
+    xCardStart = xCenter - (((cardCount - 1) / 2) * xCardTableRange)
+
+    -- load Card
+    for i = 1,cardCount do
+        local card = cards[i]
+
+        local transCard = card:GetComponent(typeof(CS.UnityEngine.Transform))
+        -- transCard = transCard[0]
+
+        if isMove then
+            card:InvokeXLua("MoveCard",transCard.position,CS.UnityEngine.Vector3(xCardStart + (i * xCardTableRange), yCardStart, transCard.position.z), tranTable, tranWorld, 0.8, false,false)
+        else
+            card:InvokeXLua("SetCardPosition",CS.UnityEngine.Vector3(xCardStart + (i * xCardTableRange), yCardStart, transCard.position.z), tranTable, 0.8)
+        end
+        tableCards:append(card)
+    end
+
+    yLastTableCard = yCardStart
+    xLastTableCard = xCenter
+    turnInRound = turnInRound +1
+end
+
+function LoadActionPlayer(actions)
+
+    if myData ~= nil and myData.Status == PlayerStatus_PLAYING then
+        _btDanhBai:SetActive(true)
+        _btXepBai:SetActive(true)
+        _btHuy:SetActive(true)
+
+        btDanhBai.VKInteractable = false
+        btHuy.VKInteractable = false
+
+        if actions ~= nil and #actions > 0 then
+            for k,action in pairs(actions) do
+                if action == ActionName_WAIT then
+                    _btDanhBai:SetActive(false)
+                    _btXepBai:SetActive(false)
+                    _btHuy:SetActive(false)
+                    _btBatDau:SetActive(false)
+                    _btBaoSam:SetActive(false)
+                    _btHuySam:SetActive(false)
+                elseif action == ActionName_DANH_BAI then
+                    btDanhBai.VKInteractable = true
+                elseif action == ActionName_BO_LUOT then
+                    btHuy.VKInteractable = true
+                elseif action == ActionName_CHAT_BAI then
+
+                elseif action == ActionName_THANG_THUA then
+                end
+            end
+        else
+            btDanhBai.VKInteractable = false
+            btHuy.VKInteractable = false
+        end
+    else
+        _btDanhBai:SetActive(false)
+        _btXepBai:SetActive(false)
+        _btHuy:SetActive(false)
+        _btBatDau:SetActive(false)
+        _btBaoSam:SetActive(false)
+        _btHuySam:SetActive(false)
+
+        if (actions ~= nil and #actions > 0) then
+
+            for k,action in pairs(actions) do
+                if action ==  ActionName_START_GAME then
+                    _btBatDau:SetActive(true)
+                    _uiUser:SetActive(true)
+
+                    for i=1,#uiPlayers do
+                        local gmaster = uiPlayers[i]:InvokeXLua("GetGmaster")
+                        gmaster = gmaster[0]
+                        gmaster:SetActive(false)
+                    end
+                    dataRoom.OwnerId = myData.AccountID
+                end
+            end
+        end
+    end
+end
+
+function DisableAllButton()
+    btDanhBai.gameObject:SetActive(false)
+    btXepBai.gameObject:SetActive(false)
+    btHuy.gameObject:SetActive(false)
+    btBatDau.gameObject:SetActive(false)
+    btBaoSam.gameObject:SetActive(false)
+    btHuySam.gameObject:SetActive(false)
+end
+
+------------------handle----------------------------------------------------
+----------------------------------------------------------------------------------
+
+function playerJoin(datas)
+    print(" ---------- data playerJoin game   ", datas)
+    local dataPlayerJoin = json.decode(datas)
+    dataRoom.Players[tostring(math.floor( dataPlayerJoin.AccountID ) )] = dataPlayerJoin
+
+    uiPlayers[indexPlayerPositions[dataPlayerJoin.Position +1]]:InvokeXLua("Init",dataRoom,dataPlayerJoin, GetAvatar(-1), self)
+end
+
+function playerLeave(datas)
+    print("---------- data playerLeave game   ", datas)
+    local idAccountLeave = tonumber(datas)
+    print("my " , myData.AccountID , " id level " ,idAccountLeave)
+
+    if myData.AccountID == idAccountLeave then
+        Close()
+    else
+        for i=1,#uiPlayers do
+            local isAccount = uiPlayers[i]:InvokeXLua("IsPlayer",idAccountLeave)
+            isAccount = isAccount[0]
+            print("...  is account",isAccount)
+
+            if isAccount then
+                local uiPlayer = uiPlayers[i]
+                uiPlayer:InvokeXLua("ClearUI")
+            end
+        end
+
+        for k,v in pairs(dataRoom.Positions) do
+            if v == idAccountLeave then
+                print("reset postion account",v)
+                v =0
+            end
+        end
+
+        dataRoom.Players[idAccountLeave] = nil
+
+        local isCheckDisableAll = true
+        for i=1,#uiPlayers do
+            local obj = uiPlayers[i]:InvokeXLua("GetgContent")
+            obj = obj[0]
+            if obj.activeSelf then
+                isCheckDisableAll = false
+            end
+        end
+
+        if isCheckDisableAll then
+            _btBatDau:SetActive(false)
+            uiUser:InvokeXLua("HideCoundDown") 
+        end
+    end
+end
+
+function startGame(datas)
+    print("---------- data startGame game   ", datas)
+
+    dataRoom = json.decode(datas)
+
+    _cardController:InvokeXLua("GiveBackAll")
+    userCards:clear ()
+    tableCards:clear ()
+    
+
+    myData = dataRoom.Players[tostring(_account.AccountID)]
+
+    LoadRoomInfo()
+
+    uiUser:InvokeXLua("UpdateUserData",myData,dataRoom)
+    uiUser:InvokeXLua("HideStatus")
+    uiUser:InvokeXLua("HideBao1La")
+
+    CS.Database.Instance:UpdateUserMoney(GameEnums.MoneyType_GOLD, myData.Account.Gold)
+    CS.Database.Instance:UpdateUserMoney(GameEnums.MoneyType_COIN, myData.Account.Coin)
+
+    for i=1,#uiPlayers do
+        uiPlayers[i]:InvokeXLua("HideStatus")
+        uiPlayers[i]:InvokeXLua("HideBao1La")
+
+        local idPlayer = uiPlayers[i]:InvokeXLua("GetIDPlayer")
+        idPlayer = idPlayer[0]
+        
+        if(idPlayer ~= nil) then 
+
+            idPlayer= math.floor(idPlayer)
+            if dataRoom.Players[tostring(idPlayer)] ~= nil then
+                uiPlayers[i]:InvokeXLua("UpdateUserData",dataRoom.Players[tostring(idPlayer)],dataRoom)
+            end
+        end
+    end
+
+    _btBatDau:SetActive(false)
+    turnInRound = 0
+
+    cs_coroutine.start(self, WaitChiaBai)
+end
+
+function startActionTimer(datas,datas2,datas3)
+     
+    local accountId = tonumber(datas)
+    local time = tonumber(datas2)
+    local actions = json.decode(datas3)
+
+    print("accountId  ",accountId)
+    print("time " , time)
+    print("action ", actions)
+   
+    uiUser:InvokeXLua("HideCoundDown")
+
+    for i=1,#uiPlayers do
+        uiPlayers[i]:InvokeXLua("HideCoundDown")
+    end
+
+    if (_gBaoSamEffect.activeSelf) then
+
+        _btBaoSam.gameObject:SetActive(false)
+        _btHuySam.gameObject:SetActive(false)
+
+        _gBaoSamEffect:SetActive(false)
+    end
+
+    print(myData.AccountID ," compare...id " ,accountId)
+
+    if myData.AccountID == accountId then
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioYourTurn);
+        uiUser:InvokeXLua("ShowCoundDown",time)
+        LoadActionPlayer(actions)
+    else
+
+        local isExits = false
+        for k,v in pairs(actions) do
+            if math.floor(v) == ActionName_START_GAME then
+                isExits = true
+            end
+        end
+
+        if not isExits then
+
+            local uiPlayer
+            for i=1,#uiPlayers do
+                local isAccount = uiPlayers[i]:InvokeXLua("IsPlayer",accountId)
+                isAccount = isAccount[0]
+                print("...  is account",isAccount)
+    
+                if isAccount then
+                    local uiPlayer = uiPlayers[i]
+                end
+            end
+
+            if (uiPlayer ~= nil) then
+                uiPlayer:InvokeXLua("ShowCoundDown",time)
+            end
+        end
+
+        LoadActionPlayer(nil)
+    end
+end
+
+function danhBaiCallBack(datas)
+    print("danh bài callback:  ",datas)
+end
+
+function danhBai(datas1,datas2,datas3)
+    print("data danhBai game   ", datas1)
+    print("data danhBai game   ", datas2)
+    print("data danhBai game   ", datas3)
+
+    local accountId = tonumber(datas1)
+
+    local cardIds = json.decode(datas2)
+    dataRoom = json.decode(datas3)
+    myData = dataRoom.Players[tostring(_account.AccountID)]
+
+    uiUser:InvokeXLua("HideStatus")
+    for i=1,#uiPlayers do
+       uiPlayers[i]:InvokeXLua("HideStatus")
+    end
+
+    local cardAttack = List()
+
+    if myData.AccountID == accountId then
+
+        for k,id in pairs(cardIds) do
+            
+            local indexSave = nil
+
+            for i=1,#userCards do
+                local isCardExists = userCards[i]:InvokeXLua("IsCheckCard",id)
+                isCardExists = isCardExists[0]
+
+                if isCardExists then
+                    indexSave = i
+                end
+            end
+
+            if indexSave ~= nil then
+                local temp = userCards[indexSave]
+                cardAttack:append(temp)
+                userCards:remove(indexSave)
+            end
+        end
+
+        AddCardToTable(cardAttack,true)
+
+        for i = 1,#userCards do
+            local uCard = userCards[i]
+
+            local transCard = uCard:GetComponent(typeof(CS.UnityEngine.Transform))
+
+            uCard:InvokeXLua("MoveCard",transCard.position, tranUserCards[i].position, tranUserCards[i], tranUserCards[i], 1, false,false)
+        end
+
+        -- // my bao1la
+        if #userCards == 1 then
+            uiUser:InvokeXLua("ShowBao1La")
+        else
+            uiUser:InvokeXLua("HideBao1La")
+        end
+    else
+        local uiPlayer = nil
+        for i=1,#uiPlayers do
+            local id = uiPlayers[i]:InvokeXLua("GetIDPlayer")
+            id = id[0]
+
+            if(id == accountId) then
+                uiPlayer = uiPlayers[i]
+            end
+        end
+
+        if uiPlayer ~= nil then
+            local dataPlayerThier
+
+            for k,idCard in pairs(cardIds) do
+               -- // user
+               local uCard = _cardController:InvokeXLua("BorrowCard")
+                uCard = uCard[0]
+
+               local srstlmnCard = SRSTlmnCard
+               srstlmnCard.OrdinalValue = idCard
+
+               print("... id card danh ", idCard)
+
+               uCard:InvokeXLua("LoadData",srstlmnCard,nil,false)
+               uCard:InvokeXLua("LoadCard")
+
+               local transCard = uCard:GetComponent(typeof(CS.UnityEngine.Transform))
+
+               transCard:SetParent(tranWorld)
+               transCard.localScale = CS.UnityEngine.Vector3(0.6, 0.6, 1)
+
+               local transPlayer = uiPlayer:InvokeXLua("GetTransGcard")
+               transPlayer = transPlayer[0]
+               transCard.position = transPlayer.position
+
+               cardAttack:append(uCard)
+
+               -- // remove card
+                dataPlayerThier = uiPlayer:InvokeXLua("GetDataUser")
+                dataPlayerThier = dataPlayerThier[0]
+
+                if #dataPlayerThier.HandCards > 0 then
+                    table.remove(dataPlayerThier.HandCards,1)
+                end
+            end
+            uiPlayer:InvokeXLua("UpdateCardNumber",#dataPlayerThier.HandCards)
+        end
+        AddCardToTable(cardAttack,true)
+    end
+
+    -- // check chat tuquy chat 2
+    ShowTuQuy(accountId)
+    ShowThreeStraightPair()
+    ShowFourStraightPair()
+
+    -- // audio
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, isAttack2 ? _config.audioDanh2 : _config.audioDanhBai);
+end
+
+
+
+function endRound( datas )
+    print("data endRound game   ", datas)
+
+    turnInRound = 0
+    for k,card in pairs(tableCards) do
+        _cardController:InvokeXLua("GiveBackCard",card.gameObject)
+    end
+    tableCards:clear()
+end
+
+function askBaoSam(datas)
+
+    print("data askBaoSam game   ", datas)
+
+    local duration =  math.floor( datas )
+
+    _gBaoSamEffect:SetActive(true)
+    _btBaoSam:SetActive(true)
+    _btHuySam:SetActive(true)
+    _btXepBai:SetActive(true)
+
+    uiUser:InvokeXLua("ShowCoundDown",duration)
+end
+
+function playerBaoSam(datas)
+    print("data playerBaoSam game   ", datas)
+
+    local accountId = datas
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioBaoSam);
+    if myData.AccountID == accountId then
+        uiUser:InvokeXLua("ShowBaoSam")
+    else
+        local uiPlayer
+        for k,v in pairs(uiPlayers) do
+            local isPlayer = v:InvokeXLua("IsPlayer",accountId)
+            isPlayer = isPlayer[0]
+            if isPlayer then
+                uiPlayer = v
+            end
+        end
+
+        if uiPlayer ~= nil then
+            uiPlayer:InvokeXLua("ShowBaoSam")
+        end
+    end
+
+    _btBaoSam:SetActive(false)
+    _btHuySam:SetActive(false)
+end
+
+function BoLuotCallBack( datas )
+    print("... data bo luot CallBack... ",datas)
+end
+
+function boLuot(datas)
+    print("data start game   ", datas)
+
+    local accountId = datas
+
+    if myData.AccountID == accountId then
+        uiUser:InvokeXLua("HideCoundDown")
+    else
+        local uiPlayer
+        for k,v in pairs(uiPlayers) do
+            local isPlayer = v:InvokeXLua("IsPlayer",accountId)
+            isPlayer = isPlayer[0]
+            if isPlayer then
+                uiPlayer = v
+            end
+        end
+
+        if uiPlayer ~= nil then
+            uiPlayer:InvokeXLua("HideCoundDown")
+        end
+    end
+end
+
+function showResult(datas)
+    print("data showResult game   ", datas)
+    dataRoom =  json.decode(datas)
+    myData = dataRoom.Players[tostring(_account.AccountID)]
+    print("...show my data -----",myData)
+    cs_coroutine.start(self, WaitShowResult)
+end
+
+function CallBackBaoSam(datas)
+    print("------- CallBack Bao sam  ",datas)
+    -- //is ok
+    if datas then
+        _btBaoSam:SetActive(false);
+        _btHuySam:SetActive(false);
+    end
+end
+
+function CallBackXepBai( datas )
+    print("data CallBackXepBai game   ", datas)
+
+    if datas ==nil or string.len( datas ) <=1 then
+        return
+    end
+
+    print("...____________","Thuc hien xep bai")
+
+    local cardNews =  json.decode(datas)
+    local cardTemps = List()
+
+    for i = 1, #cardNews  do
+        local cardTemp
+
+        for k,card in pairs(userCards) do
+
+            local idCard = card:InvokeXLua("GetIdCard")
+            idCard = idCard[0]
+            if idCard == cardNews[i].OrdinalValue then
+                cardTemp = card
+            end
+        end
+
+        if cardTemp ~= nil then
+
+            local transCard = cardTemp:GetComponent(typeof(CS.UnityEngine.Transform))
+            cardTemp:InvokeXLua("MoveCard",transCard.position, tranUserCards[i].position, tranUserCards[i], tranUserCards[i], 1, false)
+
+            cardTemps:append(cardTemp)
+        end
+
+    end
+
+    userCards = cardTemps
+end
+
+function WaitShowResult()
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(timeWaitShowResult))
+    DisableAllButton()
+
+    -- // hide table card
+    RomeveTableCard()
+
+    for k,v in pairs(userCards) do
+        v:InvokeXLua("DisableCardSelect")
+    end
+
+    -- // clear ui - update data - show result
+    uiUser:InvokeXLua("HideCard")
+    uiUser:InvokeXLua("HideBao1La")
+    uiUser:InvokeXLua("HideCoundDown")
+    uiUser:InvokeXLua("UpdateUserData",myData, dataRoom)
+
+    myData.Status = PlayerStatus_WAITING_MATCH
+
+    CS.Database.Instance:UpdateUserMoney(GameEnums.MoneyType_GOLD, myData.Account.Gold)
+    CS.Database.Instance:UpdateUserMoney(GameEnums.MoneyType_COIN, myData.Account.Coin)
+
+    local playerResult
+
+    for k,v in pairs(dataRoom.GameLoop.SessionResult.ResultList) do
+        if v.AccountId == myData.AccountID then
+            playerResult = v
+        end
+    end
+
+    if (playerResult ~= nil) then
+
+        print(" ------------- show result player ------------------------")
+        local spriteStatus
+
+        if playerResult.ResultFamily == Family_TOI_TRANG then
+            if playerResult.WinType < 0 then
+                spriteStatus = listSpriteStatus[PlayerResurlt_TOI_TRANG]
+            else
+                spriteStatus = listSpriteToiTrang[playerResult.WinType+1]
+            end
+        else
+            spriteStatus = listSpriteStatus[playerResult.ResultFamily + 1] 
+        end
+
+        uiUser:InvokeXLua("ShowStatus",spriteStatus,true,playerResult.Money,0)
+
+        if playerResult.ResultFamily == Family_TOI_TRANG then
+            -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioThangDam);
+        elseif  playerResult.Money < 0 then
+             -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioThua);
+        elseif playerResult.Money > 0 then
+             -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioThang);
+        end
+    end
+
+    -- // Show Card in hand
+    for k,uiPlayer in pairs(uiPlayers) do
+
+        uiPlayer:InvokeXLua("HideCoundDown")
+        uiPlayer:InvokeXLua("HideCard")
+        uiPlayer:InvokeXLua("HideBao1La")
+
+        local isPlayingInRoom = false
+        local isPlayData = false
+
+        local dataPlayer = uiPlayer:InvokeXLua("GetDataUser")
+        dataPlayer = dataPlayer[0]
+        if dataPlayer ~= nil then
+            isPlayData = true
+        end
+
+        local idPlayer = uiPlayer:InvokeXLua("GetIDPlayer")
+        idPlayer = idPlayer[0]
+
+        if idPlayer ~= nil then
+            dataPlayer = dataRoom.Players[tostring(math.floor(idPlayer))]
+            if dataPlayer ~= nil then
+                isPlayingInRoom = true
+            end
+        end
+
+        if (isPlayData == true and isPlayingInRoom ) then
+            uiPlayer:InvokeXLua("UpdateUserData",dataPlayer,dataRoom)
+
+            dataPlayer.Status = PlayerStatus_WAITING_MATCH
+
+            for k,v in pairs(dataRoom.GameLoop.SessionResult.ResultList) do
+                if v.AccountId == dataPlayer.AccountID then
+                    playerResult = v
+                end
+            end
+
+            if playerResult ~= nil then
+                local spriteStatus
+        
+                if playerResult.ResultFamily == Family_TOI_TRANG then
+                    if playerResult.WinType < 0 then
+                        spriteStatus = listSpriteStatus[PlayerResurlt_TOI_TRANG]
+                    else
+                        spriteStatus = listSpriteToiTrang[playerResult.WinType+1]
+                    end
+                else
+                    spriteStatus = listSpriteStatus[playerResult.ResultFamily + 1]
+                end
+
+                uiPlayer:InvokeXLua("ShowStatus",spriteStatus,true,playerResult.Money,0)
+
+                ShowCardInHand(uiPlayer,k)
+            end
+        end
+    end
+
+    -- // hide result
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(timeWaitHideResult))
+
+    if (#tableCards > 0 or #userCards > 0) then
+        _cardController:InvokeXLua("GiveBackAll")
+        tableCards:clear()
+        userCards:clear()
+
+        uiUser:InvokeXLua("HideStatus")
+        for k,uiPlayer in pairs(uiPlayers) do
+            uiPlayer:InvokeXLua("HideStatus")
+        end
+    end
+end
+
+function ShowCardInHand(uiPlayer,indexInput)
+    local uiCard = nil
+    local transCard = uiPlayer:InvokeXLua("GetTransGcard")
+    transCard = transCard[0]
+
+    local x = transCard.position.x;
+    local y = transCard.position.y;
+    local z = transCard.position.z;
+    local xRange = xCardTableRange
+
+    local index = indexInput
+    local dataPlayer = uiPlayer:InvokeXLua("GetDataUser")
+    dataPlayer = dataPlayer[0]
+
+    if (index == 2) then
+        x = x - ((#dataPlayer.HandCards - 1) * xRange)
+    end
+
+    for i=1,#dataPlayer.HandCards do
+        
+        uiCard = _cardController:InvokeXLua("BorrowCard")
+        uiCard = uiCard[0]
+
+        uiCard:InvokeXLua("LoadData",dataPlayer.HandCards[i],nil,false)
+        uiCard:InvokeXLua("LoadCard")
+        uiCard:InvokeXLua("SetCardPosition",CS.UnityEngine.Vector3(x, y, z),tranTable, 0.7)
+        x = x+ xRange;
+
+        tableCards:append(uiCard)
+    end
+end
+
+function WaitChiaBai()
+    local uiCard = nil
+
+    for i=1,#uiPlayers do
+        local isPlaying = uiPlayers[i]:InvokeXLua("IsPlaying")
+        isPlaying = isPlaying[0]
+
+        if isPlaying then
+            print("...---show so luong card ")
+            uiPlayers[i]:InvokeXLua("ShowCard")
+        end
+    end
+
+    for i = 1,  #myData.HandCards do
+        -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioChiaBai);
+        -- // user
+        uiCard = _cardController:InvokeXLua("BorrowCard")
+        uiCard = uiCard[0]
+        uiCard:InvokeXLua("LoadData",myData.HandCards[i], nil, true)
+
+        local transCard = tranUserCards[i]:GetComponent(typeof(CS.UnityEngine.Transform))
+        uiCard:InvokeXLua("MoveCard",tranWorld.position, transCard.position, transCard, tranWorld, 1, false, true)
+        userCards:append(uiCard)
+
+        -- // player
+        for j=1,#uiPlayers do
+            local isPlaying = uiPlayers[j]:InvokeXLua("IsPlaying")
+            isPlaying = isPlaying[0]
+
+            if(isPlaying) then
+                local test = uiPlayers[j]:InvokeXLua("GetIDPlayer")
+                print("co nguoi dang choi   " ,test[0])
+            end
+
+            local dataUserThier = uiPlayers[j]:InvokeXLua("GetDataUser")
+            dataUserThier = dataUserThier[0]
+
+            if (isPlaying and #dataUserThier.HandCards > i) then
+                uiCard = _cardController:InvokeXLua("BorrowCard")
+                uiCard = uiCard[0]
+                uiCard:InvokeXLua("LoadData",dataUserThier.HandCards[i],nil,false)
+
+                local transCardUserThier = uiPlayers[j]:InvokeXLua("GetTransGcard")
+                transCardUserThier = transCardUserThier[0]
+                uiCard:InvokeXLua("MoveCard",tranWorld.position, transCardUserThier.position, nil, tranWorld, 0.7, true,false)
+                uiPlayers[j]:InvokeXLua("UpdateCardNumber",i + 1)
+            end
+        end
+
+        coroutine.yield(CS.UnityEngine.WaitForSeconds(0.06))
+    end
+end
+
+function ShowNotify(msg)
+    if msg == nil or string.len(msg) < 1 then
+        gNotify:SetActive(false)
+    else
+        gNotify:SetActive(true)
+        txtNotify.text = msg
+    end
+end
+
+function RomeveTableCard()
+    for k,v in pairs(tableCards) do
+        _cardController:InvokeXLua("GiveBackCard",v.gameObject)
+    end
+    tableCards:clear()
+end
+
+function CheckCanAction()
+    if ((CS.System.DateTime.Now - lastTimeClick).TotalSeconds < timeNextAction) then
+        return false
+    end
+
+    lastTimeClick = CS.System.DateTime.Now
+    return true;
+end
+
+
+
+function ClearUI()
+
+    self:StopAllCoroutines()
+
+    gBaoSamEffect:SetActive(false)
+    btLeave:SetupAll(true)
+
+    DisableAllButton()
+
+    for i=1,#uiPlayers do
+        uiPlayers[i]:InvokeXLua("ClearUI")
+    end
+    uiUser:InvokeXLua("ClearUI")
+
+    _cardController:InvokeXLua("GiveBackAll")
+
+    userCards:clear()
+    tableCards:clear()
+    ShowNotify("");
+
+    turnInRound = 0
+end
+
+-- ----------------------------------- Method Common No FIXED ----------------------------
+function SetLayerIndex(index)
+    layerIndex = index
+end
+
+function FirstLoadLayer()
+
+end
+
+function EnableLayer()
+    graphicRaycaster.enabled = true;
+end
+
+function ReloadLayer()
+    
+end
+
+function BeforeHideLayer()
+    
+end
+
+function DisableLayer()
+   if position ~= Position.Middle then
+        graphicRaycaster.enabled = false;
+   end 
+end
+
+function SetSortOrder(order)
+    canvas.sortingOrder = order;
+    if childOrders ~= nil then
+        -- body
+        for i=1,#childOrders do
+            childOrders[i].ResetOrder(canvas.sortingOrder)
+        end
+    end
+end
+
+function ResetPosition()
+    if gContentAll ~= nil then
+        rect = gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+    end
+end
+
+function ResetAfterAnim()
+    if gContentAll ~= nil then
+
+        gContentAll.transform.localScale = Vector3.one;
+
+        rect =  gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+        cvGroup = gContentAll.GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+        cvGroup.alpha = 1
+    end
+end
+
+function PlayAnimation(key)
+    if anim ~= nil then
+        isLayerAnimOpenDone = false
+        anim.enabled = true
+        graphicRaycaster.enabled = false;
+        if key == AnimKey.OpenPopup or key == AnimKey.ClosePopup then
+            if key == AnimKey.OpenPopup then
+                cs_coroutine.start(self, DelayToResetAfterAnim)
+            end
+            anim:SetTrigger(key);
+        else
+            local DelaytoRunAnim = cs_coroutine.start(self,
+                function()
+                    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+                    anim:SetTrigger(key);
+                end
+            )
+        end
+    else
+        isLayerAnimOpenDone = true;
+    end
+end
+
+
+function OnLayerOpenDone()
+    anim.enabled = false
+    graphicRaycaster.enabled = true;
+    isLayerAnimOpenDone = true;
+    ResetAfterAnim();
+end
+
+function OnLayerCloseDone()
+    anim.enabled = false
+    HideLayer()
+
+    uiLayerController:CacheLayer(uiLayerThis)
+    isLayerAnimOpenDone = false
+end
+
+function DelayToResetAfterAnim()
+    
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.5))
+
+    if gContentAll ~= nil then
+        local cvGroup = gContentAll.GetComponent(typeof(CanvasGroup))
+        if  cvGroup.alpha < 1 then
+            gContentAll.transform.localScale = CS.UnityEngine.Vector3.one
+
+            local rect = gContentAll.GetComponent(typeof(RectTransform))
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+            cvGroup.alpha = 1
+        end
+    end    
+end
+----------------------------------------------------------- Function Helper ---------------------------------
+
+function IsAttack2(type)
+    if type == AttackType_ONE_CARD_TWO or type == AttackType_PAIR_TWO
+    or type == AttackType_THREE_OFAKIND_TWO or type == AttackType_FOUR_OFAKIND_TWO then
+        return true
+    end
+    return false
+end
+
+function IsAttackTuQuy(type)
+    if type == AttackType_FOUR_OFAKIND_NORMAL or type == AttackType_FOUR_OFAKIND_TWO then
+        return true
+    end
+    return false
+end
+
+function IsAttackThreeStraightPair(type)
+    if type == AttackType_THREE_STRAIGHT_PAIR then
+        return true
+    end
+    return false
+end
+
+function IsAttackFourStraightPair(type)
+    if type == AttackType_FOUR_STRAIGHT_PAIR then
+        return true
+    end
+    return false
+end
+
+function GetPlayerResultStatus(status)
+    local spriteStatus = listSpriteStatus[status]
+    return spriteStatus
+end
+
+function GetAvatar(index)
+    print("...------------------ Get Avatar ID ",index)
+
+    if index == -1 then
+        index = math.random(1,8)
+    end
+
+    local spriteAvatar = lobbyTlmn:InvokeXLua("GetSpriteAvatar",index)
+    spriteAvatar = spriteAvatar[0]
+    return spriteAvatar
+end
+
+function ShowTuQuy(accountId)
+    local isAttack2 = false
+    local isAttackTuQuy = false
+
+    if dataRoom.GameLoop.CurrTurnCards == nil then
+        return
+    end
+
+    local turnCardCount = #dataRoom.GameLoop.CurrTurnCards
+
+    print("turnCardCount",turnCardCount)
+
+    if turnCardCount < 1 then
+        return 
+    end
+
+    local turnCard = dataRoom.GameLoop.CurrTurnCards[1]
+    print("Turn card ", turnCard)
+
+    -- isAttack2 = IsAttack2(turnCard.Value.Type)
+    isAttackTuQuy = IsAttackTuQuy(turnCard.Value.Type)
+
+    if isAttackTuQuy == false then
+        return
+    end
+
+    -- -------------------------------- show tu quy -------------------------------------------------
+    if myData.AccountID == accountId then
+        uiUser:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_TU_QUY),false,0,0)
+    else
+        local uiPlayerCache
+
+        for k,uiPlayer in pairs(uiPlayers) do
+            local isplayer = uiPlayer:InvokeXLua("IsPlayer",accountId)
+            isplayer = isplayer[0]
+
+            if isplayer then
+                uiPlayerCache = uiPlayer
+            end
+        end
+
+        if uiPlayerCache ~= nil then
+            uiPlayerCache:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_TU_QUY),false,0,0)
+        end
+    end
+
+    -- // show bi chat 
+    if turnCardCount > 1 then
+        local lastTurnCard = dataRoom.GameLoop.CurrTurnCards[2]
+        local isLastAttack2 = IsAttack2(lastTurnCard.Value.Type)
+        local isLastAttackTuQuy = IsAttackTuQuy(lastTurnCard.Value.Type)
+        local isLastAttackThreeStraightPair = IsAttackThreeStraightPair(lastTurnCard.Value.Type)
+
+        if isLastAttack2 or isLastAttackTuQuy or isLastAttackThreeStraightPair then
+        
+            if myData.AccountID == lastTurnCard.Key then
+                uiUser:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BI_CHAT),false,0,0)
+            else
+                local uiPlayerCache
+                for k,uiPlayer in pairs(uiPlayers) do
+                    local isplayer = uiPlayer:InvokeXLua("IsPlayer",lastTurnCard.Key)
+                    isplayer = isplayer[0]
+
+                    if isplayer then
+                        uiPlayerCache = uiPlayer
+                    end
+                end
+
+                if (uiPlayerCache ~= nil) then
+                    uiPlayerCache:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BI_CHAT),false,0,0)
+                end
+            end
+        end
+    end
+    
+end
+
+function ShowThreeStraightPair(accountId)
+    local isAttack2 = false
+    local isAttackThreeStraightPair = false
+
+    if dataRoom.GameLoop.CurrTurnCards == nil then
+        return
+    end
+
+    local turnCardCount = #dataRoom.GameLoop.CurrTurnCards
+
+    print("turnCardCount",turnCardCount)
+
+    if turnCardCount < 1 then
+        return 
+    end
+
+    local turnCard = dataRoom.GameLoop.CurrTurnCards[1]
+    print("Turn card ", turnCard)
+
+    -- isAttack2 = IsAttack2(turnCard.Value.Type)
+    isAttackThreeStraightPair = IsAttackThreeStraightPair(turnCard.Value.Type)
+
+    if isAttackThreeStraightPair == false then
+        return
+    end
+
+    -- -------------------------------- show tu quy -------------------------------------------------
+    if myData.AccountID == accountId then
+        uiUser:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BA_DOI_THONG),false,0,0)
+    else
+        local uiPlayerCache
+
+        for k,uiPlayer in pairs(uiPlayers) do
+            local isplayer = uiPlayer:InvokeXLua("IsPlayer",accountId)
+            isplayer = isplayer[0]
+
+            if isplayer then
+                uiPlayerCache = uiPlayer
+            end
+        end
+
+        if uiPlayerCache ~= nil then
+            uiPlayerCache:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BA_DOI_THONG),false,0,0)
+        end
+    end
+
+    -- // show bi chat 
+    if turnCardCount > 1 then
+        local lastTurnCard = dataRoom.GameLoop.CurrTurnCards[2]
+        local isLastAttack2 = IsAttack2(lastTurnCard.Value.Type)
+        local isLastAttackThreeStraightPair = IsAttackThreeStraightPair(lastTurnCard.Value.Type)
+
+        if isLastAttack2 or isLastAttackThreeStraightPair then
+        
+            if myData.AccountID == lastTurnCard.Key then
+                uiUser:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BI_CHAT),false,0,0)
+            else
+                local uiPlayerCache
+                for k,uiPlayer in pairs(uiPlayers) do
+                    local isplayer = uiPlayer:InvokeXLua("IsPlayer",lastTurnCard.Key)
+                    isplayer = isplayer[0]
+
+                    if isplayer then
+                        uiPlayerCache = uiPlayer
+                    end
+                end
+
+                if (uiPlayerCache ~= nil) then
+                    uiPlayerCache:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BI_CHAT),false,0,0)
+                end
+            end
+        end
+    end
+    
+end
+
+function ShowFourStraightPair(accountId)
+    local isAttack2 = false
+    local isAttackFourStraightPair = false
+
+    if dataRoom.GameLoop.CurrTurnCards == nil then
+        return
+    end
+
+    local turnCardCount = #dataRoom.GameLoop.CurrTurnCards
+
+    print("turnCardCount",turnCardCount)
+
+    if turnCardCount < 1 then
+        return 
+    end
+
+    local turnCard = dataRoom.GameLoop.CurrTurnCards[1]
+    print("Turn card ", turnCard)
+
+    -- isAttack2 = IsAttack2(turnCard.Value.Type)
+    isAttackFourStraightPair = IsAttackFourStraightPair(turnCard.Value.Type)
+
+    if isAttackFourStraightPair == false then
+        return
+    end
+
+    -- -------------------------------- show tu quy -------------------------------------------------
+    if myData.AccountID == accountId then
+        uiUser:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BON_DOI_THONG),false,0,0)
+    else
+        local uiPlayerCache
+
+        for k,uiPlayer in pairs(uiPlayers) do
+            local isplayer = uiPlayer:InvokeXLua("IsPlayer",accountId)
+            isplayer = isplayer[0]
+
+            if isplayer then
+                uiPlayerCache = uiPlayer
+            end
+        end
+
+        if uiPlayerCache ~= nil then
+            uiPlayerCache:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BON_DOI_THONG),false,0,0)
+        end
+    end
+
+    -- // show bi chat 
+    if turnCardCount > 1 then
+        local lastTurnCard = dataRoom.GameLoop.CurrTurnCards[2]
+        local isLastAttack2 = IsAttack2(lastTurnCard.Value.Type)
+        local isLastAttackThreeStraightPair = IsAttackThreeStraightPair(lastTurnCard.Value.Type)
+        local isLastAttackTuQuy = IsAttackTuQuy(lastTurnCard.Value.Type)
+        local isLastAttackFourStraightPair = IsAttackFourStraightPair(lastTurnCard.Value.Type)
+
+        if isLastAttack2 or isLastAttackThreeStraightPair or isLastAttackTuQuy or isLastAttackFourStraightPair then
+        
+            if myData.AccountID == lastTurnCard.Key then
+                uiUser:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BI_CHAT),false,0,0)
+            else
+                local uiPlayerCache
+                for k,uiPlayer in pairs(uiPlayers) do
+                    local isplayer = uiPlayer:InvokeXLua("IsPlayer",lastTurnCard.Key)
+                    isplayer = isplayer[0]
+
+                    if isplayer then
+                        uiPlayerCache = uiPlayer
+                    end
+                end
+
+                if (uiPlayerCache ~= nil) then
+                    uiPlayerCache:InvokeXLua("ShowStatus",GetPlayerResultStatus(PlayerResurlt_BI_CHAT),false,0,0)
+                end
+            end
+        end
+    end
+    
+end

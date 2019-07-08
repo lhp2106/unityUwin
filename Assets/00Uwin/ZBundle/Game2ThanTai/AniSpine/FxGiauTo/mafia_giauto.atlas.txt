@@ -1,0 +1,41 @@
+
+mafia_giauto.png
+size: 394,274
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: true
+  xy: 171, 2
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+giauto_text
+  rotate: false
+  xy: 2, 159
+  size: 298, 113
+  orig: 298, 113
+  offset: 0, 0
+  index: -1
+mafia_giauto_char
+  rotate: true
+  xy: 2, 4
+  size: 153, 167
+  orig: 153, 167
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 323, 37
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: true
+  xy: 323, 82
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1

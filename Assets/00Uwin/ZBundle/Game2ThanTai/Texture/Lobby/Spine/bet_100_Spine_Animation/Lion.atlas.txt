@@ -1,0 +1,125 @@
+
+Lion.png
+size: 627,816
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Lion01
+  rotate: false
+  xy: 433, 581
+  size: 141, 69
+  orig: 141, 69
+  offset: 0, 0
+  index: -1
+Lion02
+  rotate: false
+  xy: 433, 652
+  size: 163, 162
+  orig: 163, 162
+  offset: 0, 0
+  index: -1
+Lion03
+  rotate: true
+  xy: 275, 42
+  size: 231, 203
+  orig: 231, 203
+  offset: 0, 0
+  index: -1
+Lion04
+  rotate: false
+  xy: 555, 469
+  size: 46, 45
+  orig: 46, 45
+  offset: 0, 0
+  index: -1
+Lion05
+  rotate: false
+  xy: 216, 8
+  size: 47, 49
+  orig: 47, 49
+  offset: 0, 0
+  index: -1
+Lion06
+  rotate: true
+  xy: 501, 530
+  size: 49, 51
+  orig: 49, 51
+  offset: 0, 0
+  index: -1
+Lion07
+  rotate: true
+  xy: 216, 59
+  size: 53, 55
+  orig: 53, 55
+  offset: 0, 0
+  index: -1
+Lion08
+  rotate: true
+  xy: 480, 68
+  size: 205, 138
+  orig: 205, 138
+  offset: 0, 0
+  index: -1
+Lion09
+  rotate: false
+  xy: 555, 516
+  size: 70, 63
+  orig: 70, 63
+  offset: 0, 0
+  index: -1
+Lion10
+  rotate: false
+  xy: 433, 527
+  size: 66, 52
+  orig: 66, 52
+  offset: 0, 0
+  index: -1
+Lion11
+  rotate: false
+  xy: 275, 275
+  size: 278, 244
+  orig: 278, 244
+  offset: 0, 0
+  index: -1
+Lion12
+  rotate: false
+  xy: 2, 2
+  size: 212, 173
+  orig: 212, 173
+  offset: 0, 0
+  index: -1
+Lion13
+  rotate: true
+  xy: 576, 589
+  size: 61, 35
+  orig: 61, 35
+  offset: 0, 0
+  index: -1
+Lion14
+  rotate: true
+  xy: 216, 114
+  size: 61, 35
+  orig: 61, 35
+  offset: 0, 0
+  index: -1
+cmcuocthantai01
+  rotate: false
+  xy: 480, 2
+  size: 143, 64
+  orig: 143, 64
+  offset: 0, 0
+  index: -1
+cmcuocthantai02
+  rotate: true
+  xy: 2, 521
+  size: 293, 429
+  orig: 293, 429
+  offset: 0, 0
+  index: -1
+cmcuocthantai06
+  rotate: false
+  xy: 2, 177
+  size: 271, 342
+  orig: 271, 342
+  offset: 0, 0
+  index: -1

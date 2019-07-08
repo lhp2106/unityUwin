@@ -1,0 +1,132 @@
+
+OngThanTai.png
+size: 1405,519
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cmcuocthantai01
+  rotate: true
+  xy: 1324, 374
+  size: 143, 64
+  orig: 143, 64
+  offset: 0, 0
+  index: -1
+cmcuocthantai02
+  rotate: false
+  xy: 689, 88
+  size: 293, 429
+  orig: 293, 429
+  offset: 0, 0
+  index: -1
+cmcuocthantai03
+  rotate: true
+  xy: 984, 246
+  size: 271, 338
+  orig: 271, 338
+  offset: 0, 0
+  index: -1
+cmcuocthantai07
+  rotate: false
+  xy: 689, 2
+  size: 273, 84
+  orig: 273, 84
+  offset: 0, 0
+  index: -1
+cmcuocthantai08
+  rotate: false
+  xy: 1324, 262
+  size: 41, 42
+  orig: 41, 42
+  offset: 0, 0
+  index: -1
+coinani00
+  rotate: false
+  xy: 1148, 144
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani01
+  rotate: false
+  xy: 1148, 105
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani05
+  rotate: false
+  xy: 1148, 105
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani02
+  rotate: false
+  xy: 1346, 223
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani03
+  rotate: false
+  xy: 1346, 184
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+coinani04
+  rotate: false
+  xy: 1346, 145
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
+ongthantaitach01
+  rotate: true
+  xy: 964, 11
+  size: 75, 223
+  orig: 75, 223
+  offset: 0, 0
+  index: -1
+ongthantaitach02
+  rotate: false
+  xy: 1189, 22
+  size: 155, 222
+  orig: 155, 222
+  offset: 0, 0
+  index: -1
+ongthantaitach03
+  rotate: true
+  xy: 984, 103
+  size: 141, 60
+  orig: 141, 60
+  offset: 0, 0
+  index: -1
+ongthantaitach04
+  rotate: false
+  xy: 1046, 183
+  size: 132, 61
+  orig: 132, 61
+  offset: 0, 0
+  index: -1
+ongthantaitach05
+  rotate: false
+  xy: 2, 15
+  size: 685, 502
+  orig: 685, 502
+  offset: 0, 0
+  index: -1
+ongthantaitach06
+  rotate: false
+  xy: 1046, 99
+  size: 100, 82
+  orig: 100, 82
+  offset: 0, 0
+  index: -1
+ongthantaitach07
+  rotate: false
+  xy: 1324, 306
+  size: 79, 66
+  orig: 79, 66
+  offset: 0, 0
+  index: -1

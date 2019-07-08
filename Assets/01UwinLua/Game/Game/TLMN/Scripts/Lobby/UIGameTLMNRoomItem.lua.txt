@@ -1,0 +1,95 @@
+List = require 'pl.List'
+GameEnums = require 'common.GameEnums'
+UILayerKey = require 'common.UILayerKey'
+local cs_coroutine = require 'common.cs_coroutine'
+local json = (require 'common.json')
+-----------------------------------------------
+
+local btItem
+
+local txtId
+local txtBet
+local txtUser
+local txtMinBet
+local txtStatus
+
+local imgProgress
+local sprProgress = List()
+local cStatus = List()
+local strStatus  = List()
+
+local gContent
+
+local max = 20
+local maxRange = 10
+
+local btChoseRoom
+local xluaBehaviorLobby
+
+local isInit = false
+local dataItem
+
+----------------------------------------------------
+function LoadObject()
+    btItem = _btItem:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    txtId = _txtId:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtBet = _txtBet:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtUser = _txtUser:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtMinBet = _txtMinBet:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    txtStatus  = _txtStatus:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    imgProgress = _imgProgress:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    sprProgress:append(_sprProgress1)
+    sprProgress:append(_sprProgress2)
+
+    strStatus:append("Chờ")
+    strStatus:append("Đang chơi")
+    strStatus:append("Đầy")
+
+    cStatus:append(CS.UnityEngine.Color(1, 1, 1, 1))
+    cStatus:append(CS.UnityEngine.Color(0.45, 1, 0, 1))
+    cStatus:append(CS.UnityEngine.Color(1, 0.07, 0.07, 1))
+
+    gContent =_gContent
+
+    btChoseRoom =_btChoseRoom:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    xluaBehaviorLobby =_xluaBehaviorLobby:GetComponent(typeof(CS.XLuaBehaviour))
+
+    btChoseRoom.onClick:AddListener(ClickBtJoinRoom)
+end
+
+function LoadData(data,index)
+    dataItem = data
+
+    if isInit == false then
+        LoadObject()
+        isInit = true
+    end
+  
+    gameObject:SetActive(true)
+    gContent:SetActive(true)
+
+    txtId.text = math.floor(data.Item1) 
+    txtBet.text = CS.VKCommon.ConvertStringMoney(data.Item1)
+    txtMinBet.text = CS.VKCommon.ConvertStringMoney(data.Item3)
+
+    local status = 1
+    if (data.Item2 >= 2) then
+        status = 2
+    end
+    txtStatus.text = strStatus[status]
+    txtStatus.color = cStatus[status]
+
+    txtUser.text = math.floor(data.Item2) 
+    maxTemp = max
+
+    if(maxTemp <= data.Item2) then
+        maxTemp = data.Item2 + maxRange
+    end
+
+    imgProgress.fillAmount = (data.Item2 / maxTemp)
+end
+
+function ClickBtJoinRoom()
+    xluaBehaviorLobby:InvokeXLua("ButtonSelectRoomClickListener",dataItem)
+end
+

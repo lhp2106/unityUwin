@@ -1,0 +1,41 @@
+
+nongtrai_nohu.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: false
+  xy: 242, 91
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+nohu_text
+  rotate: false
+  xy: 2, 243
+  size: 470, 241
+  orig: 470, 241
+  offset: 0, 0
+  index: -1
+nongtrai_nohu_char
+  rotate: false
+  xy: 2, 73
+  size: 238, 168
+  orig: 238, 168
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 399, 198
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 2, 2
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1

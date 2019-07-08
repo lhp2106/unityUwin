@@ -1,0 +1,126 @@
+{
+"skeleton": { "hash": "U/SWyMtc+NUbcLF0Om6V27/t8W4", "spine": "3.6.53", "width": 155, "height": 179, "images": "./images/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "mafia_free_char", "parent": "root", "x": 1.06, "y": 7.38 },
+	{ "name": "text_light_fx", "parent": "root", "length": 60.12, "rotation": 178.56, "x": -43.35, "y": 9.62, "scaleX": 0.391 }
+],
+"slots": [
+	{ "name": "mafia_free_bg", "bone": "root", "attachment": "mafia_free_bg" },
+	{ "name": "mafia_free_char", "bone": "mafia_free_char", "attachment": "mafia_free_char" },
+	{ "name": "mafia_free_text", "bone": "root", "attachment": "mafia_free_text" },
+	{ "name": "text_light_fx", "bone": "text_light_fx", "blend": "additive" }
+],
+"skins": {
+	"default": {
+		"mafia_free_bg": {
+			"mafia_free_bg": { "x": 1.3, "y": 49.78, "width": 141, "height": 141 }
+		},
+		"mafia_free_char": {
+			"mafia_free_char": { "x": 2.75, "y": 37.41, "width": 155, "height": 179 }
+		},
+		"mafia_free_text": {
+			"mafia_free_text": { "x": 2.3, "y": -5.24, "width": 143, "height": 41 }
+		},
+		"text_light_fx": {
+			"text_light_fx": { "x": 38.27, "y": 11.93, "rotation": -178.56, "width": 80, "height": 29 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"slots": {
+			"text_light_fx": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.0667, "color": "ffffff00" },
+					{ "time": 0.1333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 0.5, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "text_light_fx" }
+				]
+			}
+		},
+		"bones": {
+			"text_light_fx": {
+				"translate": [
+					{
+						"time": 0,
+						"x": -16.08,
+						"y": 0,
+						"curve": [ 0.106, 0.01, 0.75, 1 ]
+					},
+					{ "time": 0.5, "x": 107.97, "y": 0 }
+				],
+				"scale": [
+					{
+						"time": 0,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.106, 0.01, 0.75, 1 ]
+					},
+					{ "time": 0.5, "x": 2.238, "y": 1 }
+				]
+			},
+			"mafia_free_char": {
+				"rotate": [
+					{
+						"time": 0,
+						"angle": -1.39,
+						"curve": [ 0.375, 0.5, 0.75, 1 ]
+					},
+					{
+						"time": 0.3,
+						"angle": 0,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{
+						"time": 0.9,
+						"angle": -2.79,
+						"curve": [ 0.25, 0, 0.625, 0.5 ]
+					},
+					{ "time": 1.2, "angle": -1.39 }
+				],
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{
+						"time": 0.6,
+						"x": 0,
+						"y": 2.51,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{ "time": 1.2, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{
+						"time": 0,
+						"x": 1.013,
+						"y": 1.031,
+						"curve": [ 0.375, 0.5, 0.75, 1 ]
+					},
+					{
+						"time": 0.3,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.25, 0, 0.75, 1 ]
+					},
+					{
+						"time": 0.9,
+						"x": 1.025,
+						"y": 1.062,
+						"curve": [ 0.25, 0, 0.625, 0.5 ]
+					},
+					{ "time": 1.2, "x": 1.013, "y": 1.031 }
+				]
+			}
+		}
+	}
+}
+}

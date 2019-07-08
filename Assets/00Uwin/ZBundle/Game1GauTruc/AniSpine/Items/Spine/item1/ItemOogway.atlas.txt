@@ -1,0 +1,76 @@
+
+ItemOogway.png
+size: 411,163
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ItemOogway01
+  rotate: false
+  xy: 269, 119
+  size: 118, 42
+  orig: 118, 42
+  offset: 0, 0
+  index: -1
+ItemOogway02
+  rotate: true
+  xy: 2, 10
+  size: 151, 141
+  orig: 151, 141
+  offset: 0, 0
+  index: -1
+ItemOogway03
+  rotate: false
+  xy: 269, 2
+  size: 86, 115
+  orig: 86, 115
+  offset: 0, 0
+  index: -1
+ItemOogway04
+  rotate: true
+  xy: 357, 43
+  size: 74, 46
+  orig: 74, 46
+  offset: 0, 0
+  index: -1
+ItemOogway05
+  rotate: true
+  xy: 401, 32
+  size: 9, 8
+  orig: 9, 8
+  offset: 0, 0
+  index: -1
+ItemOogway06
+  rotate: true
+  xy: 145, 3
+  size: 33, 23
+  orig: 33, 23
+  offset: 0, 0
+  index: -1
+ItemOogway07
+  rotate: false
+  xy: 401, 22
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+ItemOogway08
+  rotate: false
+  xy: 170, 12
+  size: 22, 24
+  orig: 22, 24
+  offset: 0, 0
+  index: -1
+ItemOogway09
+  rotate: false
+  xy: 145, 38
+  size: 122, 123
+  orig: 122, 123
+  offset: 0, 0
+  index: -1
+ItemOogway10
+  rotate: true
+  xy: 357, 11
+  size: 30, 42
+  orig: 30, 42
+  offset: 0, 0
+  index: -1

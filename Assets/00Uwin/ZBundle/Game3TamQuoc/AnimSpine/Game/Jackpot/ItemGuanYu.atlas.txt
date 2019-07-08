@@ -1,0 +1,41 @@
+
+ItemGuanYu.png
+size: 589,153
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ItemGuanYu03
+  rotate: false
+  xy: 329, 10
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+ItemGuanYu04
+  rotate: false
+  xy: 2, 11
+  size: 119, 86
+  orig: 119, 86
+  offset: 0, 0
+  index: -1
+ItemGuanYu05
+  rotate: false
+  xy: 472, 10
+  size: 115, 141
+  orig: 115, 141
+  offset: 0, 0
+  index: -1
+ItemLuBu01
+  rotate: false
+  xy: 2, 99
+  size: 174, 52
+  orig: 174, 52
+  offset: 0, 0
+  index: -1
+ItemLuBu03
+  rotate: false
+  xy: 178, 2
+  size: 149, 149
+  orig: 149, 149
+  offset: 0, 0
+  index: -1

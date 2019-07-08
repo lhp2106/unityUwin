@@ -1,0 +1,774 @@
+List = require 'pl.List'
+GameEnums = require 'common.GameEnums'
+UILayerKey = require 'common.UILayerKey'
+local cs_coroutine = require 'common.cs_coroutine'
+local json = (require 'common.json')
+
+configGate = require("gate.ConfigGate")
+
+-- --------------------------------- Parameter Common ----------------------------
+local AnimKey = {
+    OpenPopup = "OpenPopup",
+    ClosePopup = "ClosePopup",
+}
+
+local Position = {
+    Bootom = 0,
+    Middle = 1,
+    Top = 2
+}
+
+local AnimType= {
+    None = 0,
+    Popup= 1,
+}
+
+local dragMini
+local gContenAll
+local layerAnimType = AnimType.None
+
+local animkey = AnimKey.OpenPopup
+
+local allowDestroy = false
+local isGameLayer = false
+local lockCanvasScale= false
+local hideBehindLayers= false
+
+local position = Position.Middle
+
+local childOrders = List()
+
+local anim
+local canvas 
+local graphicRaycaster
+local layerIndex
+local layerKey
+local isLayerAnimOpenDone = false
+
+local uiLayerController
+local uiLayerThis
+
+------------------------------------- Parameter MiniPoker -------------------------------
+
+-- ("CONFIG")]
+local  _GAMEID = 105
+local  _API = "https://tlmnsolo.uwin369.net/tlmnsolo/"
+local  _URLSOLO = "https://tlmnsolo.uwin369.net/signalr/negotiate"
+local  _URLMULTI = "https://tlmn.uwin369.net/signalr/negotiate"
+
+local  _HUBNAME = "tienlenHub"
+
+local audioBackground
+local audioButtonClick
+local audioButtonFail
+
+local audioAnTien
+local audioBaoSam
+local audioChiaBai
+local audioDanhBai
+local audioDanh2
+local audioHurryup
+local audioMatTien
+local audioThang
+local audioThangDam
+local audioThua
+local audioTicktak
+local audioYourTurn
+
+local sprAvatars  = List()
+local sprAvatarDefault
+
+local sprPlayerResultStatus  = List()
+
+local txtMoney
+local imgMoneyType
+local sprMoneyType  = List()
+
+local gMenuContent
+local btSound
+local btMusic
+local btCloseMenu
+local gRoomPrefab
+local gRoomContent
+
+local uiRoomItems  = List()
+
+local btCloseLobby
+local btMenu
+local btPlayNow
+local btChangeMoney
+
+local titleNormal
+local titleSolo
+
+local roomData
+
+local _assetBundleConfig
+
+-- 1 Gold, 0 Coin
+local moneyType = 1
+local goldInt = 1
+local coinInt = 0
+local isClickChoiNhanh = false
+
+local isRoomSolo = true
+
+local lGameTlmnXlua
+local lGameTlmnLobbyXlua
+-- --------------------------------------------------------- load Object -------------------
+
+function LoadObjectGame()
+    audioBackground = _audioBackground
+    audioButtonClick = _audioButtonClick
+    audioButtonFail = _audioButtonFail
+    audioAnTien = _audioAnTien
+    audioBaoSam = _audioBaoSam
+    audioChiaBai = _audioChiaBai
+    audioDanhBai = _audioDanhBai
+    audioDanh2 = _audioDanh2
+    audioHurryup = _audioHurryup
+    audioMatTien = _audioMatTien
+    audioThang = _audioThang
+    audioThangDam = _audioThangDam
+    audioThua = _audioThua
+    audioTicktak = _audioTicktak
+    audioYourTurn    = _audioYourTurn
+
+    sprAvatars:append(_sprAvatar1)
+    sprAvatars:append(_sprAvatar2)
+    sprAvatars:append(_sprAvatar3)
+    sprAvatars:append(_sprAvatar4)
+    sprAvatars:append(_sprAvatar5)
+    sprAvatars:append(_sprAvatar6)
+    sprAvatars:append(_sprAvatar7)
+    sprAvatars:append(_sprAvatar8)
+
+    sprAvatarDefault = _sprAvatarDefault
+
+    sprPlayerResultStatus:append(_sprPlayerResultStatus1)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus2)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus3)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus4)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus5)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus6)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus7)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus8)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus9)
+    sprPlayerResultStatus:append(_sprPlayerResultStatus10)
+
+    txtMoney = _txtMoney:GetComponent(typeof(CS.VKTextValueChange))
+    imgMoneyType = _imgMoneyType:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    sprMoneyType:append(_sprMoneyTypeGold)
+    sprMoneyType:append(_sprMoneyTypeCoin)
+  
+    gMenuContent = _gMenuContent
+    btSound = _btSound:GetComponent(typeof(CS.VKButton))
+    btMusic = _btMusic:GetComponent(typeof(CS.VKButton))
+    btCloseMenu = _btCloseMenu:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    gRoomPrefab = _gRoomPrefab
+    gRoomContent = _gRoomContent
+
+    uiRoomItems:append(_uiRoomItem1:GetComponent(typeof(CS.XLuaBehaviour)))
+
+    btCloseLobby = _btCloseLobby:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btMenu = _btCloseLobby:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+    btPlayNow = _btPlayNow:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    btChangeMoney = _btChangeMoney:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    lGameTlmnLobbyXlua = _lGameTlmnLobbyXlua:GetComponent(typeof(CS.XLuaBehaviour))
+
+    titleNormal = _titleNormal
+    titleSolo = _titleSolo
+end
+
+function AddEvent()
+    btPlayNow.onClick:AddListener(ButtonChoiNhanhClickListener)
+    btChangeMoney.onClick:AddListener(ButtonChangeMoneyClickListener)
+    btCloseMenu.onClick:AddListener(ButtonMenuClickListener)
+    btSound.onClick:AddListener(ButtonMenuClickListener)
+    btMusic.onClick:AddListener(ButtonMusicClickListener)
+    btCloseLobby.onClick:AddListener(ButtonCloseLobbyListener)
+end
+
+
+----------------------------------- Method Common ----------------------------------
+function InitLayer(layerKeys, screenRatio)
+    isLayerAnimOpenDone = false;
+
+    layerKey = layerKeys
+    canvas = self:GetComponent(typeof(CS.UnityEngine.Canvas))
+    anim = self:GetComponent(typeof(CS.UnityEngine.Animator))
+    graphicRaycaster = self:GetComponent(typeof(CS.UnityEngine.UI.GraphicRaycaster))
+
+    -- khởi tạo gContenAll
+    gContenAll  = _gContenAll
+    -- Chưa khởi tạo dragMini
+    -- dragMini = _dragMini:GetComponent(typeof(CS.DragGameMiniEvent))
+end
+
+function StartLayer()
+    uiLayerController = CS.UILayerController.Instance
+    uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+
+    if layerAnimType == AnimType.None then
+        isLayerAnimOpenDone = true;
+    end
+
+    LoadObjectGame()
+    AddEvent()
+
+    CS.TopJackpotController.instance:ShowTopHu(false)
+    CS.Database.Instance.onUserUpdateGoldEventLua:AddListener(UpdateGold) 
+    CS.Database.Instance.onUserUpdateCoinEventLua:AddListener(UpdateCoin) 
+
+end
+
+function ShowLayer()
+    Init()
+end
+
+function HideLayer()
+    _server:HubCall("HideSlot")
+    _server:SRSDisconnect()
+
+    CS.TopJackpotController.instance:ShowTopHu(true)
+
+    CS.Database.Instance.onUserUpdateGoldEventLua:AddListener(UpdateGold) 
+    CS.Database.Instance.onUserUpdateCoinEventLua:AddListener(UpdateCoin) 
+
+    _server:SRSDisconnect()
+    ClearUI()
+end
+
+function DestroyLayer()
+    CS.Database.Instance.currentGame = CS.GameId.NONE
+    CS.UILayerController.Instance:RemoveLayerGame()
+    CS.AssetbundlesManager.Instance:RemoveAssetBundleByKey(_assetBundleConfig.name)
+end
+
+function Init()
+    CS.UILayerController.Instance:ShowLoading()
+    _assetBundleConfig = CS.AssetbundlesManager.Instance.assetSetting:GetItemByGameId(_GAMEID)
+
+    moneyType = GameEnums.MoneyType_GOLD
+
+    _server = self.gameObject:AddComponent(typeof(CS.XLuaSignalRServer))
+
+    isRoomSolo = configGate.requestJoinGameTLMNSolo
+    if isRoomSolo then
+        titleSolo:SetActive(true)
+        titleNormal:SetActive(false)
+        _server:SRSInit(_URLSOLO, _HUBNAME)
+    else
+        titleSolo:SetActive(false)
+        titleNormal:SetActive(true)
+        _server:SRSInit(_URLMULTI, _HUBNAME)
+    end
+    
+    _server.onConnected = HandleConnected
+    _server.onClosed = HandleConnectClose
+    _server.onError = HandleConnectError
+
+    accountInfo = CS.Database.Instance:Account()
+
+    LoadMoney()
+end
+
+-- --  --------------------------------------------------Method-------------------------------
+
+-- ----------------------------------------------------Listener-----------------------------------
+
+function ButtonSelectRoomClickListener(data)
+    -- CS.AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick)
+    local account = CS.Database.Instance:Account()
+    if (moneyType == 1) then
+        if data.Item3 > account.Gold then
+            CS.NotifyController.Instance:Open("Số dư của bạn không đủ để vào phòng", CS.NotifyController.TypeNotify.Error);
+            return
+        end
+    else
+        if data.Item3 > account.Coin then
+            CS.NotifyController.Instance:Open("Số dư của bạn không đủ để vào phòng", CS.NotifyController.TypeNotify.Error);
+            return
+        end
+    end
+    CS.UILayerController.Instance:ShowLoading();
+    _server:HubCallAndResult("PlayNow",CallBackPlayNow,data.Item1,moneyType)
+end
+
+function ButtonChangeMoneyClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    if moneyType == 1 then
+        moneyType = 0
+    else
+        moneyType = 1
+    end    
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    LoadMoney()
+    ChangeTypeMoney()
+    LoadRoom(roomData)
+end
+
+function ButtonChoiNhanhClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    local roomItem = nil
+    local account = Database.Instance.Account()
+
+    for i=1,#uiRoomItems do
+
+        if moneyType == 1 then
+            if uiRoomItems[i].data.Item3 < account.Gold then
+                roomItem = uiRoomItems[i]
+            else
+                break
+            end
+        else
+            if uiRoomItems[i].data.Item3 < account.Coin then
+                roomItem = uiRoomItems[i]
+            else
+                break
+            end
+        end
+end
+
+    if roomItem ~= nil then
+        CS.UILayerController.Instance.ShowLoading()
+        _server:HubCallAndResult("PlayNow",CallBackPlayNow,roomItem.data.Item1,moneyType)
+    else
+        CS.NotifyController.Instance:Open("Số dư của bạn không đủ để vào phòng", NotifyController.TypeNotify.Error)
+    end
+end
+
+
+function ButtonLamMoiClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    _server.HubCallGetLobbyInfo();
+end
+
+function ButtonMenuClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    gMenuContent:SetActive(true)
+    LoadSound()
+end
+
+function ButtonMusicClickListener()
+    -- @Todo
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    -- AudioAssistant.Instance.MuteMusicGame(_config.gameId);
+    -- btMusic.SetupAll(!_settingSound.isMuteMusic);
+end
+
+function ButtonSoundClickListener()
+    -- AudioAssistant.Instance.PlaySoundGame(_config.gameId, _config.audioButtonClick);
+    -- AudioAssistant.Instance.MuteSoundGame(_config.gameId);
+
+    -- btSound.SetupAll(!_settingSound.isMuteSound);
+end
+
+function ButtonCloseLobbyListener()
+    Close()
+end
+
+----------------------------------------- Handle Method ---------------------------------------
+function HandleConnected()
+    CS.UILayerController.Instance:HideLoading()
+    _server:HubCallAndResult("EnterLobby",CallBackEnterLobby)
+end
+
+function HandleConnectError(msg)
+    CS.UILayerController.Instance:HideLoading()
+    if (not(msg == nil or msg == '') ) then
+        CS.LPopup.OpenPopupTop("Lỗi", msg)
+    end
+end
+
+function HandleConnectClose()
+    CS.UILayerController.Instance:HideLoading()
+    self:StopAllCoroutines();
+end
+
+-- On Message
+function lobbyInfo(datas)
+    roomData = json.decode(datas)
+    LoadRoom(roomData)
+end
+
+function joinGame(data)
+
+    print("data joinGame game   ", data)
+    -- body
+    CS.UILayerController.Instance:ShowLayer(UILayerKey.LGameTLMN, "tlmn.bundle"
+    ,function(layer)
+        lGameTlmnXlua = layer:GetComponent(typeof(CS.XLuaBehaviour))
+        lGameTlmnXlua:InvokeXLua("Init",lGameTlmnLobbyXlua,data,moneyType,isRoomSolo)
+    end)
+end
+
+function error(datas)
+    print("data error game   ", datas)
+end
+
+function playerLeave(datas)
+    lGameTlmnXlua:InvokeXLua("playerLeave",datas)
+end
+
+function playerJoin(datas)
+    lGameTlmnXlua:InvokeXLua("playerJoin",datas)
+end
+
+function startGame(datas)
+    lGameTlmnXlua:InvokeXLua("startGame",datas)
+end
+
+function danhBai(datas1,datas2,datas3)
+    lGameTlmnXlua:InvokeXLua("danhBai",datas1,datas2,datas3)
+end
+
+function askBaoSam(datas)
+    lGameTlmnXlua:InvokeXLua("askBaoSam",datas)
+end
+
+function startActionTimer(datas,datas2,datas3)
+    lGameTlmnXlua:InvokeXLua("startActionTimer",datas,datas2,datas3)
+end
+
+function playerBaoSam(datas)
+    lGameTlmnXlua:InvokeXLua("playerBaoSam",datas)
+end
+
+function boLuot(datas)
+    lGameTlmnXlua:InvokeXLua("boLuot",datas)
+end
+
+function endRound(datas)
+    lGameTlmnXlua:InvokeXLua("endRound",datas)
+end
+
+function showResult(datas)
+    lGameTlmnXlua:InvokeXLua("showResult",datas)
+end
+
+function GetMessage(datas)
+    print("data GetMessage game   ", datas)
+end
+
+function updateAccount(datas)
+    print("data updateAccount game   ", datas)
+end
+
+function buyManual( datas )
+    print("data buyManual game   ", datas)
+end
+
+function playerMessage( datas )
+    print("----------data playerMessage game   ", datas)
+end
+
+function  baoSam(datas)
+    print("----------data baosam game   ", datas)
+end
+
+function  updateConnectionStatus(datas)
+    print("----------data updateConnectionStatus game   ", datas)
+end
+
+function error( datas )
+    print("----------data error game   ", datas)
+end
+
+function recieveMessage( datas )
+    print("----------data recieveMessage game   ", datas)
+end
+
+function notifyEvent( datas )
+    print("----------data notifyEvent game   ", datas)
+end
+
+function stopHub( datas )
+    print("----------data stopHub game   ", datas)
+end
+
+function forceLogout( datas )
+    print("----------data forceLogout game   ", datas)
+end
+
+-- Call Sever -------------------------
+function StartGameCallServer()
+    print("--------Request startGame ")
+    _server:HubCallAndResult("StartGame",CallBackStartGame)
+end
+
+function DanhBaiCallServer(callback, datas)
+    print("--------Request danh bai ")
+    -- body
+    _server:HubCallAndResult("DanhBai",callback,datas)
+end
+
+function BoLuotCallServer(callback)
+    print("---------- Request bo luot")
+
+    _server:HubCallAndResult("BoLuot",callback)
+end
+
+function BaoSamCallServer(callBack,datas)
+    print("---------- Request bao sam " , datas)
+    _server:HubCallAndResult("BaoSam",callBack,datas)
+end
+
+function LeaveGameCallServer(callBack)
+    _server:HubCallAndResult("LeaveGame",callBack)
+end
+
+function RegisterLeaveRoomCallServer(callBack)
+    _server:HubCallAndResult("UnregisterLeaveRoom",callBack)
+end
+
+-- Call Back ------------------------------------------------------------------------------
+function CallBackEnterLobby(datas)
+    _server:HubCallAndResult("GetLobbyInfo",CallBackInfoLobby)
+
+    --  Cập nhật thông tin người ở lobby
+    print("-------------- data EnterLobby-------------", datas)
+    local dataReturn = json.decode(datas)
+    if dataReturn == nil then
+        return
+    end
+    CS.Database.Instance:UpdateUserCoin(dataReturn.Coin)
+    CS.Database.Instance:UpdateUserGold(dataReturn.Gold)
+
+    -- LoadMoney()
+end
+
+function CallBackInfoLobby(data)
+--    nil action
+print("--------------infoLobby CallBack----------------------------------")
+end
+
+function CallBackPlayNow(data)
+    print("--------------PlayNow CallBack----------------------------------")
+    print(data,"data play now")
+end
+
+function CallBackStartGame(datas)
+    print("------- StartGame  ",datas)
+    -- lGameTlmnXlua:InvokeXLua("startGame",datas)
+end
+
+function XepBaiCallServer(callBack)
+    _server:HubCallAndResult("SortHandCards",callBack)
+end
+
+-- ----------------------------------- Method Logic Sam lobby .....................................
+function LoadRoom(dataRooms)
+
+    dataRooms = GetListRoom(moneyType,dataRooms)
+    for i=1,#uiRoomItems do
+        uiRoomItems[i].gameObject:SetActive(false)
+    end
+
+    if #dataRooms> 0 then
+        for  i = 1, #dataRooms do
+            if i > #uiRoomItems then
+                local gObj = CS.VKCommon.CreateGameObject(gRoomPrefab, gRoomContent)
+                local item = gObj:GetComponent(typeof(CS.XLuaBehaviour))
+                uiRoomItems:append(item);
+            end
+            uiRoomItems[i]:InvokeXLua("LoadData",dataRooms[i], i)
+        end
+    end
+end
+
+function GetListRoom(typeRoom,dataRooms)
+
+    local data = List()
+
+    for i=1,#dataRooms do
+        if dataRooms[i].Item4 == typeRoom then
+            data:append(dataRooms[i])
+        end
+    end
+    return data
+end
+
+function LoadMoney()
+    if moneyType == goldInt then
+        txtMoney:SetNumber(CS.Database.Instance:Account().Gold)
+    else
+        txtMoney:SetNumber(CS.Database.Instance:Account().Coin)
+    end
+end
+
+function Reload()
+    _server.onConnected = HandleConnected
+    _server.onClosed = HandleConnectClose
+    _server.onError = HandleConnectError
+
+    _server:HubCallAndResult("EnterLobby",CallBackEnterLobby)
+end
+
+function UpdateCoin(infoUpdate)
+    if moneyType ~= goldInt then 
+        txtMoney:SetNumber(infoUpdate.Coin)
+    end
+end
+
+function UpdateGold(infoUpdate)
+    if moneyType == goldInt then
+        txtMoney:SetNumber(infoUpdate.Gold)
+    end
+end
+
+function ClearUI()
+    gMenuContent:SetActive(false)
+    isClickChoiNhanh = false
+    self:StopAllCoroutines()
+end
+
+function ChangeTypeMoney()
+    if moneyType == goldInt then
+        imgMoneyType.sprite = sprMoneyType[1]
+    else
+        imgMoneyType.sprite = sprMoneyType[2]
+    end
+end
+
+function GetSpriteStatus(index)
+    print("index statucs spte" , index)
+
+    if index > #sprPlayerResultStatus then
+        return nil
+    end
+
+    return sprPlayerResultStatus[index]
+end
+
+function GetSpriteAvatar(index)
+    print("index statucs spte" , index)
+
+    if index + 1 > #sprAvatars then
+        return nil
+    end
+
+    return sprAvatars[index + 1]
+end
+-- ----------------------------------- Method Common No FIXED ----------------------------
+function SetLayerIndex(index)
+    layerIndex = index
+end
+
+function FirstLoadLayer()
+
+end
+
+function EnableLayer()
+    graphicRaycaster.enabled = true;
+end
+
+function ReloadLayer()
+    
+end
+
+function BeforeHideLayer()
+    
+end
+
+function DisableLayer()
+   if position ~= Position.Middle then
+        graphicRaycaster.enabled = false;
+   end 
+end
+
+function SetSortOrder(order)
+    canvas.sortingOrder = order;
+    if childOrders ~= nil then
+        -- body
+        for i=1,#childOrders do
+            childOrders[i].ResetOrder(canvas.sortingOrder)
+        end
+    end
+end
+
+function ResetPosition()
+    if gContentAll ~= nil then
+        rect = gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+    end
+end
+
+function ResetAfterAnim()
+    if gContentAll ~= nil then
+
+        gContentAll.transform.localScale = Vector3.one;
+
+        rect =  gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+        cvGroup = gContentAll.GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+        cvGroup.alpha = 1
+    end
+end
+
+function PlayAnimation(key)
+    if anim ~= nil then
+        isLayerAnimOpenDone = false
+        anim.enabled = true
+        graphicRaycaster.enabled = false;
+        if key == AnimKey.OpenPopup or key == AnimKey.ClosePopup then
+            if key == AnimKey.OpenPopup then
+                cs_coroutine.start(self, DelayToResetAfterAnim)
+            end
+            anim:SetTrigger(key);
+        else
+            local DelaytoRunAnim = cs_coroutine.start(self,
+                function()
+                    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+                    anim:SetTrigger(key);
+                end
+            )
+        end
+    else
+        isLayerAnimOpenDone = true;
+    end
+end
+
+function Close()
+    graphicRaycaster.enabled = false
+    uiLayerController:HideLayer(uiLayerThis)
+end
+
+function OnLayerOpenDone()
+    anim.enabled = false
+    graphicRaycaster.enabled = true;
+    isLayerAnimOpenDone = true;
+    ResetAfterAnim();
+end
+
+function OnLayerCloseDone()
+    anim.enabled = false
+    HideLayer()
+
+    uiLayerController:CacheLayer(uiLayerThis)
+    isLayerAnimOpenDone = false
+end
+
+function DelayToResetAfterAnim()
+    
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.5))
+
+    if gContentAll ~= nil then
+        local cvGroup = gContentAll.GetComponent(typeof(CanvasGroup))
+        if  cvGroup.alpha < 1 then
+            gContentAll.transform.localScale = CS.UnityEngine.Vector3.one
+
+            local rect = gContentAll.GetComponent(typeof(RectTransform))
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+            cvGroup.alpha = 1
+        end
+    end    
+end

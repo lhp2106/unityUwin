@@ -1,0 +1,20 @@
+
+vqmm_title.png
+size: 500,147
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+title_light_on
+  rotate: false
+  xy: 474, 122
+  size: 24, 23
+  orig: 32, 29
+  offset: 4, 3
+  index: -1
+tittle_light_off
+  rotate: false
+  xy: 2, 2
+  size: 470, 143
+  orig: 480, 161
+  offset: 6, 9
+  index: -1

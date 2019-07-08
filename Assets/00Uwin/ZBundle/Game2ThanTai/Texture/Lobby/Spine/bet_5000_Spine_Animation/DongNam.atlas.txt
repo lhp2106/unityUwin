@@ -1,0 +1,76 @@
+
+DongNam.png
+size: 1227,312
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cmcuocthantai01
+  rotate: false
+  xy: 1021, 48
+  size: 143, 64
+  orig: 143, 64
+  offset: 0, 0
+  index: -1
+cmcuocthantai02
+  rotate: true
+  xy: 2, 17
+  size: 293, 429
+  orig: 293, 429
+  offset: 0, 0
+  index: -1
+cmcuocthantai04
+  rotate: true
+  xy: 433, 39
+  size: 271, 338
+  orig: 271, 338
+  offset: 0, 0
+  index: -1
+dongnam01
+  rotate: false
+  xy: 773, 90
+  size: 246, 220
+  orig: 246, 220
+  offset: 0, 0
+  index: -1
+dongnam02
+  rotate: false
+  xy: 773, 19
+  size: 184, 69
+  orig: 184, 69
+  offset: 0, 0
+  index: -1
+dongnam03
+  rotate: false
+  xy: 1021, 114
+  size: 186, 196
+  orig: 186, 196
+  offset: 0, 0
+  index: -1
+dongnam04
+  rotate: true
+  xy: 959, 20
+  size: 68, 57
+  orig: 68, 57
+  offset: 0, 0
+  index: -1
+dongnam05
+  rotate: false
+  xy: 433, 22
+  size: 14, 15
+  orig: 14, 15
+  offset: 0, 0
+  index: -1
+dongnam06
+  rotate: true
+  xy: 1018, 2
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+dongnam07
+  rotate: false
+  xy: 1209, 295
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1

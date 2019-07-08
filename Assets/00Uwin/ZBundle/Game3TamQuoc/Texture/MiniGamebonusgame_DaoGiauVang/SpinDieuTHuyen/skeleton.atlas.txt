@@ -1,0 +1,125 @@
+
+skeleton.png
+size: 4364,3368
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diaochan01
+  rotate: false
+  xy: 2, 1124
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan02
+  rotate: false
+  xy: 729, 2246
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan03
+  rotate: false
+  xy: 2, 2
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan04
+  rotate: false
+  xy: 729, 1124
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan05
+  rotate: false
+  xy: 1456, 2246
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan06
+  rotate: false
+  xy: 729, 2
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan07
+  rotate: false
+  xy: 1456, 1124
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan08
+  rotate: false
+  xy: 2183, 2246
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan09
+  rotate: false
+  xy: 1456, 2
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan10
+  rotate: false
+  xy: 2183, 1124
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan11
+  rotate: false
+  xy: 2910, 2246
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan12
+  rotate: false
+  xy: 2183, 2
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan13
+  rotate: false
+  xy: 2910, 1124
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan14
+  rotate: false
+  xy: 3637, 2246
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan15
+  rotate: false
+  xy: 2910, 2
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan16
+  rotate: false
+  xy: 3637, 1124
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1
+diaochan17
+  rotate: false
+  xy: 2, 2246
+  size: 725, 1120
+  orig: 725, 1120
+  offset: 0, 0
+  index: -1

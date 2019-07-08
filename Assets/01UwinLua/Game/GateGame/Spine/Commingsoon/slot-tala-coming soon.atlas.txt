@@ -1,0 +1,125 @@
+
+slot-tala-coming soon.png
+size: 556,556
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+COMING SOON
+  rotate: false
+  xy: 258, 289
+  size: 232, 84
+  orig: 232, 84
+  offset: 0, 0
+  index: -1
+Layer 1 copy
+  rotate: true
+  xy: 250, 123
+  size: 29, 190
+  orig: 29, 190
+  offset: 0, 0
+  index: -1
+Layer 2 copy 2
+  rotate: false
+  xy: 138, 18
+  size: 22, 19
+  orig: 22, 19
+  offset: 0, 0
+  index: -1
+Layer 4
+  rotate: true
+  xy: 423, 154
+  size: 26, 131
+  orig: 26, 131
+  offset: 0, 0
+  index: -1
+bgt11
+  rotate: false
+  xy: 258, 375
+  size: 240, 179
+  orig: 240, 179
+  offset: 0, 0
+  index: -1
+bgtll
+  rotate: false
+  xy: 2, 359
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+bgtll copy
+  rotate: false
+  xy: 2, 162
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+suolaka
+  rotate: false
+  xy: 162, 21
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+tal
+  rotate: false
+  xy: 442, 89
+  size: 102, 63
+  orig: 102, 63
+  offset: 0, 0
+  index: -1
+tal1
+  rotate: true
+  xy: 500, 462
+  size: 92, 54
+  orig: 92, 54
+  offset: 0, 0
+  index: -1
+tl1
+  rotate: false
+  xy: 258, 154
+  size: 163, 133
+  orig: 163, 133
+  offset: 0, 0
+  index: -1
+tl2
+  rotate: false
+  xy: 138, 39
+  size: 110, 121
+  orig: 110, 121
+  offset: 0, 0
+  index: -1
+tl3
+  rotate: true
+  xy: 250, 33
+  size: 88, 104
+  orig: 88, 104
+  offset: 0, 0
+  index: -1
+tl4
+  rotate: false
+  xy: 500, 356
+  size: 50, 104
+  orig: 50, 104
+  offset: 0, 0
+  index: -1
+tl5
+  rotate: false
+  xy: 423, 182
+  size: 75, 105
+  orig: 75, 105
+  offset: 0, 0
+  index: -1
+v1
+  rotate: false
+  xy: 2, 2
+  size: 134, 158
+  orig: 134, 158
+  offset: 0, 0
+  index: -1
+v11
+  rotate: true
+  xy: 356, 23
+  size: 98, 79
+  orig: 98, 79
+  offset: 0, 0
+  index: -1

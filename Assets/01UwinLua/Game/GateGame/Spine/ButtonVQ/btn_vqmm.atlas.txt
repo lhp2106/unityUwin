@@ -1,0 +1,20 @@
+
+btn_vqmm.png
+size: 206,79
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+lb_0003s_0000s_0000_btn_vqmm_normal_02
+  rotate: false
+  xy: 104, 2
+  size: 100, 75
+  orig: 100, 75
+  offset: 0, 0
+  index: -1
+lb_0003s_0000s_0001_btn_vqmm_normal_01
+  rotate: false
+  xy: 2, 2
+  size: 100, 75
+  orig: 100, 75
+  offset: 0, 0
+  index: -1

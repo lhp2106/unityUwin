@@ -1,0 +1,41 @@
+
+mafia_nohu.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: true
+  xy: 311, 73
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+mafia_nohu_char
+  rotate: false
+  xy: 2, 3
+  size: 307, 225
+  orig: 307, 225
+  offset: 0, 0
+  index: -1
+nohu_text
+  rotate: false
+  xy: 2, 230
+  size: 470, 241
+  orig: 470, 241
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 463, 185
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: false
+  xy: 311, 2
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1

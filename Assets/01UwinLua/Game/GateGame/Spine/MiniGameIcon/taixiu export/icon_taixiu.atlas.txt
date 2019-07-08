@@ -1,0 +1,69 @@
+
+icon_taixiu.png
+size: 1141,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+taixiu/dice red
+  rotate: true
+  xy: 961, 134
+  size: 120, 118
+  orig: 288, 288
+  offset: 125, 116
+  index: -1
+taixiu/dice white
+  rotate: true
+  xy: 999, 21
+  size: 111, 108
+  orig: 288, 288
+  offset: 53, 108
+  index: -1
+taixiu/tai_xiu_icon_0000s_0000s_0002_Layer-10-copy
+  rotate: false
+  xy: 1081, 196
+  size: 58, 58
+  orig: 288, 288
+  offset: 124, 55
+  index: -1
+taixiu/tai_xiu_icon_0000s_0000s_0004_chu-xiu
+  rotate: true
+  xy: 869, 117
+  size: 137, 90
+  orig: 288, 288
+  offset: 140, 15
+  index: -1
+taixiu/tai_xiu_icon_0000s_0000s_0005_chu-tai-
+  rotate: false
+  xy: 869, 28
+  size: 128, 87
+  orig: 288, 288
+  offset: 15, 16
+  index: -1
+taixiu/tai_xiu_icon_0000s_0000s_0006_anh-sang-den
+  rotate: true
+  xy: 691, 32
+  size: 222, 176
+  orig: 288, 288
+  offset: 36, 81
+  index: -1
+taixiu/tai_xiu_icon_0000s_0000s_0007_logo-taixiu
+  rotate: true
+  xy: 505, 22
+  size: 232, 184
+  orig: 288, 288
+  offset: 31, 73
+  index: -1
+taixiu/tai_xiu_icon_0000s_0000s_0008_aura-2
+  rotate: true
+  xy: 2, 6
+  size: 248, 255
+  orig: 288, 288
+  offset: 20, 31
+  index: -1
+taixiu/tai_xiu_icon_0000s_0000s_0009_Group-6
+  rotate: false
+  xy: 259, 2
+  size: 244, 252
+  orig: 288, 288
+  offset: 24, 13
+  index: -1

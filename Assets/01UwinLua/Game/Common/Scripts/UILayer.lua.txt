@@ -1,0 +1,208 @@
+List = require 'pl.List'
+GameEnums = require 'common.GameEnums'
+local cs_coroutine = require 'common.cs_coroutine'
+
+-- --------------------------------- Parameter Common ----------------------------
+local AnimKey = {
+    OpenPopup = "OpenPopup",
+    ClosePopup = "ClosePopup",
+}
+
+local Position = {
+    Bootom = 0,
+    Middle = 1,
+    Top = 2
+}
+
+local  AnimType= {
+    None = 0,
+    Popup= 1,
+}
+
+local dragMini
+local gContenAll
+local layerAnimType = AnimType.None
+
+local animkey = AnimKey.OpenPopup
+
+local  allowDestroy = false;
+local  isGameLayer = false;
+local  lockCanvasScale= false;
+local  hideBehindLayers= false;
+
+local position = Position.Bootom
+
+local childOrders = List()
+
+local anim
+local canvas 
+local graphicRaycaster
+local layerIndex
+local layerKey
+local isLayerAnimOpenDone = false
+
+local uiLayerController
+local uiLayerThis
+
+function InitLayer(layerKeys, screenRatio)
+    isLayerAnimOpenDone = false;
+
+    layerKey = layerKeys
+    canvas = self:GetComponent(typeof(CS.UnityEngine.Canvas))
+    anim = self:GetComponent(typeof(CS.UnityEngine.Animator))
+    graphicRaycaster = self:GetComponent(typeof(CS.UnityEngine.UI.GraphicRaycaster))
+
+    -- khởi tạo gContenAll
+    gContenAll  = _gContenAll
+    -- Chưa khởi tạo dragMini
+end
+
+function SetLayerIndex(index)
+    layerIndex = index
+end
+
+function StartLayer()
+    uiLayerController = CS.UILayerController.Instance
+    uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+
+    LoadObjectGame()
+
+    if layerAnimType == AnimType.None then
+        isLayerAnimOpenDone = true
+    end
+end
+
+function LoadObjectGame()
+end
+
+function FirstLoadLayer()
+
+end
+
+function ShowLayer()
+    
+end
+
+function EnableLayer()
+    graphicRaycaster.enabled = true
+end
+
+function ReloadLayer()
+    
+end
+
+function BeforeHideLayer()
+    
+end
+
+function DisableLayer()
+   if position ~= Position.Middle then
+        graphicRaycaster.enabled = false
+   end 
+end
+
+function HideLayer()
+    
+end
+
+function DestroyLayer()
+    
+end
+
+function SetSortOrder(order)
+    canvas.sortingOrder = order
+    if childOrders ~= nil then
+        -- body
+        for i=1,#childOrders do
+            childOrders[i].ResetOrder(canvas.sortingOrder)
+        end
+    end
+end
+
+function ResetPosition()
+    if gContentAll ~= nil then
+        rect = gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+    end
+end
+
+function ResetAfterAnim()
+    if gContentAll ~= nil then
+
+        gContentAll.transform.localScale = Vector3.one
+
+        rect =  gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+        cvGroup = gContentAll.GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+        cvGroup.alpha = 1
+    end
+end
+
+function PlayAnimation(key)
+    if anim ~= nil then
+        isLayerAnimOpenDone = false
+        anim.enabled = true
+        graphicRaycaster.enabled = false
+        if key == AnimKey.OpenPopup or key == AnimKey.ClosePopup then
+            if key == AnimKey.OpenPopup then
+                cs_coroutine.start(self, DelayToResetAfterAnim)
+            end
+            anim:SetTrigger(key)
+        else
+            local DelaytoRunAnim = cs_coroutine.start(self,
+                function()
+                    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+                    anim:SetTrigger(key)
+                end
+            )
+        end
+    else
+        isLayerAnimOpenDone = true
+    end
+end
+
+function  Close()
+    graphicRaycaster.enabled = false
+    uiLayerController:HideLayer(uiLayerThis)
+end
+
+function  OnLayerOpenDone()
+
+    anim.enabled = false
+
+    graphicRaycaster.enabled = true
+    isLayerAnimOpenDone = true
+
+    ResetAfterAnim()
+end
+
+function  OnLayerCloseDone()
+    anim.enabled = false
+    HideLayer()
+
+    uiLayerController:CacheLayer(uiLayerThis)
+    isLayerAnimOpenDone = false
+end
+
+function DelayToResetAfterAnim()
+    
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.5))
+
+    if gContentAll ~= nil then
+        local cvGroup = gContentAll.GetComponent(typeof(CanvasGroup))
+        if  cvGroup.alpha < 1 then
+            gContentAll.transform.localScale = CS.UnityEngine.Vector3.one
+
+            local rect = gContentAll.GetComponent(typeof(RectTransform))
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+            cvGroup.alpha = 1
+        end
+    end    
+end

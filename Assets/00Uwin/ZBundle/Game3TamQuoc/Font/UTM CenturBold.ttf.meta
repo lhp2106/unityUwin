@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 7146f7916af0d0045ba415ab48f6b83f
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: UTM Centur
+  fontNames:
+  - UTM Centur
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0d3992d7efbc5e442a6eb998c49da7e5, type: 3}
+  - {fileID: 12800000, guid: 0f7095790891c224e8be51f2e8a3289c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

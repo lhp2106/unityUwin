@@ -1,0 +1,48 @@
+
+bau.png
+size: 216,216
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 2
+  rotate: false
+  xy: 2, 4
+  size: 10, 28
+  orig: 10, 28
+  offset: 0, 0
+  index: -1
+bc_0033_Layer-14
+  rotate: false
+  xy: 2, 124
+  size: 84, 88
+  orig: 84, 88
+  offset: 0, 0
+  index: -1
+bc_0033_Layer-14 copy
+  rotate: false
+  xy: 2, 34
+  size: 84, 88
+  orig: 84, 88
+  offset: 0, 0
+  index: -1
+bc_0033_Layer-14 copy 2
+  rotate: false
+  xy: 88, 125
+  size: 76, 87
+  orig: 76, 87
+  offset: 0, 0
+  index: -1
+bc_0033_Layer-14 copy 3
+  rotate: true
+  xy: 88, 46
+  size: 77, 74
+  orig: 77, 74
+  offset: 0, 0
+  index: -1
+suolaka1
+  rotate: true
+  xy: 164, 72
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1

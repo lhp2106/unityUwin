@@ -1,0 +1,41 @@
+
+mafia_jackpot.png
+size: 433,150
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mafia_jackpot_bg
+  rotate: true
+  xy: 174, 3
+  size: 145, 146
+  orig: 145, 146
+  offset: 0, 0
+  index: -1
+mafia_jackpot_char
+  rotate: true
+  xy: 2, 10
+  size: 138, 170
+  orig: 138, 170
+  offset: 0, 0
+  index: -1
+mafia_jackpot_text
+  rotate: true
+  xy: 322, 2
+  size: 146, 57
+  orig: 146, 57
+  offset: 0, 0
+  index: -1
+smoke
+  rotate: false
+  xy: 381, 84
+  size: 50, 64
+  orig: 50, 64
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: true
+  xy: 381, 2
+  size: 80, 29
+  orig: 80, 29
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,441 @@
+List = require 'pl.List'
+UILayerKey = require 'common.UILayerKey'
+json = require "common.json"
+local cs_coroutine = require 'common.cs_coroutine'
+
+------------------------Parameter Common UILayer -------------------------------------
+local AnimKey = {
+    OpenPopup = "OpenPopup",
+    ClosePopup = "ClosePopup",
+}
+
+local Position = {
+    Bootom = 0,
+    Middle = 1,
+    Top = 2
+}
+
+local  AnimType= {
+      None = 0,
+      Popup= 1,
+}
+
+local dragMini
+local gContenAll
+local layerAnimType = AnimType.Popup
+
+local animkey = AnimKey.OpenPopup
+
+local  allowDestroy = true
+local  isGameLayer = false
+local  lockCanvasScale= false
+local  hideBehindLayers= false
+
+local position = Position.Bootom
+
+local childOrders = List()
+
+local anim
+local canvas 
+local graphicRaycaster
+local layerIndex
+local layerKey = UILayerKey.LCreateAccount
+local isLayerAnimOpenDone = false
+
+local uiLayerController
+local uiLayerThis
+
+-- -----------------Parameter LCreateAccountController --------------------------------
+-- [Header("Create Account")]
+local  inputFieldNameLogin;
+local  inputFielPass;
+local  inputFielPassAgain;
+local  inputFiedOTP;
+
+local  imgCapcha;
+local  btGetOTP;
+
+local listImgNotice = List()
+
+local  btCreateAccount;
+
+local  btClose;
+
+local  txtNotice;
+local  rectTransNotice;
+local  objNotice;
+
+local captchaData;
+
+local tempVector3;
+
+local CodeReponseCreateAccount =
+{
+    SUCCESS = 1,
+    CODE_SECUTIRY_OVERTIME = -1,
+    CODE_SECURITY_WRONG = -2,
+    NAME_ACCOUNT_WRONG_FORMAT = -20,
+    PASS_WRONG_FOMAT = -30,
+    ACCOUNT_EXIST = -57,
+    BUSY = -99,
+}
+
+    -- ----------------- Method Common------------------------
+
+function StartLayer()
+    uiLayerController = CS.UILayerController.Instance
+    uiLayerThis = self:GetComponent(typeof(CS.UILayer))
+
+    LoadObjectGame()
+    if layerAnimType == AnimType.None then
+        isLayerAnimOpenDone = true;
+    end
+    AddEvent();
+    ReloadLayer();
+    captchaData = CS.MCaptchaResponse();
+    GetCaptcha();
+end
+
+function ReloadLayer()
+    CS.WebServiceController.Instance.onWebServiceResponseLua:AddListener(OnWebServiceResponse)
+    ReloadLayoutCreateAcount();
+end
+
+function HideLayer()
+    CS.WebServiceController.Instance.onWebServiceResponseLua:RemoveListener(OnWebServiceResponse)
+end
+
+function Close()
+    graphicRaycaster.enabled = false;
+    uiLayerController:HideLayer(layer);
+end
+
+-- ------------------------Method Create Account -----------------------------------------
+
+function LoadObjectGame()
+    inputFieldNameLogin = _inputFieldNameLogin:GetComponent(typeof(CS.UnityEngine.UI.InputField))
+    inputFielPass = _inputFielPass:GetComponent(typeof(CS.UnityEngine.UI.InputField))
+    inputFielPassAgain = _inputFielPassAgain:GetComponent(typeof(CS.UnityEngine.UI.InputField))
+    inputFiedOTP = _inputFiedOTP:GetComponent(typeof(CS.UnityEngine.UI.InputField))
+
+    imgCapcha = _imgCapcha:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    btGetOTP = _btGetOTP:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+    listImgNotice:append(_ImgNotice1)
+    listImgNotice:append(_ImgNotice2)
+    listImgNotice:append(_ImgNotice3)
+    listImgNotice:append(_ImgNotice4)
+
+    btCreateAccount = _btCreateAccount:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+    btClose =_btClose:GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+    txtNotice = _txtNotice:GetComponent(typeof(CS.UnityEngine.UI.Text))
+    rectTransNotice = _rectTransNotice:GetComponent(typeof(CS.UnityEngine.RectTransform))
+    objNotice = _objNotice
+end
+
+function OnWebServiceResponse(code, status, data)
+    if code == CS.WebServiceCode.Code.GenCaptcha then
+
+        if status == CS.WebServiceStatus.Status.OK then
+
+            captchaData = json.decode(data)
+            cs_coroutine.start(self, function()
+                print("Vao load captch", captchaData.Data)
+                coroutine.yield(CS.VKCommon.LoadImageFromBase64(imgCapcha, captchaData.Data, 0))
+            end)
+        else
+            CS.LPopup.OpenPopup("Thông báo", "Không lấy được Captcha. Hãy thử lại!")
+        end
+    end
+
+    if code == CS.WebServiceCode.Code.SignUp then
+
+        CS.UILayerController.Instance:HideLoading();
+        if status == CS.WebServiceStatus.Status.OK then
+            
+            for i = 1,#listImgNotice do
+                listImgNotice[i].SetActive(false);
+            end
+
+            objNotice.SetActive(false);
+            local mSignUp = CS.JsonUtility.FromJson<MSignUpResponse>(data);
+
+            if mSignUp.Code == CS.CodeReponseCreateAccount.SUCCESS then
+            
+                print("____________________----------- Create success")
+                CS.Database.Instance:SetAccountInfo(mSignUp.Account);
+
+                layerLobby = CS.UILayerController.Instance:GetLayer(UILayerKey.LLobby);
+                layerLobby.lobbyController:LoginSuccess(mSignUp.OTPToken);
+                Close()
+
+                if not mSignUp.Account.IsUpdateAccountName then
+                    UILayerController.Instance:ShowLayer(UILayerKey.LCreateNewName,DataResourceLobby.instance.listObjLayer[IndexSourceGate.LCREATE_NEW_NAME])
+                end
+            
+            else
+                -- // Get New Captcha
+                GetCaptcha();
+
+                -- // Show create Error
+                if mSignUp.Code == CS.CodeReponseCreateAccount.BUSY then
+                    CS.LPopup.OpenPopup("Thông báo", Helper.GetStringError(mSignUp.Code) + ". Hãy thử lại!")
+
+                elseif mSignUp.Code == CS.CodeReponseCreateAccount.CODE_SECURITY_WRONG then
+                    SetPosNotice(3, CS.Helper.GetStringError(mSignUp.Code))
+
+                elseif mSignUp.Code == CS.CodeReponseCreateAccount.PASS_WRONG_FOMAT then
+                    SetPosNotice(1, Helper.GetStringError(mSignUp.Code))    
+
+                elseif mSignUp.Code == CS.CodeReponseCreateAccount.NAME_ACCOUNT_WRONG_FORMAT then
+                    SetPosNotice(0, Helper.GetStringError(mSignUp.Code))   
+
+                elseif mSignUp.Code == CS.CodeReponseCreateAccount.ACCOUNT_EXIST then
+                    SetPosNotice(0, Helper.GetStringError(mSignUp.Code))
+
+                elseif mSignUp.Code == CS.CodeReponseCreateAccount.CODE_SECUTIRY_OVERTIME then
+                    SetPosNotice(3, Helper.GetStringError(mSignUp.Code)) 
+                else  
+                    CS.LPopup.OpenPopup("Thông báo","Hãy thử lại!")
+                end  
+            end     
+        end
+    end
+end
+
+--  Method
+
+function AddEvent()
+    --  Button
+    btClose.onClick:AddListener(ClickBtClose)
+    btGetOTP.onClick:AddListener(ClickBtGetCaptcha)
+    btCreateAccount.onClick:AddListener(ClickBtRequestCreate)
+end
+
+function ClickBtClose()
+    uiLayerController:HideLayer(uiLayerThis);
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+
+function ClickBtGetCaptcha()
+    GetCaptcha()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+end
+
+function ClickBtRequestCreate()
+    CS.AudioAssistant.Instance:Shot(CS.StringHelper.SOUND_GATE_BT)
+
+    if (not CS.UILayerController.Instance:IsCurrentLayer(layerKey)) then
+        return
+    end
+
+    if inputFieldNameLogin.text==nil or inputFieldNameLogin.text=="" then
+        SetPosNotice(1, "Bạn chưa nhập 'Tên đăng nhập'")
+        return
+    end
+
+    if inputFielPass.text==nil or inputFielPass.text=="" or inputFielPassAgain.text==nil or inputFielPassAgain.text=="" then
+        SetPosNotice(2, "Bạn chưa nhập 'Mật khẩu'")
+        return;
+    end
+
+    if inputFieldNameLogin.text == inputFielPass.text then
+        SetPosNotice(2, "'Mật khẩu' không được giống 'Tên đăng nhập'")
+        return
+    end
+
+    if inputFielPass.text ~= inputFielPassAgain.text then
+        SetPosNotice(3, "Nhập lại mật khẩu' sai");
+        return;
+    end
+
+    if string.len(inputFielPass.text) < 6 or string.len(inputFielPass.text) > 20 then
+        SetPosNotice(2, "'Mật khẩu' phải từ 6 đến 20 kí tự!")
+        return
+    end
+
+    if (inputFiedOTP.text) == nil or (inputFiedOTP.text)  =="" then
+        SetPosNotice(4, "Chưa nhập mã captcha")
+        return
+    end
+
+    CS.UILayerController.Instance:ShowLoading(true)
+    RequestCreateAccount(inputFieldNameLogin.text, inputFielPass.text, inputFiedOTP.text, captchaData.Token)
+end
+
+function ReloadLayoutCreateAcount()
+    -- // Reset text InputField
+    inputFieldNameLogin.text = ""
+    inputFielPass.text = ""
+    inputFielPassAgain.text = ""
+    inputFiedOTP.text = ""
+
+    for i =1 , #listImgNotice do
+        listImgNotice[i]:SetActive(false);
+    end
+
+    objNotice:SetActive(false);
+    GetCaptcha();
+end
+
+function SetPosNotice(indexNotice,strNotice)
+
+    listImgNotice[indexNotice]:SetActive(true)
+    objNotice:SetActive(true)
+    txtNotice.text = strNotice
+
+    tempVector3 = listImgNotice[indexNotice]:GetComponent(typeof(CS.UnityEngine.RectTransform)).position
+    tempVector3.y = tempVector3.y+ 0.5
+    rectTransNotice.position = tempVector3
+end
+
+function GetCaptcha()
+    -- imgCapcha.color = new Color(0f, 0f, 0f, 0f);
+    CS.SendRequest.SendGenCaptchaRequest()
+end
+
+function RequestCreateAccount(name,pass,captcha,tokenCaptcha)
+    CS.SendRequest.SendSignUpRequest(name, pass, captcha, tokenCaptcha)
+end
+
+----------------------Method Comom no fix -------------------------------
+function InitLayer(layerKeys, screenRatio)
+
+    isLayerAnimOpenDone = false;
+    layerKey = layerKeys
+
+    canvas = self:GetComponent(typeof(CS.UnityEngine.Canvas))
+    
+    anim = self:GetComponent(typeof(CS.UnityEngine.Animator))
+    graphicRaycaster = self:GetComponent(typeof(CS.UnityEngine.UI.GraphicRaycaster))
+
+    -- khởi tạo gContenAll
+    gContenAll  = _gContenAll
+    -- Chưa khởi tạo dragMini
+end
+
+function SetLayerIndex(index)
+    layerIndex = index
+end
+
+function FirstLoadLayer()
+
+end
+
+function ShowLayer()
+    
+end
+
+function EnableLayer()
+    graphicRaycaster.enabled = true;
+end
+
+function BeforeHideLayer()
+    
+end
+
+function DisableLayer()
+   if position ~= Position.Middle then
+        graphicRaycaster.enabled = false;
+   end 
+end
+
+function HideLayer()
+    
+end
+
+function DestroyLayer()
+    
+end
+
+function SetSortOrder(order)
+    canvas.sortingOrder = order;
+    if childOrders ~= nil then
+        -- body
+        for i=1,#childOrders do
+            childOrders[i].ResetOrder(canvas.sortingOrder)
+        end
+    end
+end
+
+function ResetPosition()
+    if gContentAll ~= nil then
+        rect = gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+    end
+end
+
+function ResetAfterAnim()
+    if gContentAll ~= nil then
+
+        gContentAll.transform.localScale = Vector3.one;
+
+        local rect =  gContentAll.GetComponent(typeof(CS.UnityEngine.RectTransform))
+
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+        rect.localPosition = CS.UnityEngine.Vector2(0, 0)
+
+        local cvGroup = gContentAll.GetComponent(typeof(CS.UnityEngine.CanvasGroup))
+        cvGroup.alpha = 1
+    end
+end
+
+function PlayAnimation(key)
+    if anim ~= nil then
+        isLayerAnimOpenDone = false
+        anim.enabled = true
+        graphicRaycaster.enabled = false;
+        if key == AnimKey.OpenPopup or key == AnimKey.ClosePopup then
+            if key == AnimKey.OpenPopup then
+                cs_coroutine.start(self, DelayToResetAfterAnim)
+            end
+            anim:SetTrigger(key);
+        else
+            local DelaytoRunAnim = cs_coroutine.start(self,
+                function()
+                    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.2))
+                    anim:SetTrigger(key);
+                end
+            )
+        end
+    else
+        isLayerAnimOpenDone = true;
+    end
+end
+
+function  OnLayerOpenDone()
+    anim.enabled = false;
+
+    graphicRaycaster.enabled = true;
+    isLayerAnimOpenDone = true;
+
+    ResetAfterAnim();
+end
+
+function  OnLayerCloseDone()
+    anim.enabled = false;
+    HideLayer();
+
+    uiLayerController:CacheLayer(uiLayerThis);
+    isLayerAnimOpenDone = false;
+end
+
+function DelayToResetAfterAnim()
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(0.5))
+    if gContentAll ~= nil then
+        local cvGroup = gContentAll.GetComponent(typeof(CanvasGroup))
+        if  cvGroup.alpha < 1 then
+            gContentAll.transform.localScale = CS.UnityEngine.Vector3.one
+
+            local rect = gContentAll.GetComponent(typeof(RectTransform));
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0);
+            rect.localPosition = CS.UnityEngine.Vector2(0, 0);
+
+            cvGroup.alpha = 1;
+        end
+    end    
+end

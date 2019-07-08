@@ -1,0 +1,90 @@
+
+Shifu.png
+size: 435,162
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ItemShifu01
+  rotate: true
+  xy: 145, 12
+  size: 148, 44
+  orig: 148, 44
+  offset: 0, 0
+  index: -1
+ItemShifu02
+  rotate: true
+  xy: 2, 9
+  size: 151, 141
+  orig: 151, 141
+  offset: 0, 0
+  index: -1
+ItemShifu03
+  rotate: true
+  xy: 191, 25
+  size: 13, 54
+  orig: 13, 54
+  offset: 0, 0
+  index: -1
+ItemShifu04
+  rotate: false
+  xy: 420, 2
+  size: 13, 65
+  orig: 13, 65
+  offset: 0, 0
+  index: -1
+ItemShifu05
+  rotate: false
+  xy: 311, 69
+  size: 113, 91
+  orig: 113, 91
+  offset: 0, 0
+  index: -1
+ItemShifu06
+  rotate: false
+  xy: 286, 4
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+ItemShifu07
+  rotate: false
+  xy: 286, 4
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+ItemShifu08
+  rotate: false
+  xy: 247, 5
+  size: 11, 33
+  orig: 11, 33
+  offset: 0, 0
+  index: -1
+ItemShifu09
+  rotate: false
+  xy: 311, 8
+  size: 107, 59
+  orig: 107, 59
+  offset: 0, 0
+  index: -1
+ItemShifu10
+  rotate: false
+  xy: 286, 15
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+ItemShifu11
+  rotate: false
+  xy: 260, 14
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+ItemShifu12
+  rotate: false
+  xy: 191, 40
+  size: 118, 120
+  orig: 118, 120
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,111 @@
+
+tala.png
+size: 588,588
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 1 copy
+  rotate: false
+  xy: 244, 2
+  size: 29, 190
+  orig: 29, 190
+  offset: 0, 0
+  index: -1
+Layer 18
+  rotate: false
+  xy: 258, 238
+  size: 213, 167
+  orig: 213, 167
+  offset: 0, 0
+  index: -1
+Layer 18 copy
+  rotate: true
+  xy: 412, 104
+  size: 132, 131
+  orig: 132, 131
+  offset: 0, 0
+  index: -1
+Layer 18 copy 2
+  rotate: false
+  xy: 275, 104
+  size: 135, 132
+  orig: 135, 132
+  offset: 0, 0
+  index: -1
+Layer 19
+  rotate: false
+  xy: 500, 420
+  size: 59, 63
+  orig: 59, 63
+  offset: 0, 0
+  index: -1
+Layer 2 copy 2
+  rotate: false
+  xy: 493, 83
+  size: 22, 19
+  orig: 22, 19
+  offset: 0, 0
+  index: -1
+Layer 20
+  rotate: true
+  xy: 500, 485
+  size: 101, 59
+  orig: 101, 59
+  offset: 0, 0
+  index: -1
+Layer 21
+  rotate: false
+  xy: 275, 12
+  size: 117, 90
+  orig: 117, 90
+  offset: 0, 0
+  index: -1
+Layer 22
+  rotate: false
+  xy: 258, 407
+  size: 240, 179
+  orig: 240, 179
+  offset: 0, 0
+  index: -1
+Layer 22 copy
+  rotate: false
+  xy: 2, 13
+  size: 240, 179
+  orig: 240, 179
+  offset: 0, 0
+  index: -1
+Layer 23
+  rotate: false
+  xy: 2, 391
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+Layer 23 copy
+  rotate: false
+  xy: 2, 194
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+Layer 24
+  rotate: false
+  xy: 394, 31
+  size: 97, 71
+  orig: 97, 71
+  offset: 0, 0
+  index: -1
+Layer 4
+  rotate: false
+  xy: 473, 274
+  size: 26, 131
+  orig: 26, 131
+  offset: 0, 0
+  index: -1
+suolaka
+  rotate: false
+  xy: 394, 13
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,118 @@
+
+LuBu.png
+size: 1564,838
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+khung_Chonmuccuoc02
+  rotate: false
+  xy: 237, 52
+  size: 247, 452
+  orig: 247, 452
+  offset: 0, 0
+  index: -1
+tachlubu00
+  rotate: false
+  xy: 2, 715
+  size: 865, 121
+  orig: 865, 121
+  offset: 0, 0
+  index: -1
+tachlubu01
+  rotate: false
+  xy: 1323, 62
+  size: 109, 135
+  orig: 109, 135
+  offset: 0, 0
+  index: -1
+tachlubu02
+  rotate: false
+  xy: 1295, 305
+  size: 265, 183
+  orig: 265, 183
+  offset: 0, 0
+  index: -1
+tachlubu03
+  rotate: true
+  xy: 857, 195
+  size: 293, 176
+  orig: 293, 176
+  offset: 0, 0
+  index: -1
+tachlubu04
+  rotate: false
+  xy: 237, 506
+  size: 473, 207
+  orig: 473, 207
+  offset: 0, 0
+  index: -1
+tachlubu05
+  rotate: false
+  xy: 1035, 12
+  size: 286, 185
+  orig: 286, 185
+  offset: 0, 0
+  index: -1
+tachlubu06
+  rotate: false
+  xy: 712, 513
+  size: 136, 200
+  orig: 136, 200
+  offset: 0, 0
+  index: -1
+tachlubu07
+  rotate: false
+  xy: 486, 62
+  size: 369, 442
+  orig: 369, 442
+  offset: 0, 0
+  index: -1
+tachlubu08
+  rotate: true
+  xy: 1434, 108
+  size: 89, 128
+  orig: 89, 128
+  offset: 0, 0
+  index: -1
+tachlubu09
+  rotate: true
+  xy: 2, 168
+  size: 545, 233
+  orig: 545, 233
+  offset: 0, 0
+  index: -1
+tachlubu10
+  rotate: false
+  xy: 1295, 199
+  size: 247, 104
+  orig: 247, 104
+  offset: 0, 0
+  index: -1
+tachlubu11
+  rotate: false
+  xy: 2, 14
+  size: 214, 152
+  orig: 214, 152
+  offset: 0, 0
+  index: -1
+tachlubu12
+  rotate: true
+  xy: 857, 2
+  size: 191, 123
+  orig: 191, 123
+  offset: 0, 0
+  index: -1
+tachlubu13
+  rotate: false
+  xy: 869, 490
+  size: 651, 346
+  orig: 651, 346
+  offset: 0, 0
+  index: -1
+tachlubu14
+  rotate: false
+  xy: 1035, 199
+  size: 258, 289
+  orig: 258, 289
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,111 @@
+
+sam.png
+size: 556,556
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 1 copy
+  rotate: false
+  xy: 514, 364
+  size: 29, 190
+  orig: 29, 190
+  offset: 0, 0
+  index: -1
+Layer 2 copy 2
+  rotate: false
+  xy: 511, 210
+  size: 22, 19
+  orig: 22, 19
+  offset: 0, 0
+  index: -1
+Layer 25
+  rotate: true
+  xy: 2, 232
+  size: 125, 61
+  orig: 125, 61
+  offset: 0, 0
+  index: -1
+Layer 26
+  rotate: false
+  xy: 65, 238
+  size: 129, 119
+  orig: 129, 119
+  offset: 0, 0
+  index: -1
+Layer 27
+  rotate: true
+  xy: 196, 248
+  size: 109, 163
+  orig: 109, 163
+  offset: 0, 0
+  index: -1
+Layer 28
+  rotate: false
+  xy: 425, 22
+  size: 59, 162
+  orig: 59, 162
+  offset: 0, 0
+  index: -1
+Layer 29
+  rotate: false
+  xy: 425, 186
+  size: 84, 171
+  orig: 84, 171
+  offset: 0, 0
+  index: -1
+Layer 30
+  rotate: false
+  xy: 2, 50
+  size: 240, 179
+  orig: 240, 179
+  offset: 0, 0
+  index: -1
+Layer 30 copy
+  rotate: true
+  xy: 244, 6
+  size: 240, 179
+  orig: 240, 179
+  offset: 0, 0
+  index: -1
+Layer 31
+  rotate: false
+  xy: 2, 359
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+Layer 31 copy
+  rotate: false
+  xy: 258, 359
+  size: 254, 195
+  orig: 254, 195
+  offset: 0, 0
+  index: -1
+Layer 4
+  rotate: false
+  xy: 514, 231
+  size: 26, 131
+  orig: 26, 131
+  offset: 0, 0
+  index: -1
+sam
+  rotate: false
+  xy: 2, 2
+  size: 88, 46
+  orig: 88, 46
+  offset: 0, 0
+  index: -1
+sam2
+  rotate: true
+  xy: 486, 79
+  size: 105, 63
+  orig: 105, 63
+  offset: 0, 0
+  index: -1
+suolaka
+  rotate: false
+  xy: 425, 4
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

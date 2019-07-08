@@ -1,0 +1,48 @@
+
+cua.png
+size: 264,260
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 2
+  rotate: false
+  xy: 250, 138
+  size: 10, 28
+  orig: 10, 28
+  offset: 0, 0
+  index: -1
+bc_0032_Layer-15
+  rotate: false
+  xy: 2, 167
+  size: 128, 91
+  orig: 128, 91
+  offset: 0, 0
+  index: -1
+bc_0032_Layer-15 copy
+  rotate: false
+  xy: 2, 74
+  size: 128, 91
+  orig: 128, 91
+  offset: 0, 0
+  index: -1
+bc_0032_Layer-15 copy 2
+  rotate: false
+  xy: 132, 168
+  size: 128, 90
+  orig: 128, 90
+  offset: 0, 0
+  index: -1
+bc_0032_Layer-15 copy 3
+  rotate: false
+  xy: 132, 75
+  size: 116, 91
+  orig: 116, 91
+  offset: 0, 0
+  index: -1
+suolaka1
+  rotate: false
+  xy: 2, 22
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1

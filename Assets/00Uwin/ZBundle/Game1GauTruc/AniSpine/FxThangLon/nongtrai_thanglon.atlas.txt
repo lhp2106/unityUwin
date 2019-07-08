@@ -1,0 +1,41 @@
+
+nongtrai_thanglon.png
+size: 425,243
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_light
+  rotate: false
+  xy: 2, 2
+  size: 155, 150
+  orig: 155, 150
+  offset: 0, 0
+  index: -1
+nongtrai_thanglon_char
+  rotate: true
+  xy: 159, 55
+  size: 97, 184
+  orig: 97, 184
+  offset: 0, 0
+  index: -1
+sparks
+  rotate: false
+  xy: 159, 10
+  size: 43, 43
+  orig: 43, 43
+  offset: 0, 0
+  index: -1
+text_light_fx
+  rotate: true
+  xy: 354, 51
+  size: 190, 69
+  orig: 190, 69
+  offset: 0, 0
+  index: -1
+thanglon_text
+  rotate: false
+  xy: 2, 154
+  size: 350, 87
+  orig: 350, 87
+  offset: 0, 0
+  index: -1

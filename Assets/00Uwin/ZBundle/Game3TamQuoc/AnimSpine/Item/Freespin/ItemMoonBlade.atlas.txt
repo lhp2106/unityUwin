@@ -1,0 +1,97 @@
+
+ItemMoonBlade.png
+size: 1241,348
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ItemKich00
+  rotate: false
+  xy: 2, 175
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich01
+  rotate: false
+  xy: 2, 2
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich02
+  rotate: false
+  xy: 179, 175
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich03
+  rotate: false
+  xy: 179, 2
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich04
+  rotate: false
+  xy: 356, 175
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich05
+  rotate: false
+  xy: 356, 2
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich06
+  rotate: false
+  xy: 533, 175
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich07
+  rotate: false
+  xy: 533, 2
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich08
+  rotate: false
+  xy: 710, 175
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich09
+  rotate: false
+  xy: 710, 2
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich10
+  rotate: false
+  xy: 887, 175
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich11
+  rotate: false
+  xy: 887, 2
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1
+ItemKich12
+  rotate: false
+  xy: 1064, 175
+  size: 175, 171
+  orig: 175, 171
+  offset: 0, 0
+  index: -1

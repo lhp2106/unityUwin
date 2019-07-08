@@ -1,0 +1,171 @@
+List = require 'pl.List'
+-- ------------------------------------------------------
+local imgCard
+local btCard
+local cBack = CS.UnityEngine.Color(0.5, 0.5, 0.5, 1)
+
+local gameObject
+local transform
+
+local _controller
+local cardData
+
+local isSelected
+local allowSelect
+local idCard = -999
+
+local cardUp
+
+function awake()
+    LoadObjectGame()
+end    
+    
+function LoadObjectGame()
+    cardUp = _cardUp
+    imgCard = _imgCard:GetComponent(typeof(CS.UnityEngine.UI.Image))
+    btCard = _btCard:GetComponent(typeof(CS.UnityEngine.UI.Button))
+    gameObject = _gameObject
+    transform = _transform:GetComponent(typeof(CS.UnityEngine.Transform))
+    btCard.onClick:AddListener(ButtonClickListener)
+end
+
+
+function Init(controller)
+    _controller = controller
+end
+
+function LoadData(cardDataInput, buttonCallbackInput, allowSelectInput)
+    cardData = cardDataInput
+    idCard = cardData.OrdinalValue
+    buttonCallback = buttonCallbackInput
+    allowSelect = allowSelectInput
+
+    imgCard.sprite = cardUp
+    print(")______________Load card UP done ____________")
+    btCard.enabled = allowSelect
+
+    imgCard.color = CS.UnityEngine.Color.white
+end
+
+function LoadCard()
+    if cardData ~= nil and cardData.OrdinalValue >= 0 then
+        local valueCard = _controller:InvokeXLua("GetCard",cardData.OrdinalValue)
+        valueCard = valueCard[0]
+        imgCard.sprite = valueCard
+    end
+end
+
+function ShowBlack()
+    imgCard.color = cBack
+end
+
+function DestroyMySelf()
+
+    CS.LeanTween.cancel(gameObject)
+    CS.LeanTween.cancel(imgCard.gameObject)
+    imgCard.transform.localEulerAngles = CS.Vector3.zero
+    imgCard.transform.localPosition = CS.Vector3.zero
+
+    imgCard.color = CS.UnityEngine.Color.white
+
+    allowSelect = false
+    isSelected = false
+    btCard.enabled = false
+end
+
+function MoveCard(vStart, vTarget,tranTarget,tranWorld,scaleTo,destroyAtEnd,flipAtEnd)
+
+    CS.LeanTween.cancel(gameObject)
+
+    btCard.enabled = false
+    isSelected = false
+
+    transform:SetParent(tranWorld)
+    transform.position = vStart
+    transform.localScale = CS.UnityEngine.Vector3.one
+
+    local transImgCard = _imgCard:GetComponent(typeof(CS.UnityEngine.Transform))
+    transImgCard.localEulerAngles = CS.Vector3.zero
+    transImgCard.localPosition = CS.Vector3.zero
+
+    if (scaleTo < 1) then
+    
+        CS.LeanTween.scale(gameObject, CS.UnityEngine.Vector3(scaleTo, scaleTo, 1), 0.18):setOnComplete(
+            function()
+                transform.localScale =  CS.UnityEngine.Vector3(scaleTo, scaleTo, 1)
+            end
+        )
+    end
+
+    CS.LeanTween.move(gameObject, vTarget, 0.2):setOnComplete(
+        function()
+            if (destroyAtEnd) then
+
+                _controller:InvokeXLua("GiveBackCard",gameObject)
+            else
+                if (tranTarget ~= nil) then
+                    transform:SetParent(tranTarget)
+                end
+
+                if (flipAtEnd) then
+                    CS.LeanTween.rotateLocal(_imgCard, CS.UnityEngine.Vector3(0, 90, 0), 0.05):setOnComplete(
+                    function()
+                        LoadCard()
+                        CS.LeanTween.rotateLocal(_imgCard, CS.UnityEngine.Vector3(0, 0, 0), 0.05)
+                        btCard.enabled = allowSelect
+                    end
+                    )
+                else
+                    btCard.enabled = allowSelect
+                end
+            end
+        end
+    );
+end
+
+function SetCardPosition(vTarget,tranTarget,scaleTo)
+    transform:SetParent(tranTarget)
+    transform.position = vTarget
+    transform.localScale = CS.UnityEngine.Vector3(scaleTo, scaleTo, 1)
+end
+
+function DisableCardSelect()
+    allowSelect = false
+    isSelected = false
+    btCard.enabled = false
+
+    local transImgCard = _imgCard:GetComponent(typeof(CS.UnityEngine.Transform))
+    transImgCard.localEulerAngles = CS.UnityEngine.Vector3.zero
+    transImgCard.localPosition = CS.UnityEngine.Vector3.zero
+end
+
+function ButtonClickListener()
+    -- if(buttonCallback ~= nil) then
+    --     buttonCallback.Invoke(this)
+    -- end
+    isSelected = not isSelected
+    local target = 0
+
+    if isSelected then
+        target = 25
+    else
+        target = 0
+    end
+    
+    CS.LeanTween.moveLocalY(gameObject, target, 0.05)
+end
+
+function IsCheckCard(id)
+    if id == idCard then
+        return true
+    end
+    return false
+end
+
+function GetIdCard()
+    return idCard
+end
+
+function GetSelectCard()
+    return isSelected
+end

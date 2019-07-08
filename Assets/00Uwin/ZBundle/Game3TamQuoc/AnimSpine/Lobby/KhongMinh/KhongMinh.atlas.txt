@@ -1,0 +1,90 @@
+
+KhongMinh.png
+size: 1476,584
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+khung_Chonmuccuoc04
+  rotate: true
+  xy: 1022, 335
+  size: 247, 452
+  orig: 247, 452
+  offset: 0, 0
+  index: -1
+zhugeliang00
+  rotate: true
+  xy: 1022, 37
+  size: 296, 441
+  orig: 296, 441
+  offset: 0, 0
+  index: -1
+zhugeliang01
+  rotate: false
+  xy: 2, 16
+  size: 214, 188
+  orig: 214, 188
+  offset: 0, 0
+  index: -1
+zhugeliang02
+  rotate: true
+  xy: 2, 206
+  size: 376, 606
+  orig: 376, 606
+  offset: 0, 0
+  index: -1
+zhugeliang03
+  rotate: true
+  xy: 610, 41
+  size: 541, 410
+  orig: 541, 410
+  offset: 0, 0
+  index: -1
+zhugeliang04
+  rotate: false
+  xy: 304, 55
+  size: 52, 16
+  orig: 52, 16
+  offset: 0, 0
+  index: -1
+zhugeliang05
+  rotate: false
+  xy: 367, 69
+  size: 48, 135
+  orig: 48, 135
+  offset: 0, 0
+  index: -1
+zhugeliang06
+  rotate: false
+  xy: 276, 71
+  size: 26, 133
+  orig: 26, 133
+  offset: 0, 0
+  index: -1
+zhugeliang07
+  rotate: true
+  xy: 304, 73
+  size: 131, 49
+  orig: 131, 49
+  offset: 0, 0
+  index: -1
+zhugeliang08
+  rotate: true
+  xy: 218, 52
+  size: 152, 56
+  orig: 152, 56
+  offset: 0, 0
+  index: -1
+zhugeliang09
+  rotate: false
+  xy: 218, 28
+  size: 147, 22
+  orig: 147, 22
+  offset: 0, 0
+  index: -1
+zhugeliang10
+  rotate: false
+  xy: 367, 2
+  size: 103, 65
+  orig: 103, 65
+  offset: 0, 0
+  index: -1

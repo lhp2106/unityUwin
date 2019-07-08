@@ -1,0 +1,15 @@
+
+List = require 'pl.List'
+
+local configGate={
+    viewLobby = nil,
+    noticeRun = nil,
+    listElementGame = List(),
+    requestJoinGameTLMNSolo = false,
+}
+
+function configGate.sub(a,b)
+    print(a-b)
+ end
+
+return configGate	

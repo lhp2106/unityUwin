@@ -1,0 +1,27 @@
+
+deco_right.png
+size: 710,413
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+deco_right_00
+  rotate: false
+  xy: 238, 2
+  size: 234, 409
+  orig: 234, 409
+  offset: 0, 0
+  index: -1
+deco_right_01
+  rotate: false
+  xy: 474, 2
+  size: 234, 409
+  orig: 234, 409
+  offset: 0, 0
+  index: -1
+deco_right_02
+  rotate: false
+  xy: 2, 2
+  size: 234, 409
+  orig: 234, 409
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,48 @@
+
+ca.png
+size: 232,232
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 2
+  rotate: false
+  xy: 206, 109
+  size: 10, 28
+  orig: 10, 28
+  offset: 0, 0
+  index: -1
+bc_0029_Layer-18 copy
+  rotate: false
+  xy: 2, 133
+  size: 114, 94
+  orig: 114, 94
+  offset: 0, 0
+  index: -1
+bc_0029_Layer-18 copy 2
+  rotate: false
+  xy: 2, 37
+  size: 114, 94
+  orig: 114, 94
+  offset: 0, 0
+  index: -1
+bc_0029_Layer-18 copy 3
+  rotate: false
+  xy: 118, 55
+  size: 86, 82
+  orig: 86, 82
+  offset: 0, 0
+  index: -1
+bc_0029_Layer-18 copy 4
+  rotate: false
+  xy: 118, 139
+  size: 111, 88
+  orig: 111, 88
+  offset: 0, 0
+  index: -1
+suolaka1
+  rotate: false
+  xy: 118, 3
+  size: 51, 50
+  orig: 51, 50
+  offset: 0, 0
+  index: -1

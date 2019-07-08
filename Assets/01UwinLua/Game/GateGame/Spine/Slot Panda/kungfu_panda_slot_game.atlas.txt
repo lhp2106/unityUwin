@@ -1,0 +1,139 @@
+
+kungfu_panda_slot_game.png
+size: 1141,423
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Po01
+  rotate: false
+  xy: 337, 237
+  size: 285, 184
+  orig: 285, 184
+  offset: 0, 0
+  index: -1
+Po02
+  rotate: false
+  xy: 337, 54
+  size: 271, 181
+  orig: 271, 181
+  offset: 0, 0
+  index: -1
+Po03
+  rotate: false
+  xy: 2, 158
+  size: 333, 263
+  orig: 333, 263
+  offset: 0, 0
+  index: -1
+Po04
+  rotate: false
+  xy: 226, 23
+  size: 32, 29
+  orig: 32, 29
+  offset: 0, 0
+  index: -1
+Po05
+  rotate: false
+  xy: 168, 60
+  size: 27, 30
+  orig: 27, 30
+  offset: 0, 0
+  index: -1
+Po06
+  rotate: false
+  xy: 2, 21
+  size: 164, 135
+  orig: 164, 135
+  offset: 0, 0
+  index: -1
+Po07
+  rotate: false
+  xy: 168, 92
+  size: 65, 64
+  orig: 65, 64
+  offset: 0, 0
+  index: -1
+Po08
+  rotate: false
+  xy: 197, 62
+  size: 27, 28
+  orig: 27, 28
+  offset: 0, 0
+  index: -1
+Po09
+  rotate: false
+  xy: 610, 223
+  size: 11, 12
+  orig: 11, 12
+  offset: 0, 0
+  index: -1
+Po10
+  rotate: false
+  xy: 1097, 104
+  size: 39, 55
+  orig: 39, 55
+  offset: 0, 0
+  index: -1
+Po11
+  rotate: false
+  xy: 260, 27
+  size: 28, 25
+  orig: 28, 25
+  offset: 0, 0
+  index: -1
+Po12
+  rotate: false
+  xy: 610, 210
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+Po13
+  rotate: false
+  xy: 168, 9
+  size: 56, 43
+  orig: 56, 43
+  offset: 0, 0
+  index: -1
+Po14
+  rotate: false
+  xy: 1097, 161
+  size: 42, 49
+  orig: 42, 49
+  offset: 0, 0
+  index: -1
+logo/khung
+  rotate: false
+  xy: 624, 20
+  size: 269, 401
+  orig: 269, 401
+  offset: 0, 0
+  index: -1
+logo/khung hien thi tien
+  rotate: false
+  xy: 895, 212
+  size: 220, 115
+  orig: 220, 115
+  offset: 0, 0
+  index: -1
+logo/leaf
+  rotate: false
+  xy: 226, 2
+  size: 38, 16
+  orig: 38, 16
+  offset: 0, 0
+  index: -1
+logo/light_ray
+  rotate: false
+  xy: 895, 10
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+logo/text
+  rotate: false
+  xy: 895, 329
+  size: 238, 92
+  orig: 238, 92
+  offset: 0, 0
+  index: -1
